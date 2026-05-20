@@ -1,0 +1,6 @@
+mode: standalone
+resources:
+  requests: { cpu: "200m", memory: "256Mi" }
+  limits: { cpu: "1", memory: "1Gi" }
+persistence:
+  size: 50Gi

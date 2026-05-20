@@ -1,0 +1,7 @@
+{
+  "EnableCapture": true,
+  "InitialSamplingPercentage": 100,
+  "DestinationS3Uri": "s3://YOUR-BUCKET/aif/capture/",
+  "CaptureOptions": [{"CaptureMode":"Input"},{"CaptureMode":"Output"}],
+  "CaptureContentTypeHeader": {"CsvContentTypes": ["text/csv"], "JsonContentTypes": ["application/json"]}
+}

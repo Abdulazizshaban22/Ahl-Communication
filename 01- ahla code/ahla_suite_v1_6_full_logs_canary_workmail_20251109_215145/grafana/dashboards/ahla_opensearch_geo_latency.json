@@ -1,0 +1,86 @@
+{
+  "id": null,
+  "uid": "ahla-os-geo",
+  "title": "Ahla — OpenSearch Geo & Latency (ALB)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "5xx (last 1h)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND elb_status_code:[500 TO 599] | stats count()"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Target Processing Time (p50/p95)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb | stats percentiles(target_processing_time, [50,95]) by date_histogram(@timestamp, 1m)"
+        }
+      ],
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 18,
+        "h": 8
+      }
+    },
+    {
+      "type": "table",
+      "title": "Top Client IPs",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb | stats count() by client_ip | sort -count | limit 20"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      }
+    },
+    {
+      "type": "table",
+      "title": "Top URIs (slow > 1s)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb AND target_processing_time:[1 TO *] | stats avg(target_processing_time) as avg_t, count() by request_url | sort -avg_t | limit 20"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      }
+    }
+  ]
+}

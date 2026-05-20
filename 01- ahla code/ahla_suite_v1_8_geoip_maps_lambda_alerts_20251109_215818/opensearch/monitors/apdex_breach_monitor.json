@@ -1,0 +1,88 @@
+{
+  "type": "monitor",
+  "name": "Apdex breach < 0.85 (1h)",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 5,
+      "unit": "MINUTES"
+    }
+  },
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-1h"
+                    }
+                  }
+                },
+                {
+                  "term": {
+                    "service": "alb"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "satisfied": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "lte": 0.5
+                  }
+                }
+              }
+            },
+            "tolerating": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "gt": 0.5,
+                    "lte": 2.0
+                  }
+                }
+              }
+            },
+            "total": {
+              "value_count": {
+                "field": "target_processing_time"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "name": "Apdex<0.85",
+      "severity": "3",
+      "condition": {
+        "script": {
+          "lang": "painless",
+          "source": "double S=ctx.results[0].aggregations.satisfied.doc_count; double T=ctx.results[0].aggregations.tolerating.doc_count; double N=ctx.results[0].aggregations.total.value; if(N==0) return false; double A=(S+0.5*T)/N; return A<0.85;"
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE-SNS-DESTINATION-ID>",
+          "message_template": {
+            "source": "Apdex < 0.85 in last 1h"
+          }
+        }
+      ]
+    }
+  ]
+}

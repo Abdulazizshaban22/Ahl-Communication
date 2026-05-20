@@ -1,0 +1,22 @@
+{{- if .Values.deploy.collab }}
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: collab-gateway, labels: { app: collab-gateway } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: collab-gateway } }
+  template:
+    metadata: { labels: { app: collab-gateway } }
+    spec:
+      containers:
+      - name: collab-gateway
+        image: {{ .Values.images.collab }}
+        ports: [{{ name: ws, containerPort: 1234 }}]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: collab-gateway }
+spec:
+  selector: { app: collab-gateway }
+  ports: [{{ name: ws, port: 1234, targetPort: 1234 }}]
+{{- end }}

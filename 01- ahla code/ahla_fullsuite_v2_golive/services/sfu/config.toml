@@ -1,0 +1,10 @@
+[webrtc]
+icelite=true
+rtp_port=5000
+rtp_port_range=200
+[[webrtc.iceserver]]
+urls=["stun:stun.l.google.com:19302"]
+[[webrtc.iceserver]]
+urls=["turn:coturn:3478?transport=udp","turn:coturn:3478?transport=tcp"]
+username="ahla"
+credential="ahla123"

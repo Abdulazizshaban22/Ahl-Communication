@@ -1,0 +1,1 @@
+This pack contains configuration templates authored for Ahla Mail Public v1. Stalwart image is pulled at runtime from Docker Hub.

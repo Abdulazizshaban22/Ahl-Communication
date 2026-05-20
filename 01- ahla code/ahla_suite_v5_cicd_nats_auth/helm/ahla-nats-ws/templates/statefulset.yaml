@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nats
+  namespace: ahla-system
+  labels: { app: nats }
+spec:
+  replicas: {{ .Values.replicas }}
+  serviceName: nats-headless
+  selector: { matchLabels: { app: nats } }
+  template:
+    metadata:
+      labels: { app: nats }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "7777"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: nats
+        image: nats:2.10
+        args: ["-c","/etc/nats/nats.conf","--jetstream"]
+        ports:
+        - { name: client,  containerPort: 4222 }
+        - { name: cluster, containerPort: 6222 }
+        - { name: monitor, containerPort: 8222 }
+        - { name: ws,      containerPort: 9222 }
+        volumeMounts:
+        - { name: cfg,  mountPath: /etc/nats }
+        - { name: data, mountPath: /data }
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+      - name: nats-exporter
+        image: natsio/prometheus-nats-exporter:0.17.3
+        args: ["-varz","http://localhost:8222","-connz","http://localhost:8222","-routez","http://localhost:8222","-subz","http://localhost:8222"]
+        ports:
+        - { name: metrics, containerPort: 7777 }
+      volumes:
+      - name: cfg
+        configMap: { name: nats-config }
+  volumeClaimTemplates:
+  - metadata: { name: data }
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: {{ .Values.storage.className }}
+      resources: { requests: { storage: {{ .Values.storage.size }} } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-headless
+  namespace: ahla-system
+spec:
+  clusterIP: None
+  selector: { app: nats }
+  ports:
+  - { name: client,  port: 4222, targetPort: 4222 }
+  - { name: cluster, port: 6222, targetPort: 6222 }
+  - { name: monitor, port: 8222, targetPort: 8222 }
+  - { name: ws,      port: 9222, targetPort: 9222 }

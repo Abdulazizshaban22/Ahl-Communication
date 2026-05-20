@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coturn-config
+  namespace: ahla-system
+data:
+  turnserver.conf: |
+    realm=ahla.com
+    fingerprint
+    use-auth-secret
+    static-auth-secret=CHANGE_ME
+    listening-port=3478
+    tls-listening-port=443
+    no-loopback-peers
+    no-multicast-peers
+    # Prometheus metrics on 9641
+    prometheus
+    prometheus-port=9641

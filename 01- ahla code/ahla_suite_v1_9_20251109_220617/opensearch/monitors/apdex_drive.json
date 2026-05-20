@@ -1,0 +1,101 @@
+{
+  "type": "monitor",
+  "name": "Apdex drive (1h)",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 5,
+      "unit": "MINUTES"
+    }
+  },
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "term": {
+                    "service.keyword": "drive"
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-1h"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "total": {
+              "value_count": {
+                "field": "target_processing_time"
+              }
+            },
+            "satisfied": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "lte": 1.2
+                  }
+                }
+              }
+            },
+            "tolerating": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "gt": 1.2,
+                    "lte": 4.8
+                  }
+                }
+              }
+            },
+            "apdex": {
+              "bucket_script": {
+                "buckets_path": {
+                  "sat": "satisfied._count",
+                  "tol": "tolerating._count",
+                  "tot": "total"
+                },
+                "script": "params.tot > 0 ? (params.sat + 0.5 * params.tol) / params.tot : 1.0"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "name": "Apdex breach",
+      "severity": "1",
+      "condition": {
+        "script": {
+          "source": "return ctx.results[0].aggregations.apdex.value < 0.85;",
+          "lang": "painless"
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE_WITH_SNS_DESTINATION_ID>",
+          "subject_template": {
+            "source": "[Ahla] Apdex breach — drive"
+          },
+          "message_template": {
+            "source": "Apdex dropped below threshold. Current Apdex: {{ctx.results.0.aggregations.apdex.value}}"
+          }
+        }
+      ]
+    }
+  ]
+}

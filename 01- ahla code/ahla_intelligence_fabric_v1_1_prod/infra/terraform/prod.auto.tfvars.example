@@ -1,0 +1,11 @@
+project = "ahla-aif"
+region  = "me-central-1"
+
+db_username = "aif_user"
+db_password = "CHANGE_ME_STRONG_PASSWORD"
+
+ecr_repo_orchestrator = "aif/orchestrator"
+ecr_repo_workers      = "aif/workers"
+
+# optional OpenSearch sink for logs/Firehose
+open_search_log_sink_arn = ""

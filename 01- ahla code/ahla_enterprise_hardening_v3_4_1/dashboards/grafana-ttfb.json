@@ -1,0 +1,9 @@
+{
+  "title": "Ahla — TTFB & Page Load (Synthetics)",
+  "panels": [
+    { "type": "stat", "title": "Canary Duration (ms)", "targets": [], "gridPos": {"x":0,"y":0,"w":8,"h":6} },
+    { "type": "graph", "title": "TTFB (ms) — derived from logs", "targets": [], "gridPos": {"x":8,"y":0,"w":16,"h":8} }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

@@ -1,0 +1,12 @@
+resource "aws_s3_bucket" "alb_logs" {
+  bucket = "${var.project}-alb-logs"
+}
+
+resource "aws_lb" "alb" {
+  # ... existing config ...
+  access_logs {
+    bucket  = aws_s3_bucket.alb_logs.bucket
+    prefix  = "alb/"
+    enabled = true
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Ahla \u2014 Latency p95 per Service",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Chat p95 (ms)",
+      "targets": [
+        {
+          "expression": "latency_p95_chat"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Meet p95 (ms)",
+      "targets": [
+        {
+          "expression": "latency_p95_meet"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Drive p95 (ms)",
+      "targets": [
+        {
+          "expression": "latency_p95_drive"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Mail p95 (ms)",
+      "targets": [
+        {
+          "expression": "latency_p95_mail"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Business p95 (ms)",
+      "targets": [
+        {
+          "expression": "latency_p95_business"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

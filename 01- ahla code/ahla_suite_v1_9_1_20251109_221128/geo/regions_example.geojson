@@ -1,0 +1,74 @@
+{
+  "type": "FeatureCollection",
+  "name": "example_regions",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "region_iso_code": "SA-01",
+        "region_name": "Example North"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              39.0,
+              26.0
+            ],
+            [
+              45.0,
+              26.0
+            ],
+            [
+              45.0,
+              30.0
+            ],
+            [
+              39.0,
+              30.0
+            ],
+            [
+              39.0,
+              26.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_iso_code": "SA-02",
+        "region_name": "Example South"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              39.0,
+              20.0
+            ],
+            [
+              45.0,
+              20.0
+            ],
+            [
+              45.0,
+              25.5
+            ],
+            [
+              39.0,
+              25.5
+            ],
+            [
+              39.0,
+              20.0
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

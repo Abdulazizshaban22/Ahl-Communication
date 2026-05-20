@@ -1,0 +1,1 @@
+export const api = (base:string)=>({get: (p:string)=>fetch(base+p).then(r=>r.json())});

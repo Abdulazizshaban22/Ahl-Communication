@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: { name: feast-materialize-daily }
+spec:
+  schedule: "0 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: feast
+            image: ghcr.io/feastdev/feast:latest
+            command: ["/bin/sh","-lc"]
+            args:
+              - |
+                cd /work/feast_repo && feast apply && feast materialize-incremental $(date -u -d "25 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
+            volumeMounts: [{ name: repo, mountPath: /work }]
+          restartPolicy: OnFailure
+          volumes: [{ name: repo, persistentVolumeClaim: { claimName: feast-repo-pvc } }]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata: { name: evidently-drift-daily }
+spec:
+  schedule: "30 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: drift
+            image: python:3.11-slim
+            command: ["/bin/sh","-lc"]
+            args: ["pip install evidently pandas && python monitoring/evidently/drift_report.py"]
+            volumeMounts: [{ name: repo, mountPath: /work }]
+          restartPolicy: OnFailure
+          volumes: [{ name: repo, persistentVolumeClaim: { claimName: ahla-repo-pvc } }]

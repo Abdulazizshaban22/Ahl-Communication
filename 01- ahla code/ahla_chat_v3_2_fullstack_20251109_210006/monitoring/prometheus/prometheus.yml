@@ -1,0 +1,15 @@
+
+global: { scrape_interval: 10s }
+scrape_configs:
+  - job_name: chat-api
+    static_configs: [{ targets: ['chat-api:8000'] }]
+    metrics_path: /metrics
+  - job_name: moments-api
+    static_configs: [{ targets: ['moments-api:8010'] }]
+    metrics_path: /metrics
+  - job_name: emotion-api
+    static_configs: [{ targets: ['emotion-api:8020'] }]
+    metrics_path: /metrics
+  - job_name: voice-tone-api
+    static_configs: [{ targets: ['voice-tone-api:8030'] }]
+    metrics_path: /metrics

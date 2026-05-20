@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Ahla Chat",
+    "slug": "ahla-chat",
+    "version": "0.1.0",
+    "sdkVersion": "51.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6CC5A3"
+    },
+    "updates": {
+      "enabled": false
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6CC5A3"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+name: Deploy Env Overlays
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to deploy (staging|prod)"
+        required: true
+        default: "staging"
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+  AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install kubectl & helm
+        run: |
+          curl -L https://get.helm.sh/helm-v3.14.4-linux-amd64.tar.gz | tar zx && sudo mv linux-amd64/helm /usr/local/bin/helm
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl && sudo mv kubectl /usr/local/bin/kubectl
+
+      - name: Update kubeconfig for EKS
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+      - name: Deploy Ultra services
+        run: |
+          ENV=${{ github.event.inputs.env }}
+          for svc in ahla-asr-service ahla-translate-service ahla-diarization-service ahla-search-service; do
+            helm upgrade -i $svc charts/$svc               --namespace ahla --create-namespace               -f overlays/$ENV/services/$svc.values.yaml               --set image.repository=$ECR_REGISTRY/ahla/$svc               --set image.tag=${{ github.sha }}
+          done
+
+      - name: Deploy App services
+        run: |
+          ENV=${{ github.event.inputs.env }}
+          for svc in ahla-chat-api ahla-drive-api ahla-meet-signaling ahla-web-app; do
+            helm upgrade -i $svc charts/$svc               --namespace ahla --create-namespace               -f overlays/$ENV/apps/$svc.values.yaml               --set image.repository=$ECR_REGISTRY/ahla/$svc               --set image.tag=${{ github.sha }}
+          done

@@ -1,0 +1,14 @@
+{
+  "realm": "ahla",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "omni-web",
+      "publicClient": true,
+      "redirectUris": [
+        "*"
+      ],
+      "standardFlowEnabled": true
+    }
+  ]
+}

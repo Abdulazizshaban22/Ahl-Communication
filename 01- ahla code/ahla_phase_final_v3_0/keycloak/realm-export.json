@@ -1,0 +1,53 @@
+{
+  "realm": "ahla",
+  "enabled": true,
+  "displayName": "Ahla ID",
+  "users": [
+    {
+      "username": "admin@ahla",
+      "enabled": true,
+      "email": "admin@ahla",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeMe123!",
+          "temporary": true
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "ahla-web",
+      "publicClient": true,
+      "redirectUris": [
+        "https://app.ahla.example.com/*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "*"
+      ]
+    },
+    {
+      "clientId": "ahla-api",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "redirectUris": [
+        "*"
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "admin"
+      },
+      {
+        "name": "staff"
+      },
+      {
+        "name": "user"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+export default function Page(){return <main style={{maxWidth:720,margin:'24px auto',padding:16}}><h2>Ahla Business</h2><p>Observability panels will appear in Grafana (http://localhost:3005).</p></main>}

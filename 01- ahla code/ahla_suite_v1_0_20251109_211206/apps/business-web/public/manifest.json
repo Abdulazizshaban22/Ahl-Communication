@@ -1,0 +1,20 @@
+{
+  "name": "Ahla Business",
+  "short_name": "Ahla",
+  "start_url": "/business/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00c46a",
+  "icons": [
+    {
+      "src": "/business/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/business/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

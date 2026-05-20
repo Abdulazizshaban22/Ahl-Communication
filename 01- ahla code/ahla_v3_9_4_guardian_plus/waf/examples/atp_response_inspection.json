@@ -1,0 +1,31 @@
+{
+  "Name": "ahla-cf-acl",
+  "Scope": "CLOUDFRONT",
+  "DefaultAction": { "Allow": {} },
+  "VisibilityConfig": { "MetricName": "ahla-cf-acl", "SampledRequestsEnabled": true, "CloudWatchMetricsEnabled": true },
+  "Rules": [
+    {
+      "Name": "AWS-AWSManagedRulesATPRuleSet",
+      "Priority": 10,
+      "OverrideAction": { "None": {} },
+      "Statement": {
+        "ManagedRuleGroupStatement": {
+          "VendorName": "AWS",
+          "Name": "AWSManagedRulesATPRuleSet",
+          "ManagedRuleGroupConfigs": [
+            {
+              "AWSManagedRulesATPRuleSet": {
+                "LoginPath": "/auth/login",
+                "EnableRegexInPath": false,
+                "ResponseInspection": {
+                  "StatusCode": { "SuccessCodes": [200, 204, 302], "FailureCodes": [400, 401, 403] }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "VisibilityConfig": { "MetricName": "ahla-atp", "SampledRequestsEnabled": true, "CloudWatchMetricsEnabled": true }
+    }
+  ]
+}

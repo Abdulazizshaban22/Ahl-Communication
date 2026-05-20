@@ -1,0 +1,10 @@
+{
+  "incident_id": "INC-YYYYMMDD-0001",
+  "detected_at": "<ISO8601>",
+  "services_impacted": ["chat","mail"],
+  "nature": "Unauthorized access via credential stuffing",
+  "data_categories": ["PII","Account"],
+  "preliminary_impact": "TBD",
+  "mitigation": ["WAF ATP enabled","User password resets","Forced MFA"],
+  "notify_sdaia_within_hours": 72
+}

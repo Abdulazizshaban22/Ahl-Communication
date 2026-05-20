@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-drive-api
+description: Ahla Drive API (Uploads/OCR)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

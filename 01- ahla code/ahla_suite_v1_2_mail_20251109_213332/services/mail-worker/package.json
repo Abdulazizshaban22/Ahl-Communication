@@ -1,0 +1,12 @@
+{
+  "name": "ahla-mail-worker",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/worker.js"
+  },
+  "dependencies": {
+    "aws-sdk": "2.1581.0"
+  }
+}

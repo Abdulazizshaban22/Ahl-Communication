@@ -1,0 +1,5 @@
+# Find aws_ecs_task_definition.chat and .meet and add/update the container env:
+"environment": [
+  { "name": "REDIS_URL", "value": "rediss://:${aws_secretsmanager_secret_version.redis_auth_v.secret_string}@${aws_elasticache_replication_group.redis.primary_endpoint_address}:6379" }
+],
+# For Node ioredis, 'rediss://' enables TLS. No code change required.

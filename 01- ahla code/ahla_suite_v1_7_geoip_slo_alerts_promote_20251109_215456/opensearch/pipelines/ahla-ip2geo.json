@@ -1,0 +1,13 @@
+{
+  "description": "Enrich documents with GeoIP from client_ip using ip2geo datasource.",
+  "processors": [
+    {
+      "ip2geo": {
+        "field": "client_ip",
+        "datasource": "ahla-geoip-ds",
+        "target_field": "ip2geo",
+        "ignore_missing": true
+      }
+    }
+  ]
+}

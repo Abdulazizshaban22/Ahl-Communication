@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  dashboard:
+    build: ../dashboard
+    ports: ["8088:8088"]
+    volumes:
+      - ../out:/data:ro   # mount CSV outputs from v3 pack
+  # Optional: connect to intel-api if deployed on same host/network (update endpoint in enterprise.ai config)
+  # intel-api:
+  #   image: ghcr.io/ahla/intel-api:latest
+  #   ports: ["8090:8090"]

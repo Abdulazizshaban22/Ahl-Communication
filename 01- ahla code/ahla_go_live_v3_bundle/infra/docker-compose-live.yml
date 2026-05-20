@@ -1,0 +1,68 @@
+
+version: "3.9"
+services:
+  nats1:
+    image: nats:2.10
+    command: ["-c", "/etc/nats/n1.conf"]
+    volumes: [ "./nats:/etc/nats", "nats1_data:/data" ]
+    ports: [ "4222:4222", "6222:6222", "9222:9222" ]
+
+  nats2:
+    image: nats:2.10
+    command: ["-c", "/etc/nats/n2.conf"]
+    volumes: [ "./nats:/etc/nats", "nats2_data:/data" ]
+
+  nats3:
+    image: nats:2.10
+    command: ["-c", "/etc/nats/n3.conf"]
+    volumes: [ "./nats:/etc/nats", "nats3_data:/data" ]
+
+  postgres-primary:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pg_primary:/var/lib/postgresql/data
+      - ./postgres/primary/init:/docker-entrypoint-initdb.d
+    ports: ["5432:5432"]
+
+  postgres-replica:
+    image: postgres:15
+    depends_on: [postgres-primary]
+    environment:
+      POSTGRES_PASSWORD: postgres
+      PG_PRIMARY_HOST: postgres-primary
+      PG_PRIMARY_USER: repl_user
+    volumes:
+      - pg_replica:/var/lib/postgresql/data
+      - ./postgres/replica/init:/docker-entrypoint-initdb.d
+
+  coturn:
+    image: coturn/coturn:latest
+    network_mode: host
+    volumes:
+      - ./turn/turnserver.conf:/etc/turnserver.conf:ro
+
+  mobile-gateway:
+    build: ../services/mobile-gateway
+    environment:
+      NATS_URL: nats://nats1:4222
+    ports: ["8089:8080"]
+    depends_on: [nats1]
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports: ["9000:9000", "9001:9001"]
+    volumes: ["minio_data:/data"]
+
+volumes:
+  nats1_data: {}
+  nats2_data: {}
+  nats3_data: {}
+  pg_primary: {}
+  pg_replica: {}
+  minio_data: {}

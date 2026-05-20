@@ -1,0 +1,9 @@
+# --- S3 / Drive ---
+s3_bucket = "ahla-prod-drive"
+cors_allowed_origins = ["https://app.ahla.example.com","https://meet.ahla.example.com"]
+
+# --- Images ---
+image_drive = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla-drive:prod"
+
+# --- TURN ---
+turn_realm = "turn.ahla.example.com"

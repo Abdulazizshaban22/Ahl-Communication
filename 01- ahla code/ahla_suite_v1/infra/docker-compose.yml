@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  postgres: { image: postgres:16, environment: [ POSTGRES_PASSWORD=postgres ], ports: ["5432:5432"] }
+  redis:    { image: redis:7, ports: ["6379:6379"] }
+  nats:     { image: nats:2, command: ["-js"], ports: ["4222:4222","8222:8222"] }
+  minio:
+    image: minio/minio:RELEASE.2024-09-01T00-00-00Z.fips
+    command: server /data --console-address ":9001"
+    environment: [ MINIO_ROOT_USER=minio, MINIO_ROOT_PASSWORD=minio12345 ]
+    ports: ["9000:9000","9001:9001"]
+    volumes: ["minio:/data"]
+  keycloak-db:
+    image: postgres:16
+    environment: [ POSTGRES_DB=keycloak, POSTGRES_USER=keycloak, POSTGRES_PASSWORD=keycloak ]
+    volumes: ["kcdata:/var/lib/postgresql/data"]
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    command: ["start-dev","--http-port","8089"]
+    environment: [ KEYCLOAK_ADMIN=admin, KEYCLOAK_ADMIN_PASSWORD=admin ]
+    ports: ["8089:8089"]
+    depends_on: ["keycloak-db"]
+    volumes: ["../ahla-identity/keycloak:/opt/keycloak/data/import"]
+  mind:
+    build: ../ahla-mind
+    ports: ["8081:8081"]
+  chat-api:    { build: ../ahla-chat/services/api,    ports: ["8082:8080"] }
+  chat-web:
+    build: ../ahla-chat/apps/web
+    environment: [ NEXT_PUBLIC_CHAT_API=http://localhost:8082 ]
+    ports: ["3001:3000"]
+  mail-api:    { build: ../ahla-mail/services/api,    ports: ["8083:8080"] }
+  mail-web:    { build: ../ahla-mail/apps/web,        ports: ["3002:3000"] }
+  drive-api:   { build: ../ahla-drive/services/api,   ports: ["8084:8080"], volumes: ["uploads:/data/uploads"] }
+  drive-web:   { build: ../ahla-drive/apps/web,       ports: ["3003:3000"] }
+  meet-signaling: { build: ../ahla-meet/services/signaling, ports: ["8085:8085"] }
+  meet-web:    { build: ../ahla-meet/apps/web,        ports: ["3004:3000"] }
+  business-api:{ build: ../ahla-business/services/api, ports: ["8086:8080"] }
+  business-web:{ build: ../ahla-business/apps/web,     ports: ["3005:3000"] }
+  coturn:
+    image: coturn/coturn:4.6
+    network_mode: host
+    volumes: ["./turn/turnserver.conf:/etc/coturn/turnserver.conf:ro"]
+  nginx:
+    image: nginx:1.27-alpine
+    volumes: ["./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro"]
+    ports: ["80:80"]
+    depends_on: ["chat-web","mail-web","drive-web","meet-web","business-web"]
+volumes: { uploads: {}, minio: {}, kcdata: {} }

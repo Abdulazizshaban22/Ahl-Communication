@@ -1,0 +1,214 @@
+{
+  "title": "Ahla \u2014 SLO Command Center",
+  "schemaVersion": 39,
+  "tags": [
+    "ahla",
+    "slo",
+    "burnrate"
+  ],
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Burn Rate \u2014 Chat",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Requests",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum",
+          "expressionEnabled": false
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Errors",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum",
+          "expressionEnabled": false
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Burn Rate \u2014 Meet",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/MEET",
+          "metricName": "Requests",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/MEET",
+          "metricName": "Errors",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.995)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Burn Rate \u2014 Drive",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Requests",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Errors",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Burn Rate \u2014 Mail",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Requests",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Errors",
+          "dimensions": {},
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Platform Degraded (ANY)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "X",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-platform-degraded-any\"','Average',60)",
+          "returnData": true
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 4
+      }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Fast Pair \u2014 Active",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "X",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=~\".*-br-fast-pair\"','Average',60)",
+          "returnData": true
+        }
+      ],
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 4
+      }
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Maintenance (Muted via Mute Timings)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "__expr__"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "__expr__"
+          },
+          "expression": "1",
+          "hide": false,
+          "instant": true,
+          "range": false
+        }
+      ],
+      "description": "\u0645\u0624\u0634\u0631 \u062a\u0648\u0636\u064a\u062d\u064a \u2014 \u0627\u0644\u062d\u0627\u0644\u0629 \u0627\u0644\u0641\u0639\u0644\u064a\u0629 \u062a\u0639\u062a\u0645\u062f \u0639\u0644\u0649 mute timings/notification policies"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+replicas: 1
+image:
+  repository: ${{ env.ECR_REGISTRY }}/ahla/ahla-translate-service
+  tag: ${{ github.sha }}
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8089
+
+env:
+  LOG_LEVEL: info
+  CT2_MODEL_PATH: "/models"
+  SRC_LANG: "arb_Arab"
+  TGT_LANG: "eng_Latn"
+
+resources:
+  requests: { cpu: "300m", memory: "512Mi" }
+  limits:   { cpu: "2", memory: "2Gi" }
+
+readiness: { path: /healthz }
+liveness:  { path: /healthz }
+
+ingress:
+  enabled: true
+  host: translate.stg.ahla.com
+  tlsSecret: translate-stg-ahla-com-tls
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 65
+
+serviceMonitor:
+  enabled: true
+  interval: 30s

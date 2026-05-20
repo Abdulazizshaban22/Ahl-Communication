@@ -1,0 +1,25 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "admin@ahla.com"
+      storage: "acme.json"
+      httpChallenge:
+        entryPoint: web
+http:
+  routers:
+    mta-sts:
+      rule: "Host(`mta-sts.ahla.com`)"
+      entryPoints: ["websecure"]
+      service: "mta-sts"
+      tls:
+        certResolver: "letsencrypt"
+  services:
+    mta-sts:
+      loadBalancer:
+        servers:
+          - url: "http://mta-sts-web:80"

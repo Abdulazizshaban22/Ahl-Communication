@@ -1,0 +1,18 @@
+replicas: 3
+storage:
+  size: 50Gi
+  className: gp3
+auth:
+  user: wsclient
+  password: "CHANGE_ME_STRONG"
+ws:
+  port: 9222
+  allowedOrigins:
+    - "https://*.ahla.com"
+resources:
+  requests:
+    cpu: "300m"
+    memory: "512Mi"
+  limits:
+    cpu: "1500m"
+    memory: "2Gi"

@@ -1,0 +1,7 @@
+project="ahla-prod"
+region="me-central-1"
+db_username="ahla_user"
+db_password="CHANGE_ME_STRONG_PASSWORD"
+ecr_repo_api="ahla/svc-api"
+ecr_repo_web="ahla/svc-web"
+canary_role_arn="arn:aws:iam::<ACCOUNT>:role/CloudWatchSyntheticsRole"

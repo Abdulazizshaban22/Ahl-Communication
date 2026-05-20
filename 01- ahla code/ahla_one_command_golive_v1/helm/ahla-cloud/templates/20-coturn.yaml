@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: coturn, namespace: ahla-system, labels: { app: coturn } }
+spec:
+  replicas: {{ .Values.coturn.replicas | default 2 }}
+  selector: { matchLabels: { app: coturn } }
+  template:
+    metadata: { labels: { app: coturn } }
+    spec:
+      containers:
+      - name: coturn
+        image: instrumentisto/coturn:latest
+        args: ["-n","--listening-port","3478","--tls-listening-port","443","--min-port","49152","--max-port","49200","--no-cli","--no-tlsv1","--no-tlsv1_1","--use-auth-secret","--static-auth-secret","CHANGEME","--realm","{{ .Values.global.domain }}","--prometheus"]
+        ports:
+        - { name: turn,  containerPort: 3478, protocol: UDP }
+        - { name: turnt, containerPort: 3478, protocol: TCP }
+        - { name: tls,   containerPort: 443,  protocol: TCP }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coturn
+  namespace: ahla-system
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "TCP"
+spec:
+  type: LoadBalancer
+  selector: { app: coturn }
+  ports:
+  - { name: turn-udp, port: 3478, targetPort: 3478, protocol: UDP }
+  - { name: turn-tcp, port: 3478, targetPort: 3478, protocol: TCP }
+  - { name: turn-tls, port: 443,  targetPort: 443,  protocol: TCP }

@@ -1,0 +1,11 @@
+apiVersion: 1
+datasources:
+  - name: OpenSearch
+    type: grafana-opensearch-datasource
+    access: proxy
+    editable: true
+    jsonData:
+      database: "aif-webrtc-*"
+      flavor: "opensearch"
+      timeField: "@timestamp"
+      version: "2.11.0"

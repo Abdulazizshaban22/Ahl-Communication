@@ -1,0 +1,8 @@
+project: ahla
+registry: data/registry.db
+provider: local
+offline_store:
+  type: file
+online_store:
+  type: redis
+  connection_string: "redis://redis:6379/0"

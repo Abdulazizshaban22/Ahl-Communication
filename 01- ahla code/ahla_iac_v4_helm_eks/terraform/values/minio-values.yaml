@@ -1,0 +1,13 @@
+
+auth:
+  rootUser: minio
+  rootPassword: minio123
+persistence:
+  size: 50Gi
+service:
+  type: ClusterIP
+mode: standalone
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi

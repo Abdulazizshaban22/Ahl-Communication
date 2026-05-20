@@ -1,0 +1,25 @@
+# Ion-SFU config (minimal)
+# See ion-sfu README for JSON-RPC mode. This file is mounted at /config.toml
+# Notes:
+# - If behind NAT, set nat1to1 to your public IP.
+# - 'iceserver' entries correspond to RTCIceServer array (urls/username/credential).
+
+[webrtc]
+# Enable ICE-Lite on SFU if you prefer SFU to not gather host candidates
+icelite = true
+# UDP port range used by SFU for RTP/RTCP
+rtp_port = 5000
+rtp_port_range = 200
+
+# Uncomment and set when the SFU is behind NAT to advertise the correct public IP
+# nat1to1 = ["203.0.113.10"]
+
+# STUN (public)
+[[webrtc.iceserver]]
+urls = ["stun:stun.l.google.com:19302"]
+
+# TURN (our local coturn)
+[[webrtc.iceserver]]
+urls = ["turn:coturn:3478?transport=udp","turn:coturn:3478?transport=tcp"]
+username = "ahla"
+credential = "ahla123"

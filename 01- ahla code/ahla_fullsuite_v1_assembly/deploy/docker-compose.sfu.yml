@@ -1,0 +1,10 @@
+services:
+  sfu:
+    image: pionwebrtc/ion-sfu:latest-jsonrpc
+    ports: ["7000:7000", "5000-5200:5000-5200/udp"]
+    volumes: ["../services/sfu/config.toml:/config.toml:ro"]
+  coturn:
+    image: coturn/coturn:4.6.3
+    ports: ["3478:3478", "3478:3478/udp", "49152-49999:49152-49999/udp"]
+    volumes: ["../services/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro"]
+    command: ["turnserver","-c","/etc/coturn/turnserver.conf","-v"]

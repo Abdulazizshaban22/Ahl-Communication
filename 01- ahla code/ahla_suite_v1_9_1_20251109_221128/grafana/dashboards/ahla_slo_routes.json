@@ -1,0 +1,118 @@
+{
+  "id": null,
+  "uid": "ahla-slo-routes",
+  "title": "Ahla — SLO / Apdex by Critical Routes",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "type": "textbox",
+        "name": "SERVICE",
+        "label": "Service",
+        "query": "alb",
+        "current": {
+          "text": "alb",
+          "value": "alb"
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "ROUTE",
+        "label": "Path contains",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "COUNTRY",
+        "label": "country_iso_code",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "T",
+        "label": "Apdex T (sec)",
+        "query": "0.5",
+        "current": {
+          "text": "0.5",
+          "value": "0.5"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Apdex (last 1h) for ${SERVICE} @ ${ROUTE}",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND @timestamp:[now-1h TO now] AND request_url:\"${ROUTE}\" | eval tp=to_double(target_processing_time) | stats sum(case(tp <= ${T},1,0)) as S, sum(case(tp > ${T} and tp <= ${T}*4,1,0)) as TOL, count() as N | eval apdex=(S + TOL/2)/N | fields apdex"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "p50/p95 latency — ${SERVICE} @ ${ROUTE}",
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 16,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND request_url:\"${ROUTE}\" | stats percentiles(target_processing_time,[50,95]) by date_histogram(@timestamp,1m)"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Top slow URIs (> ${T}s) — ${SERVICE}",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND target_processing_time:[${T} TO *] | stats avg(target_processing_time) as avg_t, count() by request_url | sort -avg_t | limit 50"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate (5xx) — ${SERVICE}",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND elb_status_code:[500 TO 599] | stats count() by date_histogram(@timestamp,1m)"
+        }
+      ]
+    }
+  ]
+}

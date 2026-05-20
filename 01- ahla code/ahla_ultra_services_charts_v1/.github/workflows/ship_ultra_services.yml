@@ -1,0 +1,57 @@
+name: Ship Ultra Services
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'charts/**'
+      - '.github/workflows/ship_ultra_services.yml'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+  AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ahla-asr-service, ahla-translate-service, ahla-diarization-service, ahla-search-service]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.${{ matrix.service }}
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/ahla/${{ matrix.service }}:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/ahla/${{ matrix.service }}:latest
+
+      - name: Install kubectl & helm
+        run: |
+          curl -L https://get.helm.sh/helm-v3.14.4-linux-amd64.tar.gz | tar zx && sudo mv linux-amd64/helm /usr/local/bin/helm
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl && sudo mv kubectl /usr/local/bin/kubectl
+
+      - name: Update kubeconfig for EKS
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+      - name: Helm upgrade --install
+        run: |
+          helm upgrade -i ${{ matrix.service }} charts/${{ matrix.service }}             --namespace ahla --create-namespace             --set image.repository=${{ env.ECR_REGISTRY }}/ahla/${{ matrix.service }}             --set image.tag=${{ github.sha }}

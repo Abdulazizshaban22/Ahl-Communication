@@ -1,0 +1,2 @@
+# Cross-Region backup
+variable "secondary_region" { type = string default = "eu-central-1" }

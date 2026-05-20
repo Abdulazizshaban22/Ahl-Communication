@@ -1,0 +1,23 @@
+# IMPORTANT: Object Lock must be enabled on bucket creation time.
+resource "aws_s3_bucket" "drive_locked" {
+  bucket              = "${var.project}-drive-compliance"
+  object_lock_enabled = true
+  force_destroy       = false
+}
+
+# Versioning is required
+resource "aws_s3_bucket_versioning" "drive_locked_v" {
+  bucket = aws_s3_bucket.drive_locked.id
+  versioning_configuration { status = "Enabled" }
+}
+
+# Optional default retention (governance or compliance)
+resource "aws_s3_bucket_object_lock_configuration" "drive_lock_cfg" {
+  bucket = aws_s3_bucket.drive_locked.id
+  rule {
+    default_retention {
+      mode  = "COMPLIANCE"      # or GOVERNANCE
+      days  = 365               # example: 1 year
+    }
+  }
+}

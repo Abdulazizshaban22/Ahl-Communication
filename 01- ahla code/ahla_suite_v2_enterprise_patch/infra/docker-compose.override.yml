@@ -1,0 +1,27 @@
+# docker-compose.override.yml (drop into infra/ to enable env wiring)
+version: "3.9"
+services:
+  drive-api:
+    environment:
+      - S3_ENDPOINT=minio:9000
+      - S3_ACCESS_KEY=minio
+      - S3_SECRET_KEY=minio12345
+      - S3_BUCKET=ahla-uploads
+      - S3_USE_SSL=false
+    depends_on: [minio]
+  chat-api:
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NATS_STREAM=CHAT
+    depends_on: [nats]
+  mind-worker:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ../ahla-mind:/app
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NATS_STREAM=CHAT
+      - NATS_DURABLE=mind-worker
+    command: ["python","consumers/nats_worker.py"]
+    depends_on: [nats]

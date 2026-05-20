@@ -1,0 +1,11 @@
+# CHECKLIST — Ahla v5 Production
+- [ ] Route53: `ahla.com` جاهز + سجلات فرعية (A/AAAA/ALIAS)
+- [ ] AWS LBC (ALB Ingress) منصّب على الكلاستر
+- [ ] cert-manager + ClusterIssuers مطبّقة (staging/prod)
+- [ ] ExternalDNS منصّب وتعمل صلاحياته (IRSA/IAM)
+- [ ] ECR Registry مُعدّ، وOIDC لـ GitHub Actions مفعل
+- [ ] Secrets: HF_TOKEN (pyannote)، CT2 models (NLLB)، DATABASE_URL (pgvector)
+- [ ] ArgoCD App-of-Apps + ApplicationSet متزامنة
+- [ ] shared IngressGroup منشور + TLS يصدُر تلقائيًا
+- [ ] CloudFront منشور مع ترويسة سرية + WAF Rate-based
+- [ ] Grafana Dashboards مستوردة + تنبيهات SLO

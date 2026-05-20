@@ -1,0 +1,65 @@
+{
+  "id": null,
+  "uid": "ahla-geomap-geoip",
+  "title": "Ahla — GeoMap (Client IP Heat)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "geomap",
+      "title": "Clients by Location (last 24h)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 16
+      },
+      "options": {
+        "basemap": {
+          "type": "default"
+        },
+        "view": {
+          "id": "zero",
+          "lat": 20,
+          "lon": 15,
+          "zoom": 2
+        },
+        "layers": [
+          {
+            "type": "base",
+            "config": {
+              "style": "default"
+            }
+          },
+          {
+            "type": "heatmap",
+            "name": "IP Heat",
+            "config": {
+              "blur": 4,
+              "radius": 8,
+              "weight": {
+                "type": "static",
+                "value": 1
+              }
+            },
+            "data": {
+              "query": {
+                "refId": "A",
+                "datasource": {
+                  "type": "grafana-opensearch-datasource",
+                  "uid": "OSDS"
+                },
+                "query": "index=ahla-* AND service:alb AND @timestamp>now()-24h | fields ip2geo.location | limit 5000"
+              },
+              "location": {
+                "mode": "auto",
+                "field": "ip2geo.location"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

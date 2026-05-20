@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ultra-services
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: ahla-asr-service
+            chartPath: charts/ahla-asr-service
+          - name: ahla-translate-service
+            chartPath: charts/ahla-translate-service
+          - name: ahla-diarization-service
+            chartPath: charts/ahla-diarization-service
+          - name: ahla-search-service
+            chartPath: charts/ahla-search-service
+  template:
+    metadata:
+      name: '{{name}}'
+      labels:
+        app.kubernetes.io/part-of: ahla-ultra
+    spec:
+      project: ahla
+      source:
+        repoURL: https://github.com/ahla/infra.git
+        targetRevision: main
+        path: '{{chartPath}}'
+        helm:
+          valueFiles:
+            - overlays/{{env}}/services/{{name}}.values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: ahla
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  templatePatch: |
+    spec:
+      source:
+        helm:
+          parameters:
+            - name: env
+              value: "{{env}}"
+  strategy:
+    type: RollingSync

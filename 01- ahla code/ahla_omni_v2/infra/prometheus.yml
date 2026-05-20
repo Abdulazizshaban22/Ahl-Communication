@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'chat-api'
+    static_configs: [{ targets: ['chat-api:7001'] }]
+  - job_name: 'drive-api'
+    static_configs: [{ targets: ['drive-api:7002'] }]
+  - job_name: 'business-api'
+    static_configs: [{ targets: ['business-api:7004'] }]

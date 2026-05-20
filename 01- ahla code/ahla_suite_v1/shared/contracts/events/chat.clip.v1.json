@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "required": [
+    "chat_id",
+    "clip_id",
+    "url",
+    "ttl_hours",
+    "ts"
+  ],
+  "properties": {
+    "chat_id": {
+      "type": "string"
+    },
+    "clip_id": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ttl_hours": {
+      "type": "integer"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

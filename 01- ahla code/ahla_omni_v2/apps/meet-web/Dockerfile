@@ -1,0 +1,1 @@
+FROM node:20-alpine\nWORKDIR /app\nCOPY package.json .\nRUN npm i\nCOPY . .\nEXPOSE 3000\nCMD ["npm","run","dev"]\n

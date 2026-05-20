@@ -1,0 +1,9 @@
+region        = "me-central-1"
+account_id    = "<ACCOUNT_ID>"
+vpc_id        = "<VPC_ID>"
+vpc_cidrs     = ["<10.0.0.0/16>"]
+private_subnet_ids = ["<subnet-1>","<subnet-2>"]
+admin_role_arn = "arn:aws:iam::<ACCOUNT_ID>:role/<AdminRole>"
+cw_log_groups = ["/aws/ecs/ahla-ai","/aws/ecs/ahla-emotion","/aws/ecs/ahla-talk","/aws/ecs/ahla-analyze","/aws/elasticloadbalancing/access-logs"]
+alb_dns_name  = "<your-alb-dns>"
+acm_cert_arn  = "<acm-arn>"

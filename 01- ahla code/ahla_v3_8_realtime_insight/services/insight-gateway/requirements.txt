@@ -1,0 +1,6 @@
+fastapi==0.115.0
+uvicorn==0.30.6
+confluent-kafka==2.5.3
+aws-msk-iam-sasl-signer-python==1.0.0
+pydantic==2.9.2
+orjson==3.10.7

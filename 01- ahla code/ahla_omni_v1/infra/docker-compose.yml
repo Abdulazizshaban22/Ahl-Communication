@@ -1,0 +1,141 @@
+version: "3.9"
+services:
+  nats:
+    image: nats:2.10-alpine
+    command: >
+      -js -sd /data
+      --http_port 8222
+      --ws
+      --ws_port 9222
+    ports: ["4222:4222","8222:8222","9222:9222"]
+    volumes: ["./nats:/data"]
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports: ["9000:9000","9001:9001"]
+    volumes: ["./minio:/data"]
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: ahla
+      POSTGRES_USER: ahla
+      POSTGRES_DB: ahla
+    ports: ["5432:5432"]
+    volumes: ["./postgres:/var/lib/postgresql/data"]
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    command: start-dev --http-port=8085
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports: ["8085:8085"]
+
+  coturn:
+    image: instrumentisto/coturn
+    network_mode: "host"
+    environment:
+      - TURN_USERNAME=ahla
+      - TURN_PASSWORD=ahla
+    command:
+      - -n
+      - --fingerprint
+      - --lt-cred-mech
+      - --realm=meet.ahla.local
+      - --listening-port=3478
+      - --tls-listening-port=5349
+      - --no-tlsv1
+      - --no-tlsv1_1
+      - --cipher-list=TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+      - --no-udp
+      - --no-tcp-relay
+    # For production, prefer 443 TCP/TLS behind a public IP and proper cert.
+
+  chat-api:
+    build: ../services/chat-api
+    environment:
+      NATS_URL: nats://nats:4222
+      DATABASE_URL: postgres://ahla:ahla@postgres:5432/ahla
+    depends_on: [nats, postgres]
+    ports: ["7001:7001"]
+
+  drive-api:
+    build: ../services/drive-api
+    environment:
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: "9000"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: ahla
+      MINIO_USE_SSL: "false"
+    depends_on: [minio]
+    ports: ["7002:7002"]
+
+  meet-signal:
+    build: ../services/meet-signal
+    environment:
+      NATS_URL: nats://nats:4222
+    depends_on: [nats]
+    ports: ["7003:7003"]
+
+  business-api:
+    build: ../services/business-api
+    ports: ["7004:7004"]
+
+  chat-web:
+    build: ../apps/chat-web
+    environment:
+      NEXTAUTH_URL: http://localhost:3001
+      NEXTAUTH_SECRET: devsecret
+      NEXT_PUBLIC_KEYCLOAK_ISSUER: http://localhost:8085/realms/ahla
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: ahla-web
+      KEYCLOAK_CLIENT_SECRET: devsecret
+      NEXT_PUBLIC_NATS_WS: ws://localhost:9222
+      NEXT_PUBLIC_CHAT_API: http://localhost:7001
+    depends_on: [keycloak, chat-api, nats]
+    ports: ["3001:3000"]
+
+  drive-web:
+    build: ../apps/drive-web
+    environment:
+      NEXTAUTH_URL: http://localhost:3002
+      NEXTAUTH_SECRET: devsecret
+      NEXT_PUBLIC_KEYCLOAK_ISSUER: http://localhost:8085/realms/ahla
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: ahla-web
+      KEYCLOAK_CLIENT_SECRET: devsecret
+      NEXT_PUBLIC_DRIVE_API: http://localhost:7002
+      NEXT_PUBLIC_MINIO_CONSOLE: http://localhost:9001
+    depends_on: [keycloak, drive-api, minio]
+    ports: ["3002:3000"]
+
+  meet-web:
+    build: ../apps/meet-web
+    environment:
+      NEXTAUTH_URL: http://localhost:3003
+      NEXTAUTH_SECRET: devsecret
+      NEXT_PUBLIC_KEYCLOAK_ISSUER: http://localhost:8085/realms/ahla
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: ahla-web
+      KEYCLOAK_CLIENT_SECRET: devsecret
+      NEXT_PUBLIC_SIGNAL_URL: ws://localhost:7003/ws
+      NEXT_PUBLIC_TURN: "turn:localhost:5349?transport=tcp"
+      NEXT_PUBLIC_TURN_USER: "ahla"
+      NEXT_PUBLIC_TURN_PASS: "ahla"
+    depends_on: [keycloak, meet-signal, coturn]
+    ports: ["3003:3000"]
+
+  business-web:
+    build: ../apps/business-web
+    environment:
+      NEXTAUTH_URL: http://localhost:3004
+      NEXTAUTH_SECRET: devsecret
+      NEXT_PUBLIC_KEYCLOAK_ISSUER: http://localhost:8085/realms/ahla
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: ahla-web
+      KEYCLOAK_CLIENT_SECRET: devsecret
+      NEXT_PUBLIC_BUSINESS_API: http://localhost:7004
+    depends_on: [keycloak, business-api]
+    ports: ["3004:3000"]

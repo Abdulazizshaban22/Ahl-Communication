@@ -1,0 +1,31 @@
+replicas: 2
+image:
+  repository: ${{ env.ECR_REGISTRY }}/ahla/chat-api
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8080
+
+env:
+  LOG_LEVEL: info
+
+resources:
+  requests: { cpu: "200m", memory: "256Mi" }
+  limits: { cpu: "1", memory: "1Gi" }
+
+readiness:
+  path: /healthz
+liveness:
+  path: /healthz
+
+ingress:
+  enabled: true
+  host: chat.ahla.com
+  tlsSecret: chat-ahla-com-tls
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70

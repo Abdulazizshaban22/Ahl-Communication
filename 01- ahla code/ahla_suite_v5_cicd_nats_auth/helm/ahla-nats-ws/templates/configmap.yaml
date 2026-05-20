@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nats-config
+  namespace: ahla-system
+data:
+  nats.conf: |
+    jetstream: { store_dir: "/data/js" }
+    server_name: "ahla-nats"
+    http: 8222
+    cluster { name: "ahla-js"; port: 6222 }
+    websocket {
+      port: {{ .Values.ws.port }}
+      no_tls: true
+      same_origin: false
+      allowed_origins: [{{- range $i, $o := .Values.ws.allowedOrigins }}{{ if $i }}, {{ end }}"{{ $o }}"{{- end }}]
+    }
+    authorization {
+      users = [
+        { user: "{{ .Values.auth.user }}", password: "{{ .Values.auth.password }}",
+          permissions: {
+            publish = ["chat.*.send", "presence.*", "notify.*", "doc.*.edit"]
+            subscribe = ["chat.>", "presence.>", "notify.>", "doc.>"]
+          }
+        }
+      ]
+    }

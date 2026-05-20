@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata: { name: coturn-allocations, namespace: ahla-system }
+spec:
+  scaleTargetRef: { kind: Deployment, name: coturn }
+  minReplicaCount: {{ .Values.coturn.minReplicas | default 2 }}
+  maxReplicaCount: {{ .Values.coturn.maxReplicas | default 12 }}
+  cooldownPeriod: 90
+  pollingInterval: 15
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: "http://kube-prometheus-stack-prometheus.monitoring.svc:9090"
+      metricName: turn_total_allocations
+      threshold: "500"
+      activationThreshold: "50"
+      query: |
+        sum(turn_total_allocations)

@@ -1,0 +1,60 @@
+{
+  "title": "Ahla - NATS JetStream",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Messages In / sec",
+      "targets": [
+        {
+          "expr": "rate(nats_varz_in_msgs[1m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Messages Out / sec",
+      "targets": [
+        {
+          "expr": "rate(nats_varz_out_msgs[1m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Connections",
+      "targets": [
+        {
+          "expr": "nats_varz_connections"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Subscriptions",
+      "targets": [
+        {
+          "expr": "nats_varz_subscriptions"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU",
+      "targets": [
+        {
+          "expr": "process_cpu_seconds_total"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Mem RSS",
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes"
+        }
+      ]
+    }
+  ]
+}

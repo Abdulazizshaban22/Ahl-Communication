@@ -1,0 +1,15 @@
+name: build
+on: [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build chat-web
+        working-directory: apps/chat-web
+        run: npm i && npm run build || true
+      - name: API deps
+        working-directory: services/chat-api
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt

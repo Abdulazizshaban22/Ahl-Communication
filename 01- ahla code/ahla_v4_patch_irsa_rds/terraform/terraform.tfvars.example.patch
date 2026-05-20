@@ -1,0 +1,13 @@
+
+name = "ahla"
+region = "us-east-1"
+domain = "ahla.com"
+hosted_zone_id = "Z123YOURZONE"   # ضع هوية الـZone من Route53
+
+db_instance_class = "db.m6i.large"
+db_allocated_storage = 100
+db_max_allocated_storage = 500
+db_engine_version = "15.5"
+db_username = "app_user"
+db_password = "change_me_strong_password"
+enable_rds_proxy = true

@@ -1,0 +1,110 @@
+{
+  "type": "monitor",
+  "name": "Weekly Apdex — alb /auth/callback",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 10,
+      "unit": "MINUTES"
+    }
+  },
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "term": {
+                    "service.keyword": "alb"
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-7d"
+                    }
+                  }
+                },
+                {
+                  "wildcard": {
+                    "request_url": "*/auth/callback*"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "total": {
+              "value_count": {
+                "field": "target_processing_time"
+              }
+            },
+            "sat": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "lte": 0.7
+                  }
+                }
+              }
+            },
+            "tol": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "gt": 0.7,
+                    "lte": 2.8
+                  }
+                }
+              }
+            },
+            "apdex": {
+              "bucket_script": {
+                "buckets_path": {
+                  "sat": "sat._count",
+                  "tol": "tol._count",
+                  "tot": "total"
+                },
+                "script": "params.tot>0?(params.sat+0.5*params.tol)/params.tot:1.0"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "name": "Apdex < threshold (weekly)",
+      "severity": "2",
+      "condition": {
+        "script": {
+          "lang": "painless",
+          "source": "return ctx.results[0].aggregations.apdex.value < 0.9;"
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE-SNS-DEST-ID>",
+          "message_template": {
+            "source": "[Ahla] Weekly Apdex low on alb /auth/callback : {ctx.results.0.aggregations.apdex.value}"
+          }
+        },
+        {
+          "name": "Notify Slack",
+          "destination_id": "<REPLACE-SLACK-DEST-ID>",
+          "message_template": {
+            "source": "*Weekly Apdex Alert* — alb `/auth/callback` → {ctx.results.0.aggregations.apdex.value}"
+          }
+        }
+      ]
+    }
+  ]
+}

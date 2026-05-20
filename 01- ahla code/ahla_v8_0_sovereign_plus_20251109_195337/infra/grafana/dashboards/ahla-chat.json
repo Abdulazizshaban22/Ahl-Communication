@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "WS Connections",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "ahla_ws_connections"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "API Requests (sample)",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 18,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "scrape_samples_scraped"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Ahla \u2014 Realtime"
+}

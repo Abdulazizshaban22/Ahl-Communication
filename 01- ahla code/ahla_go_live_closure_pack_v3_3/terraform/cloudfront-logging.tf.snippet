@@ -1,0 +1,21 @@
+# Standard access logs to S3
+resource "aws_s3_bucket" "cf_logs" {
+  bucket = "${var.project}-cf-logs"
+}
+
+resource "aws_cloudfront_distribution" "this" {
+  # ... existing config ...
+  logging_config {
+    include_cookies = true
+    bucket          = aws_s3_bucket.cf_logs.bucket_domain_name
+    prefix          = "cloudfront/"
+  }
+}
+
+# Real-time logs to Kinesis (optional)
+resource "aws_kinesis_stream" "cf_realtime" {
+  name             = "${var.project}-cf-rt"
+  shard_count      = 1
+  retention_period = 24
+}
+# Attach via console/API to cache behaviors as needed

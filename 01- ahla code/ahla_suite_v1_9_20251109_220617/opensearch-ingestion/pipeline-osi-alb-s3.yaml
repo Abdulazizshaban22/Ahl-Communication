@@ -1,0 +1,48 @@
+version: "2"
+pipeline:
+  name: "ahla-logs-osi"
+  # Sub-pipeline: S3 ALB logs -> parse -> geoip -> OpenSearch sink
+  source:
+    s3:
+      # If you keep ALB Access Logs in S3, OSI can read via SQS notifications.
+      # Provide your bucket and (optionally) sqs queue for event notifications.
+      # See AWS docs for supported plugins and options.
+      aws:
+        region: <YOUR_REGION>
+      compression: "GZIP"
+      acknowledgments: true
+      notification_type: "sqs"
+      notification_source:
+        sqs:
+          queue_url: "<YOUR_SQS_QUEUE_URL>"
+      s3_scan_frequency: "PT1M"
+      buckets:
+        - name: "<YOUR_ALB_LOGS_BUCKET>"
+          filter:
+            include_prefix:
+              - "AWSLogs/<YOUR_ACCOUNT_ID>/elasticloadbalancing/<YOUR_REGION>/"
+  processor:
+    - grok:
+        match:
+          message: [ "%{TIMESTAMP_ISO8601:time} %{NOTSPACE:elb} %{IP:client_ip}:%{NUMBER:client_port} %{IP:target_ip}:%{NUMBER:target_port} %{NUMBER:request_processing_time:float} %{NUMBER:target_processing_time:float} %{NUMBER:response_processing_time:float} %{NUMBER:elb_status_code:int} %{NUMBER:target_status_code:int} %{NUMBER:received_bytes:long} %{NUMBER:sent_bytes:long} "%{DATA:request_verb} %{DATA:request_uri} HTTP/%{NUMBER:http_version}" "%{DATA:user_agent}" %{NOTSPACE:ssl_cipher} %{NOTSPACE:ssl_protocol} %{NOTSPACE:target_group_arn} "%{DATA:trace_id}" "%{DATA:domain_name}" "%{DATA:chosen_cert_arn}" %{NOTSPACE:matched_rule_priority} %{DATA:request_creation_time} "%{DATA:actions_executed}" "%{DATA:redirect_url}" "%{DATA:error_reason}" "%{DATA:target_port_list}" "%{DATA:target_status_code_list}" "%{DATA:classification}" "%{DATA:classification_reason}"" ]
+    - date:
+        from_time_received: false
+        destination: "@timestamp"
+        source: "time"
+        pattern: "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+    - geoip:
+        entries:
+          - source: client_ip
+            destination: ip2geo
+    - rename_keys:
+        entries:
+          - from: ip2geo.location
+            to: ip2geo_location
+  sink:
+    - opensearch:
+        hosts: ["https://<YOUR_OPENSEARCH_ENDPOINT>"]
+        index: "ahla-alb-%{yyyy.MM.dd}"
+        # Security/auth options to be filled according to your domain setup
+        # username: "<user>"
+        # password: "<pass>"
+        document_id: "%{trace_id}-%{time}-%{client_ip}"

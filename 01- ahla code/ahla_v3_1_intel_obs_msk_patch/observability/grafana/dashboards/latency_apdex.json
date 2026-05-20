@@ -1,0 +1,8 @@
+{
+  "title": "Ahla — Latency & Apdex",
+  "panels": [
+    { "type": "stat", "title": "Apdex (Chat)", "targets": [{ "expression": "apdex(chat)" }] },
+    { "type": "graph", "title": "P50/P95 Latency", "targets": [{ "expression": "latency_ms" }] }
+  ],
+  "schemaVersion": 39
+}

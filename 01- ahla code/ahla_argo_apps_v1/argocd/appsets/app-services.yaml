@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-services
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: ahla-chat-api
+            chartPath: charts/ahla-chat-api
+          - name: ahla-drive-api
+            chartPath: charts/ahla-drive-api
+          - name: ahla-meet-signaling
+            chartPath: charts/ahla-meet-signaling
+          - name: ahla-web-app
+            chartPath: charts/ahla-web-app
+  template:
+    metadata:
+      name: '{{name}}'
+      labels:
+        app.kubernetes.io/part-of: ahla-suite
+    spec:
+      project: ahla
+      source:
+        repoURL: https://github.com/ahla/infra.git
+        targetRevision: main
+        path: '{{chartPath}}'
+        helm:
+          valueFiles:
+            - overlays/{{env}}/apps/{{name}}.values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: ahla
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+  strategy:
+    type: RollingSync

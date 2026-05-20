@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ahla-emotion-engine
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: ahla-emotion-engine}
+  template:
+    metadata:
+      labels: {app: ahla-emotion-engine}
+    spec:
+      containers:
+        - name: engine
+          image: ghcr.io/ahla/emotion-engine:2.0.0
+          ports: [{containerPort: 8088}]
+          env:
+            - name: AE_CFG
+              value: /app/config/engine.yaml
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef: {name: otel, key: otlp_endpoint}
+          resources:
+            requests: {cpu: "250m", memory: "512Mi"}
+            limits: {cpu: "1", memory: "1Gi"}
+          readinessProbe:
+            httpGet: {path: /healthz, port: 8088}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8088}
+            initialDelaySeconds: 10
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata: {name: ahla-emotion-engine}
+spec:
+  selector: {app: ahla-emotion-engine}
+  ports:
+    - port: 80
+      targetPort: 8088
+      protocol: TCP

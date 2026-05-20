@@ -1,0 +1,7 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.0
+redis==5.0.8
+starlette-exporter==0.21.0
+pydantic==2.9.2
+python-jose==3.3.0
+requests==2.32.3

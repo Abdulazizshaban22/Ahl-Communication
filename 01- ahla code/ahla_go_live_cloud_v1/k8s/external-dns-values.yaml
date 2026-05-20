@@ -1,0 +1,11 @@
+provider: aws
+policy: upsert-only
+registry: txt
+txtOwnerId: ahla-external-dns
+domainFilters: []
+sources: ["service","ingress"]
+serviceAccount:
+  create: true
+  name: external-dns
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<ACCOUNT_ID>:role/external-dns

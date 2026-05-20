@@ -1,0 +1,8 @@
+- startsAt: "2025-11-12T01:00:00Z"
+  endsAt:   "2025-11-12T03:00:00Z"
+  matchers:
+    - name: service
+      value: chat|meet
+      isRegex: true
+  comment: "Night maintenance — chat/meet"
+  createdBy: "ahla-ops"

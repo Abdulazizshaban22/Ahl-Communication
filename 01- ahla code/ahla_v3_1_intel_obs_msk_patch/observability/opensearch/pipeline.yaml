@@ -1,0 +1,14 @@
+# OpenSearch Ingestion pipeline (sample)
+version: "2"
+pipeline:
+  source:
+    cloudwatch_logs:
+      region: ${AWS_REGION}
+      log_group_name: "/aws/ecs/ahla"
+  processor:
+    - grok: { match: ["message", "%{TIMESTAMP_ISO8601:ts} %{LOGLEVEL:level} %{GREEDYDATA:msg}"] }
+    - geoip: { field: "client_ip", target_field: "geo" }
+  sink:
+    - opensearch:
+        hosts: ["https://${OPENSEARCH_ENDPOINT}"]
+        index: "ahla-logs-%{+yyyy.MM.dd}"

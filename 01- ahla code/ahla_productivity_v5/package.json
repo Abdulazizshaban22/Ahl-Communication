@@ -1,0 +1,13 @@
+{
+  "name": "ahla-productivity-v5",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "echo build all",
+    "dev": "echo 'use per-app dev'"
+  }
+}

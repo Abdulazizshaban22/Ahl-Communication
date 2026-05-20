@@ -1,0 +1,5 @@
+fastapi[all]
+sqlalchemy
+pydantic
+uvicorn
+python-multipart

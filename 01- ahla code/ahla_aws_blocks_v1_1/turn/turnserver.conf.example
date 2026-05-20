@@ -1,0 +1,21 @@
+# TURN TLS example (coturn)
+fingerprint
+no-cli
+realm=turn.ahla.example.com
+
+# Listening ports
+listening-port=3478
+tls-listening-port=5349
+
+# TLS material (mounted or bootstrapped via secrets)
+cert=/etc/ssl/turn_cert.pem
+pkey=/etc/ssl/turn_key.pem
+
+# Credentials
+lt-cred-mech
+user=turnuser:turnpass
+
+# Optional hardening
+no-tlsv1
+no-tlsv1_1
+cipher-list=TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384

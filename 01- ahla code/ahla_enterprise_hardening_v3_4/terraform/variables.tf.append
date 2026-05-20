@@ -1,0 +1,25 @@
+# ===== v3.4 Hardening variables =====
+
+# ALB name (as in CloudWatch dimension), e.g. app/alb-name/uuid
+variable "alb_load_balancer_dimension" { type = string }
+
+# Anomaly detection
+variable "anomaly_period"             { type = number  default = 60 }         # seconds
+variable "anomaly_band_width"         { type = number  default = 2 }          # 2 = wider band
+variable "anomaly_alarm_sns_arn"      { type = string  description = "SNS topic ARN for alarms" }
+
+# Secrets rotation (RDS single-user example)
+variable "rds_secret_arn"             { type = string  description = "Secrets Manager ARN for RDS credentials JSON" }
+variable "rds_instance_id"            { type = string  description = "RDS instance identifier to rotate" }
+variable "lambda_subnet_ids"          { type = list(string) }
+variable "lambda_security_group_ids"  { type = list(string) }
+
+# AWS Backup
+variable "backup_resources_arns"      { type = list(string)  description = "ARNs of EBS/RDS/EFS/DynamoDB to protect" }
+variable "backup_daily_retention"     { type = number default = 30 }
+variable "backup_weekly_retention"    { type = number default = 12 }
+variable "backup_monthly_retention"   { type = number default = 12 }
+
+# S3 lifecycle (Drive + Logs buckets)
+variable "s3_drive_bucket"            { type = string }
+variable "s3_logs_bucket"             { type = string }

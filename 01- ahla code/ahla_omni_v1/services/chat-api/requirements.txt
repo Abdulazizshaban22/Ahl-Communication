@@ -1,0 +1,6 @@
+fastapi==0.115.6
+uvicorn[standard]==0.30.6
+nats-py==2.8.0
+psycopg==3.2.1
+sqlalchemy==2.0.35
+pydantic==2.9.2

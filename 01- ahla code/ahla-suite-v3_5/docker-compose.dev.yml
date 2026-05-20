@@ -1,0 +1,28 @@
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.3.7
+    command: >
+      redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M
+      --node-id 0 --check=false --kafka-addr 0.0.0.0:9092 --advertise-kafka-addr redpanda:9092
+    ports: [ "9092:9092" ]
+
+  orchestrator:
+    build: ./services/ahla-ai
+    env_file: .env
+    ports: [ "8000:8000" ]
+    depends_on: [ redpanda ]
+
+  emotion:
+    build: ./services/ahla-emotion
+    env_file: .env
+    ports: [ "8001:8001" ]
+
+  talk:
+    build: ./services/ahla-talk
+    env_file: .env
+    ports: [ "8002:8002" ]
+
+  analyze:
+    build: ./services/ahla-analyze
+    env_file: .env
+    ports: [ "8003:8003" ]

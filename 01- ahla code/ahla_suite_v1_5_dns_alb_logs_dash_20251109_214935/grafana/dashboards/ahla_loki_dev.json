@@ -1,0 +1,29 @@
+{
+  "id": null,
+  "uid": "ahla-loki-logs",
+  "title": "Ahla — Loki Container Logs (Dev)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "logs",
+      "title": "All Logs",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "LOKI"
+          },
+          "expr": "{job=\"dockerlogs\"}"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 12
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.0
+python-multipart==0.0.9
+starlette-exporter==0.21.0
+minio==7.2.7
+pytesseract==0.3.10

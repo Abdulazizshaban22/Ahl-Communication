@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-cloud
+description: Ahla Cloud v1 - Base infra bits for Go-Live (Issuer, NATS, CoTURN, KEDA hooks)
+type: application
+version: 0.1.0
+appVersion: "v1"

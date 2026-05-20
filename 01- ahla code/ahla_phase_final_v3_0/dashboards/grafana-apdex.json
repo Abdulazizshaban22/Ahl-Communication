@@ -1,0 +1,10 @@
+{
+  "title": "Ahla — Apdex & Latency",
+  "timezone": "browser",
+  "panels": [
+    { "type": "stat", "title": "Apdex", "targets": [], "gridPos": {"x":0,"y":0,"w":12,"h":6} },
+    { "type": "graph", "title": "p50/p90/p99 Latency", "targets": [], "gridPos": {"x":0,"y":6,"w":24,"h":9} }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

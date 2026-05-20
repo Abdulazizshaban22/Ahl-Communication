@@ -1,0 +1,9 @@
+grafana:
+  adminPassword: "admin"
+prometheus:
+  prometheusSpec:
+    retention: 15d
+loki:
+  enabled: true
+tempo:
+  enabled: true

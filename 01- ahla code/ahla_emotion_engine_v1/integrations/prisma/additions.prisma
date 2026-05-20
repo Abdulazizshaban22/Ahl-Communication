@@ -1,0 +1,21 @@
+// Append to your existing schema.prisma
+model MessageAnalysis {
+  id          String   @id @default(cuid())
+  chatId      String
+  messageId   String
+  authorId    String
+  text        String
+  sentiment   Json
+  toxicity    Json
+  topEmotions Json
+  flags       Json
+  suggestions Json
+  createdAt   DateTime @default(now())
+}
+
+model ConversationState {
+  chatId        String  @id
+  lastSentiment Json
+  lastTopEmotion Json
+  updatedAt     DateTime @updatedAt
+}

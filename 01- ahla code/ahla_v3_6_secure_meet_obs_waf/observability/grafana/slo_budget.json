@@ -1,0 +1,29 @@
+{
+  "title": "Ahla \u2014 SLO Budget & Burn Rate",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "Error Budget (Chat)",
+      "targets": [
+        {
+          "expression": "slo_budget_chat"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Burn Rate (1h/6h)",
+      "targets": [
+        {
+          "expression": "burn_rate_1h"
+        },
+        {
+          "expression": "burn_rate_6h"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

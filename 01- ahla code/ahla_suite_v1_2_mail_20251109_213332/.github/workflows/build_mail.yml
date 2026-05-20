@@ -1,0 +1,33 @@
+
+name: Build Ahla Mail Images
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'apps/mail-web/**', 'services/mail-api/**' ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: { id-token: write, contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - uses: aws-actions/amazon-ecr-login@v2
+      - name: Build & Push mail-web
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          REGION=${{ secrets.AWS_REGION }}
+          REPO=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/ahla-mail-web
+          docker build -t mail-web:ci ./apps/mail-web
+          docker tag mail-web:ci $REPO:prod
+          docker push $REPO:prod
+      - name: Build & Push mail-api
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          REGION=${{ secrets.AWS_REGION }}
+          REPO=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/ahla-mail-api
+          docker build -t mail-api:ci ./services/mail-api
+          docker tag mail-api:ci $REPO:prod
+          docker push $REPO:prod

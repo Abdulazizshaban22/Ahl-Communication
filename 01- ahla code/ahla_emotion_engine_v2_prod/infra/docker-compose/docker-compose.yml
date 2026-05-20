@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  engine:
+    build: ../services/emotion-engine/docker
+    image: ahla/emotion-engine:2.0.0
+    ports: ["8088:8088"]
+    environment:
+      - AE_CFG=/app/config/engine.yaml

@@ -1,0 +1,9 @@
+# ===== v3.1 Cutover variables =====
+variable "route53_zone_id"      { type = string  description = "Hosted Zone ID for your root domain" }
+variable "app_domain"           { type = string  description = "app.ahla.example.com (CloudFront alias)" }
+variable "alb_header_secret"    { type = string  description = "Shared secret header between CloudFront and ALB" }
+
+# GitHub OIDC (for CI/CD)
+variable "gh_owner"             { type = string  description = "GitHub org/user" }
+variable "gh_repo"              { type = string  description = "Repository name" }
+variable "gh_branch"            { type = string  default = "main" }

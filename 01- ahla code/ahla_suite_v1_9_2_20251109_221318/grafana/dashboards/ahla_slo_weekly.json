@@ -1,0 +1,138 @@
+{
+  "id": null,
+  "uid": "ahla-slo-weekly",
+  "title": "Ahla — Weekly SLO (Apdex & Budget) by Route",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "type": "textbox",
+        "name": "COUNTRY",
+        "label": "Country ISO (e.g., SA)",
+        "query": "SA",
+        "current": {
+          "text": "SA",
+          "value": "SA"
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "REGION",
+        "label": "Region ISO (e.g., SA-XX)",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "CITY",
+        "label": "City name contains",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "SERVICE",
+        "label": "Service",
+        "query": "alb",
+        "current": {
+          "text": "alb",
+          "value": "alb"
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "ROUTE",
+        "label": "Route contains",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "T",
+        "label": "Apdex T (sec)",
+        "query": "0.5",
+        "current": {
+          "text": "0.5",
+          "value": "0.5"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Apdex (7d) @ ${SERVICE}:${ROUTE}",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND @timestamp:[now-7d TO now] AND request_url:\"${ROUTE}\" | eval tp=to_double(target_processing_time) | stats sum(case(tp <= ${T},1,0)) as S, sum(case(tp > ${T} and tp <= ${T}*4,1,0)) as TOL, count() as N | eval apdex=(S + TOL/2)/N | fields apdex"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency Budget Burn (>%{T}s) — 7d",
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 16,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "B",
+          "query": "service.keyword: \"${SERVICE}\" AND request_url:\"${ROUTE}\" | eval over=case(target_processing_time>${T},1,0) | stats sum(over) as over, count() as N by date_histogram(@timestamp,1h) | eval burn=(over/N)*100 | fields burn"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error Rate (5xx) — 7d",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "C",
+          "query": "service.keyword: \"${SERVICE}\" AND elb_status_code:[500 TO 599] AND @timestamp:[now-7d TO now] | stats count() by date_histogram(@timestamp,1h)"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Top Slow URIs (7d, > ${T}s)",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "D",
+          "query": "service.keyword: \"${SERVICE}\" AND target_processing_time:[${T} TO *] AND @timestamp:[now-7d TO now] | stats avg(target_processing_time) as avg_t, count() by request_url | sort -avg_t | limit 100"
+        }
+      ]
+    }
+  ]
+}

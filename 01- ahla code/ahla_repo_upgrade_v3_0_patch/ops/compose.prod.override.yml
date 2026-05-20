@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  chat-api:
+    image: ${ECR_API_REPO}:chat-${IMAGE_TAG}
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+  mail-api:
+    image: ${ECR_API_REPO}:mail-${IMAGE_TAG}
+  drive-api:
+    image: ${ECR_API_REPO}:drive-${IMAGE_TAG}
+  business-api:
+    image: ${ECR_API_REPO}:business-${IMAGE_TAG}
+  meet-signaling:
+    image: ${ECR_API_REPO}:meet-signaling-${IMAGE_TAG}
+  chat-web:
+    image: ${ECR_WEB_REPO}:chat-${IMAGE_TAG}
+  mail-web:
+    image: ${ECR_WEB_REPO}:mail-${IMAGE_TAG}
+  drive-web:
+    image: ${ECR_WEB_REPO}:drive-${IMAGE_TAG}
+  meet-web:
+    image: ${ECR_WEB_REPO}:meet-${IMAGE_TAG}
+  business-web:
+    image: ${ECR_WEB_REPO}:business-${IMAGE_TAG}

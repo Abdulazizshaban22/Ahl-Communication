@@ -1,0 +1,16 @@
+
+{
+  email you@example.com
+}
+
+your.domain.com {
+  # WebSocket routes first (Caddy handles Upgrade automatically)
+  @wsChat path /ws/chat*
+  reverse_proxy @wsChat chat-ws:8090
+
+  @wsSFU path /ws/sfu*
+  reverse_proxy @wsSFU sfu:7000
+
+  # Default app
+  reverse_proxy web:3000
+}

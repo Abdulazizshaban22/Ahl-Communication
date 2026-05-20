@@ -1,0 +1,35 @@
+# CoTURN listening on 443/TLS (requires valid certs mounted)
+replicaCount: 2
+service:
+  type: LoadBalancer
+  ports:
+    - name: turn-tls
+      port: 443
+      targetPort: 5349
+env:
+  - name: REALM
+    value: "ahla.com"
+  - name: EXTERNAL_IP
+    valueFrom:
+      fieldRef: { fieldPath: status.hostIP }
+args:
+  - "--prod"
+  - "--lt-cred-mech"
+  - "--no-udp"   # بيئات مؤسسية مغلقة (يمكن إزالته لتمكين UDP)
+  - "--listening-port=3478"
+  - "--tls-listening-port=5349"
+  - "--fingerprint"
+  - "--realm=$(REALM)"
+  - "--external-ip=$(EXTERNAL_IP)"
+  - "--cert=/certs/fullchain.pem"
+  - "--pkey=/certs/privkey.pem"
+volumeMounts:
+  - name: certs
+    mountPath: /certs
+volumes:
+  - name: certs
+    secret:
+      secretName: coturn-tls
+resources:
+  requests: { cpu: "100m", memory: "128Mi" }
+  limits: { cpu: "500m", memory: "512Mi" }

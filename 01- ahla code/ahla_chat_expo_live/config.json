@@ -1,0 +1,14 @@
+{
+  "mode": "local",
+  "roomId": "general",
+  "userId": "user-1",
+  "e2ee": false,
+  "psk": "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f",
+  "nats": {
+    "servers": [
+      "ws://localhost:9222"
+    ],
+    "token": "",
+    "inboxPrefix": "_INBOX.ahla"
+  }
+}

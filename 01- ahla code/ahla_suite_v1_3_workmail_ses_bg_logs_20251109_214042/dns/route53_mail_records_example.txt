@@ -1,0 +1,16 @@
+
+# Route53 records for ahla.com (replace with your domain)
+
+# MX (WorkMail)
+@   MX   10 inbound-smtp.<region>.amazonaws.com.
+
+# SPF (allow SES)
+@   TXT  "v=spf1 include:amazonses.com -all"
+
+# DKIM (from SES console, 3 CNAMEs) — example placeholders
+<selector>._domainkey     CNAME  <selector>.dkim.amazonses.com.
+<selector2>._domainkey    CNAME  <selector2>.dkim.amazonses.com.
+<selector3>._domainkey    CNAME  <selector3>.dkim.amazonses.com.
+
+# DMARC
+_dmarc   TXT  "v=DMARC1; p=quarantine; rua=mailto:dmarc@ahla.com; ruf=mailto:dmarc@ahla.com; fo=1"

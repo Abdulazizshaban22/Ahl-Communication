@@ -1,0 +1,49 @@
+# Model registry (can swap without code changes)
+sentiment_model: "cardiffnlp/twitter-xlm-roberta-base-sentiment"   # multilingual sentiment
+toxicity_model:  "unitary/multilingual-toxic-xlm-roberta"          # multilingual toxicity
+# zero-shot for emotion (multilingual XNLI)
+emotion_zeroshot_model: "joeddav/xlm-roberta-large-xnli"
+
+# GoEmotions 27 categories (+ neutral handled separately)
+goemotions_labels:
+  - admiration
+  - amusement
+  - anger
+  - annoyance
+  - approval
+  - caring
+  - confusion
+  - curiosity
+  - desire
+  - disappointment
+  - disapproval
+  - disgust
+  - embarrassment
+  - excitement
+  - fear
+  - gratitude
+  - grief
+  - joy
+  - love
+  - nervousness
+  - optimism
+  - pride
+  - realization
+  - relief
+  - remorse
+  - sadness
+  - surprise
+
+# Rule thresholds
+rules:
+  anger_suggest_cooloff:
+    window_days: 30
+    min_conflicts: 3
+    anger_threshold: 0.70
+  praise_suggest_thanks:
+    joy_threshold: 0.70
+    work_context_required: true
+  night_overwork:
+    hour_start: 23   # 11pm
+    count_min: 5
+    window_days: 14

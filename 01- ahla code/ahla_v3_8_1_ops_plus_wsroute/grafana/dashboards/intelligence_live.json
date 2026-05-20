@@ -1,0 +1,34 @@
+{
+  "title": "Ahla \u2014 Intelligence Live (CloudWatch+Live)",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "ASR msgs (CW metric)",
+      "targets": [
+        {
+          "query": "SEARCH('{AWS/Logs,LogGroupName=\"/ecs/insight-gateway\"} MetricName=\"CntASR\"', 'Average', 60)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Gateway p95 (ms)",
+      "targets": [
+        {
+          "query": "SELECT p95(\"latency\") FROM \"ahla/gateway\""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Next p95 (ms)",
+      "targets": [
+        {
+          "query": "SELECT p95(\"latency\") FROM \"ahla/next\""
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

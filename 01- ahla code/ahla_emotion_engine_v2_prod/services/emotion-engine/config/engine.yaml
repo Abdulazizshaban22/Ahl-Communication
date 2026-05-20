@@ -1,0 +1,45 @@
+sentiment_model: "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+toxicity_model:  "unitary/multilingual-toxic-xlm-roberta"
+emotion_zeroshot_model: "joeddav/xlm-roberta-large-xnli"
+
+goemotions_labels:
+  - admiration
+  - amusement
+  - anger
+  - annoyance
+  - approval
+  - caring
+  - confusion
+  - curiosity
+  - desire
+  - disappointment
+  - disapproval
+  - disgust
+  - embarrassment
+  - excitement
+  - fear
+  - gratitude
+  - grief
+  - joy
+  - love
+  - nervousness
+  - optimism
+  - pride
+  - realization
+  - relief
+  - remorse
+  - sadness
+  - surprise
+
+rules:
+  anger_suggest_cooloff:
+    window_days: 30
+    min_conflicts: 3
+    anger_threshold: 0.70
+  praise_suggest_thanks:
+    joy_threshold: 0.70
+    work_context_required: true
+  night_overwork:
+    hour_start: 23
+    count_min: 5
+    window_days: 14

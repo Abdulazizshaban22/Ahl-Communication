@@ -1,0 +1,6 @@
+provider: aws
+txtOwnerId: ahla-prod
+domainFilters: ["ahla.com"]
+policy: upsert-only
+registry: txt
+interval: 1m

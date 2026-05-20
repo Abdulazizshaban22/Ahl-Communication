@@ -1,0 +1,118 @@
+{
+  "title": "Ahla — Geo (Choropleth + Markers)",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "geomap",
+      "title": "Choropleth by Country (24h)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 17
+      },
+      "targets": [
+        {
+          "query": "service.keyword: \"alb\" AND @timestamp:[now-24h TO now]",
+          "refId": "A"
+        },
+        {
+          "refId": "B",
+          "queryType": "raw_data",
+          "pipelineAgg": false,
+          "bucketAggs": [
+            {
+              "type": "terms",
+              "field": "ip2geo.country_iso_code.keyword",
+              "id": "1",
+              "settings": {
+                "size": 250
+              }
+            }
+          ],
+          "metrics": [
+            {
+              "type": "count",
+              "id": "m1"
+            }
+          ]
+        }
+      ],
+      "options": {
+        "basemap": {
+          "type": "carto",
+          "config": {
+            "theme": "auto",
+            "showLabels": true
+          }
+        },
+        "layers": [
+          {
+            "name": "World Countries (Dynamic)",
+            "type": "geojson-dynamic",
+            "config": {
+              "geojsonUrl": "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson",
+              "join": {
+                "featureKey": "ISO_A2",
+                "dataKey": "ip2geo.country_iso_code.keyword",
+                "valueField": "Count"
+              },
+              "style": {
+                "colorScheme": "RdYlGn",
+                "opacity": 0.75,
+                "legend": true
+              }
+            },
+            "data": {
+              "queryRefId": "B"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "geomap",
+      "title": "Active Clients (Markers) — Top UA / URI (24h)",
+      "gridPos": {
+        "x": 0,
+        "y": 17,
+        "w": 24,
+        "h": 17
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"alb\" AND @timestamp:[now-24h TO now]"
+        }
+      ],
+      "options": {
+        "basemap": {
+          "type": "osm-standard",
+          "config": {}
+        },
+        "layers": [
+          {
+            "name": "Clients",
+            "type": "markers",
+            "config": {
+              "locationMode": "auto",
+              "textLabelField": "user_agent",
+              "tooltip": {
+                "enabled": true,
+                "mode": "fields",
+                "extraFields": [
+                  "request_uri",
+                  "client_ip",
+                  "target_status_code"
+                ]
+              }
+            },
+            "data": {
+              "queryRefId": "A"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

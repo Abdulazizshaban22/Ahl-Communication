@@ -1,0 +1,41 @@
+{
+  "title": "Ahla Chat — Realtime",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Messages",
+      "targets": [
+        {
+          "expr": "sum(increase(ahla_messages_total[5m]))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Attachments",
+      "targets": [
+        {
+          "expr": "sum(increase(ahla_attachments_total[5m]))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Emotion/Tone Text",
+      "targets": [
+        {
+          "expr": "sum(increase(ahla_tone_requests_total[5m]))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Voice Tone",
+      "targets": [
+        {
+          "expr": "sum(increase(ahla_voice_requests_total[5m]))"
+        }
+      ]
+    }
+  ]
+}

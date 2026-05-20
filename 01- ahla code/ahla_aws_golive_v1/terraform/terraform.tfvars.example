@@ -1,0 +1,10 @@
+project          = "ahla"
+aws_region       = "me-central-1"
+domain_root      = "prod.ahla.example.com"
+
+alb_cert_arn     = "arn:aws:acm:me-central-1:123456789012:certificate/xxxx-xxxx"
+turn_cert_arn    = ""
+
+image_chat            = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla-chat:prod"
+image_meet_signaling  = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla-meet-signaling:prod"
+image_coturn          = "coturn/coturn:latest"

@@ -1,0 +1,20 @@
+{
+  "name": "Ahla Chat",
+  "short_name": "Ahla",
+  "start_url": "/chat/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00c46a",
+  "icons": [
+    {
+      "src": "/chat/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/chat/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

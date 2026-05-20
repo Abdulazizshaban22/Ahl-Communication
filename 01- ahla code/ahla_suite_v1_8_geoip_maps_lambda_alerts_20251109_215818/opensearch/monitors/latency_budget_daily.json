@@ -1,0 +1,78 @@
+{
+  "type": "monitor",
+  "name": "Latency budget burn (daily)",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 60,
+      "unit": "MINUTES"
+    }
+  },
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-24h"
+                    }
+                  }
+                },
+                {
+                  "term": {
+                    "service": "alb"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "over": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "gt": 1.0
+                  }
+                }
+              }
+            },
+            "total": {
+              "value_count": {
+                "field": "target_processing_time"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "name": "Daily burn > 1%",
+      "severity": "2",
+      "condition": {
+        "script": {
+          "lang": "painless",
+          "source": "double o=ctx.results[0].aggregations.over.doc_count; double n=ctx.results[0].aggregations.total.value; return n>1000 && (o/n)>0.01;"
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE-SNS-DESTINATION-ID>",
+          "message_template": {
+            "source": "Daily latency budget burn > 1%"
+          }
+        }
+      ]
+    }
+  ]
+}

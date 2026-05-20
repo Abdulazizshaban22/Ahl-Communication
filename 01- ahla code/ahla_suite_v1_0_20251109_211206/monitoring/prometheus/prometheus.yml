@@ -1,0 +1,18 @@
+
+global: { scrape_interval: 10s }
+scrape_configs:
+  - job_name: chat-api
+    static_configs: [{ targets: ['chat-api:8000'] }]
+    metrics_path: /metrics
+  - job_name: meet-api
+    static_configs: [{ targets: ['meet-api:8100'] }]
+    metrics_path: /metrics
+  - job_name: drive-api
+    static_configs: [{ targets: ['drive-api:8200'] }]
+    metrics_path: /metrics
+  - job_name: business-api
+    static_configs: [{ targets: ['business-api:8300'] }]
+    metrics_path: /metrics
+  - job_name: emotion-engine
+    static_configs: [{ targets: ['emotion-engine:8400'] }]
+    metrics_path: /metrics

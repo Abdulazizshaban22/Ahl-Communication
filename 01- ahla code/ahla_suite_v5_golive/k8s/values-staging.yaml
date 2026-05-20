@@ -1,0 +1,6 @@
+provider: aws
+txtOwnerId: ahla-staging
+domainFilters: ["stg.ahla.com"]
+policy: upsert-only
+registry: txt
+interval: 1m

@@ -1,0 +1,12 @@
+name: evidently-reports
+on:
+  schedule: [ {cron: "0 */12 * * *"} ]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install evidently pandas pyarrow
+      - run: python ops/evidently_run.py

@@ -1,0 +1,22 @@
+{
+  "contexts": {
+    "personal": {
+      "on_device": true,
+      "store_raw_text": false,
+      "store_results": "aggregated",
+      "retention_days": 60
+    },
+    "family": {
+      "on_device": true,
+      "store_raw_text": false,
+      "store_results": "aggregated",
+      "retention_days": 60
+    },
+    "work": {
+      "on_device": false,
+      "store_raw_text": true,
+      "store_results": "full",
+      "retention_days": 180
+    }
+  }
+}

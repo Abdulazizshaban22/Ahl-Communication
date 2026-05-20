@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    volumes: [ "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro" ]
+    ports: [ "8091:80" ]
+    depends_on: [ chat-web, chat-api, moments-api, emotion-api, moments-worker, redis ]
+
+  chat-web:
+    build: ../apps/chat-web
+
+  chat-api:
+    build: ../services/chat-api
+    environment: [ "REDIS_URL=redis://redis:6379/0", "ATTACH_STORE=/data" ]
+    volumes: [ "chat_data:/data" ]
+    ports: [ "8000:8000" ]
+
+  moments-api:
+    build: ../services/moments-api
+    volumes: [ "moments:/data" ]
+    ports: [ "8010:8010" ]
+
+  moments-worker:
+    build: ../services/moments-worker
+    environment: [ "WATCH_DIR=/data/moments", "THUMBS_DIR=/data/thumbs" ]
+    volumes: [ "moments:/data" ]
+
+  emotion-api:
+    build: ../services/emotion-api
+    ports: [ "8020:8020" ]
+
+  redis:
+    image: redis:7-alpine
+    ports: [ "6379:6379" ]
+
+volumes:
+  chat_data: {}
+  moments: {}

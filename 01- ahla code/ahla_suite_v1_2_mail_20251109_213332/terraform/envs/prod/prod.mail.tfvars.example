@@ -1,0 +1,18 @@
+
+# Example when using AWS WorkMail (IMAP) + Amazon SES (SMTP)
+img_mail_web = "1111.dkr.ecr.me-central-1.amazonaws.com/ahla-mail-web:prod"
+img_mail_api = "1111.dkr.ecr.me-central-1.amazonaws.com/ahla-mail-api:prod"
+
+# WorkMail IMAP endpoint (region-specific) - see AWS docs
+mail_imap_host   = "imap.mail.me-central-1.awsapps.com"
+mail_imap_port   = 993
+mail_imap_secure = true
+
+# SES SMTP endpoint (region-specific) - see AWS docs
+mail_smtp_host   = "email-smtp.me-central-1.amazonaws.com"
+mail_smtp_port   = 587
+mail_smtp_secure = true
+
+# Store these in SSM Parameter Store (SecureString) and place ARNs here:
+ssm_mail_user = "arn:aws:ssm:me-central-1:1111:parameter/ahla/mail/user"
+ssm_mail_pass = "arn:aws:ssm:me-central-1:1111:parameter/ahla/mail/pass"

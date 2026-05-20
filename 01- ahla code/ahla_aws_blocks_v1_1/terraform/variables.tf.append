@@ -1,0 +1,9 @@
+# --- S3 / Drive ---
+variable "s3_bucket"       { type = string  description = "S3 bucket name for Ahla Drive" }
+variable "cors_allowed_origins" { type = list(string) default = ["https://app.ahla.example.com","https://meet.ahla.example.com"] }
+
+# --- Images ---
+variable "image_drive"     { type = string  description = "ECR image for drive-api" }
+
+# --- TURN secrets ---
+variable "turn_realm"      { type = string  default = "turn.ahla.example.com" }

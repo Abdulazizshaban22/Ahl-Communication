@@ -1,0 +1,11 @@
+openapi: 3.0.1
+info: { title: Ahla PDPL DSR API, version: 1.0.0 }
+paths:
+  /pdpl/consents:
+    post: { summary: Create or revoke consent, responses: { "200": { description: ok } } }
+  /pdpl/consents/{userId}:
+    get: { summary: List consents, parameters: [{ name: userId, in: path, required: true }], responses: { "200": { description: ok } } }
+  /pdpl/dsr:
+    post: { summary: Submit data subject request, responses: { "200": { description: ok } } }
+  /pdpl/dsr/{id}:
+    get: { summary: Check request status, parameters: [{ name: id, in: path, required: true }], responses: { "200": { description: ok } } }

@@ -1,0 +1,17 @@
+{
+  "realm": "ahla",
+  "enabled": true,
+  "registrationAllowed": false,
+  "clients": [
+    { "clientId": "chat-web", "publicClient": true, "redirectUris": ["*"] },
+    { "clientId": "mail-web", "publicClient": true, "redirectUris": ["*"] },
+    { "clientId": "drive-web", "publicClient": true, "redirectUris": ["*"] },
+    { "clientId": "meet-web", "publicClient": true, "redirectUris": ["*"] },
+    { "clientId": "business-web", "publicClient": true, "redirectUris": ["*"] }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "admin" }, { "name": "staff" }, { "name": "user" }, { "name": "auditor" }
+    ]
+  }
+}

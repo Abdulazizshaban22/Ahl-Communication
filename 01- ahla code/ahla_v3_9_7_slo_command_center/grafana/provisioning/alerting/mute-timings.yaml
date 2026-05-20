@@ -1,0 +1,10 @@
+apiVersion: 1
+muteTimeIntervals:
+  - name: ahla-maintenance-window
+    # Example: Friday 02:00–03:00 Asia/Riyadh
+    time_intervals:
+      - times:
+          - start_time: "02:00"
+            end_time: "03:00"
+        weekdays: ["friday"]
+        location: "Asia/Riyadh"

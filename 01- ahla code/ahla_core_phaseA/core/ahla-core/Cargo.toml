@@ -1,0 +1,12 @@
+[package]
+name = "ahla-core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "ahla_core"
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+libc = "0.2"
+jni = "0.21"

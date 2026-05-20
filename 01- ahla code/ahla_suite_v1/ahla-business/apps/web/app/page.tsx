@@ -1,0 +1,1 @@
+export default function Page(){return <p>لوحة ذكاء الفريق — مؤشرات الانسجام/التوتر/الشكر قريبًا.</p>}

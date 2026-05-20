@@ -1,0 +1,14 @@
+project      = "ahla-intelligence"
+region       = "me-central-1"
+vpc_id       = "vpc-xxxxxxxx"
+private_subnets = ["subnet-aaaa","subnet-bbbb"]
+public_subnets  = ["subnet-cccc","subnet-dddd"]
+
+acm_cert_arn = "arn:aws:acm:us-east-1:123456789012:certificate/xxxx-xxxx"
+domain_name  = "insight.ahla.com"
+hosted_zone_id = "ZABCDEFG12345"
+
+image_gateway = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla/insight-gateway:latest"
+image_next    = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla/insight-next:latest"
+
+msk_cluster_name = "ahla-aif-msk"

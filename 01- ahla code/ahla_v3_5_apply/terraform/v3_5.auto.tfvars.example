@@ -1,0 +1,7 @@
+project                   = "ahla"
+cloudfront_distribution_arn = "arn:aws:cloudfront::123456789012:distribution/EXAMPLE"
+alb_arn                   = "arn:aws:elasticloadbalancing:me-central-1:123456789012:loadbalancer/app/ahla-alb/abc123"
+login_paths               = ["/auth/login", "/login", "/api/auth/callback"]
+canary_bucket_name        = "ahla-canary-code"
+test_base_url             = "https://app.ahla.example.com"
+sns_alarms_arn            = "arn:aws:sns:me-central-1:123456789012:ahla-alarms"

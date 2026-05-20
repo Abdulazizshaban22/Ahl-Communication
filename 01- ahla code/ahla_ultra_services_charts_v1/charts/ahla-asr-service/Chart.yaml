@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-asr-service
+description: Ahla Ultra — ASR Service (faster-whisper)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,93 @@
+{
+  "type": "monitor",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 5,
+      "unit": "MINUTES"
+    }
+  },
+  "triggers": [
+    {
+      "name": "Apdex breach",
+      "severity": "2",
+      "condition": {
+        "script": {
+          "lang": "painless",
+          "source": "double S=ctx.results[0].aggregations.sat.doc_count; double T=ctx.results[0].aggregations.tol.doc_count; double N=ctx.results[0].aggregations.total.value; if(N==0) return false; double apdex=(S+0.5*T)/N; return apdex<0.85;"
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE-SNS-DESTINATION-ID>",
+          "message_template": {
+            "source": "Apdex breach on route"
+          }
+        }
+      ]
+    }
+  ],
+  "name": "Apdex alb /api/send (1h)",
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "term": {
+                    "service.keyword": "alb"
+                  }
+                },
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-1h"
+                    }
+                  }
+                },
+                {
+                  "wildcard": {
+                    "request_url": "*/api/send*"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "total": {
+              "value_count": {
+                "field": "target_processing_time"
+              }
+            },
+            "sat": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "lte": 0.5
+                  }
+                }
+              }
+            },
+            "tol": {
+              "filter": {
+                "range": {
+                  "target_processing_time": {
+                    "gt": 0.5,
+                    "lte": 2.0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

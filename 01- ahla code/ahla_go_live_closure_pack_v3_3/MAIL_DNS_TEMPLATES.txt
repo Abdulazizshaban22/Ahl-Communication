@@ -1,0 +1,11 @@
+# SPF (SES / WorkMail)
+; Root or subdomain
+@   TXT   "v=spf1 include:amazonses.com -all"
+
+# DKIM (replace with selectors from SES / WorkMail)
+selector1._domainkey   CNAME   selector1-domainkey.<region>.amazonses.com.
+selector2._domainkey   CNAME   selector2-domainkey.<region>.amazonses.com.
+selector3._domainkey   CNAME   selector3-domainkey.<region>.amazonses.com.
+
+# DMARC
+_dmarc   TXT   "v=DMARC1; p=quarantine; rua=mailto:dmarc@ahla.com; ruf=mailto:dmarc@ahla.com; fo=1; sp=quarantine; adkim=s; aspf=s"

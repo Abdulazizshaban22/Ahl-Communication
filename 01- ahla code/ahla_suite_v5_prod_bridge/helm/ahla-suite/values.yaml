@@ -1,0 +1,37 @@
+{
+  "global": {
+    "domain": "ahla.com",
+    "ingress": {
+      "className": "nginx",
+      "clusterIssuer": "letsencrypt-prod"
+    },
+    "natsWS": "wss://nats.ahla.com:9222",
+    "contentApi": "https://api.ahla.com",
+    "auth": {
+      "issuer": "https://keycloak.ahla.com/realms/ahla",
+      "clientId": "ahla-web",
+      "clientSecret": "CHANGEME",
+      "nextAuthSecret": "CHANGEME"
+    }
+  },
+  "images": {
+    "notes": "registry/notes-web:latest",
+    "book": "registry/book-web:latest",
+    "graph": "registry/graph-web:latest",
+    "dote": "registry/dote-web:latest",
+    "dash": "registry/dash-web:latest",
+    "contentApi": "registry/content-api:latest",
+    "collab": "registry/collab-gateway:latest"
+  },
+  "hosts": {
+    "notes": "notes.ahla.com",
+    "book": "book.ahla.com",
+    "graph": "graph.ahla.com",
+    "dote": "dote.ahla.com",
+    "dash": "dash.ahla.com",
+    "api": "api.ahla.com"
+  },
+  "deploy": {
+    "collab": true
+  }
+}

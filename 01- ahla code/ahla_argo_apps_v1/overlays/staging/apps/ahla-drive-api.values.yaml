@@ -1,0 +1,15 @@
+# Disable chart's built-in ingress in favor of shared IngressGroup
+ingress:
+  enabled: false
+
+# Optional headers to aid CDN caching
+env:
+  CACHE_CONTROL_STATIC: "public, max-age=604800, immutable"
+  CACHE_CONTROL_HTML: "no-cache"
+
+# Example throttling via AWS WAF (attach on shared ingress using wafv2 ACL ARN)
+annotations: {}
+
+# Host (used by app to set absolute URLs/cookies)
+appConfig:
+  publicUrl: "https://drive.stg.ahla.com"

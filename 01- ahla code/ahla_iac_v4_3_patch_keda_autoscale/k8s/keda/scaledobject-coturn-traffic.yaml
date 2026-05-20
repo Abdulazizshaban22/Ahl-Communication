@@ -1,0 +1,22 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: coturn-traffic
+  namespace: ahla-system
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: coturn
+  minReplicaCount: 2
+  maxReplicaCount: 20
+  cooldownPeriod: 90
+  pollingInterval: 15
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+      metricName: turn_traffic_rcvd_bytes_total
+      threshold: "20000000"        # 20 MB/s per replica target
+      activationThreshold: "2000000"
+      query: |
+        sum(rate(turn_traffic_rcvd_bytes_total[2m]))

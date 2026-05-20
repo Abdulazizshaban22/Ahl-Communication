@@ -1,0 +1,216 @@
+{
+  "title": "Ahla \u2014 Unified SLO (Apdex + Burn-rate + Latency)",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Apdex Chat",
+      "id": 1,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Chat",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "chat"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Apdex Meet",
+      "id": 2,
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Meet",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "meet"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Apdex Drive",
+      "id": 3,
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Drive",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "drive"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Apdex Mail",
+      "id": 4,
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Mail",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "mail"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency p95 \u2014 All Services (ALB)",
+      "id": 5,
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "AWS/ApplicationELB",
+          "metricName": "TargetResponseTime",
+          "dimensions": {
+            "LoadBalancer": "*",
+            "TargetGroup": "*"
+          },
+          "stats": [
+            "p95"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "state-timeline",
+      "title": "Composite Alarms (Service)",
+      "id": 6,
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 6
+      },
+      "options": {},
+      "targets": [
+        {
+          "refId": "F1",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-slo-comp-chat\"', 'Average', 60)"
+        },
+        {
+          "refId": "F2",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-slo-comp-meet\"', 'Average', 60)"
+        },
+        {
+          "refId": "F3",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-slo-comp-drive\"', 'Average', 60)"
+        },
+        {
+          "refId": "F4",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-slo-comp-mail\"', 'Average', 60)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Platform \u2014 Degraded Any",
+      "id": 7,
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "G",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-platform-degraded-any\"', 'Average', 60)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Platform \u2014 Critical All",
+      "id": 8,
+      "gridPos": {
+        "x": 12,
+        "y": 18,
+        "w": 12,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "H",
+          "expression": "SEARCH('{AWS/CloudWatch} AlarmName=\"ahla-platform-critical-all\"', 'Average', 60)"
+        }
+      ]
+    }
+  ]
+}

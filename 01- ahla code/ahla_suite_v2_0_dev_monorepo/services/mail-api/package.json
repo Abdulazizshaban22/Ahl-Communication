@@ -1,0 +1,9 @@
+{
+  "name": "ahla-mail-api",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.14"
+  }
+}

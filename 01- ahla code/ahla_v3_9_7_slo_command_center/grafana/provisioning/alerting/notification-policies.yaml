@@ -1,0 +1,11 @@
+apiVersion: 1
+policies:
+  - orgId: 1
+    receiver: ahla-sns-relay
+    # Apply maintenance mute timings to all alerts by default
+    muteTimeIntervals:
+      - ahla-maintenance-window
+    routes:
+      - receiver: ahla-sns-relay
+        objectMatchers:
+          - ["service", "=~", "chat|meet|drive|mail"]

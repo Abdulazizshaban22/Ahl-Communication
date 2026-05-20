@@ -1,0 +1,92 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFront in front of ALB with custom origin header and cache behaviors",
+  "Parameters": {
+    "AlbDNS": {
+      "Type": "String",
+      "Description": "ALB DNS name (e.g., k8s-...elb.amazonaws.com)"
+    },
+    "DomainName": {
+      "Type": "String",
+      "Description": "Viewer domain (e.g., apps.ahla.com)"
+    },
+    "SecretHeaderName": {
+      "Type": "String",
+      "Default": "X-Ahla-Edge",
+      "Description": "Custom header name"
+    },
+    "SecretHeaderValue": {
+      "Type": "String",
+      "NoEcho": true,
+      "Description": "Custom header value"
+    }
+  },
+  "Resources": {
+    "Distribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Enabled": true,
+          "Aliases": [
+            {
+              "Ref": "DomainName"
+            }
+          ],
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "alb-origin",
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "AllowedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS",
+              "PUT",
+              "PATCH",
+              "POST",
+              "DELETE"
+            ],
+            "CachedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS"
+            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "OriginRequestPolicyId": "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
+          },
+          "Origins": [
+            {
+              "Id": "alb-origin",
+              "DomainName": {
+                "Ref": "AlbDNS"
+              },
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "https-only"
+              },
+              "OriginCustomHeaders": [
+                {
+                  "HeaderName": {
+                    "Ref": "SecretHeaderName"
+                  },
+                  "HeaderValue": {
+                    "Ref": "SecretHeaderValue"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "DistributionId": {
+      "Value": {
+        "Ref": "Distribution"
+      }
+    },
+    "CNAME": {
+      "Value": {
+        "Ref": "DomainName"
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+name: Ahla — Build & Deploy
+on:
+  push: { branches: [ main ] }
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: { id-token: write, contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with: { role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}, aws-region: ${{ secrets.AWS_REGION }} }
+      - uses: aws-actions/amazon-ecr-login@v2
+      - name: Build API images
+        run: |
+          API_REPO=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_API_REPO }}
+          docker build -t $API_REPO:chat-${GITHUB_SHA}   "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-chat/services/api"
+          docker build -t $API_REPO:mail-${GITHUB_SHA}   "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-mail/services/api"
+          docker build -t $API_REPO:drive-${GITHUB_SHA}  "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-drive/services/api"
+          docker build -t $API_REPO:business-${GITHUB_SHA} "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-business/services/api"
+          docker build -t $API_REPO:meet-signaling-${GITHUB_SHA} "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-meet/services/signaling"
+          docker push $API_REPO:chat-${GITHUB_SHA}
+          docker push $API_REPO:mail-${GITHUB_SHA}
+          docker push $API_REPO:drive-${GITHUB_SHA}
+          docker push $API_REPO:business-${GITHUB_SHA}
+          docker push $API_REPO:meet-signaling-${GITHUB_SHA}
+      - name: Build Web images
+        run: |
+          WEB_REPO=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_WEB_REPO }}
+          docker build -t $WEB_REPO:chat-${GITHUB_SHA}    "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-chat/apps/web"
+          docker build -t $WEB_REPO:mail-${GITHUB_SHA}    "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-mail/apps/web"
+          docker build -t $WEB_REPO:drive-${GITHUB_SHA}   "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-drive/apps/web"
+          docker build -t $WEB_REPO:meet-${GITHUB_SHA}    "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-meet/apps/web"
+          docker build -t $WEB_REPO:business-${GITHUB_SHA} "┘à┘å╪╕┘ê┘à╪⌐ ╪º┘ç┘ä╪º ┘ä┘ä╪¬┘ê╪º╪╡┘ä/ahla_suite_v1/ahla-business/apps/web"
+          docker push $WEB_REPO:chat-${GITHUB_SHA}
+          docker push $WEB_REPO:mail-${GITHUB_SHA}
+          docker push $WEB_REPO:drive-${GITHUB_SHA}
+          docker push $WEB_REPO:meet-${GITHUB_SHA}
+          docker push $WEB_REPO:business-${GITHUB_SHA}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions: { id-token: write, contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with: { role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}, aws-region: ${{ secrets.AWS_REGION }} }
+      - name: Terraform
+        working-directory: infra/terraform
+        run: |
+          terraform init -input=false
+          terraform apply -auto-approve -input=false

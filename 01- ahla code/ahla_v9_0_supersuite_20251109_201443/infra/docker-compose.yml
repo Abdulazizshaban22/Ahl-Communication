@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    volumes: [ "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro" ]
+    ports: [ "${PUBLIC_PORT-8088}:80" ]
+    depends_on: [ chat-web, meet-web, drive-web, business-web, omni-web, mail-web, chat-api, meet-api, drive-api, business-api, mail-api, chat-ws, meet-ws ]
+
+  # web apps
+  chat-web:
+    build: ../apps/chat-web
+  meet-web:
+    build: ../apps/meet-web
+  drive-web:
+    build: ../apps/drive-web
+  business-web:
+    build: ../apps/business-web
+  omni-web:
+    build: ../apps/omni-web
+  mail-web:
+    build: ../apps/mail-web
+
+  # apis
+  chat-api:
+    build: ../services/chat-api
+    environment: [ "REDIS_URL=redis://redis:6379/0" ]
+    depends_on: [ redis ]
+    ports: [ "8000:8000" ]
+  meet-api:
+    build: ../services/meet-api
+    ports: [ "8020:8020" ]
+  drive-api:
+    build: ../services/drive-api
+    volumes: [ "drive_data:/data" ]
+    ports: [ "8030:8030" ]
+  business-api:
+    build: ../services/business-api
+    ports: [ "8040:8040" ]
+  mail-api:
+    build: ../services/mail-api
+    ports: [ "8050:8050" ]
+
+  # ws/signaling
+  chat-ws:
+    build: ../services/chat-ws
+    environment: [ "WS_PORT=8080" ]
+    ports: [ "8080:8080" ]
+  meet-ws:
+    build: ../services/meet-ws
+    environment: [ "MEET_PORT=8090" ]
+    ports: [ "8090:8090" ]
+
+  emotion-engine:
+    build: ../services/emotion-engine
+    ports: [ "8010:8010" ]
+
+  # infra
+  redis:
+    image: redis:7-alpine
+    ports: [ "6379:6379" ]
+  meilisearch:
+    image: getmeili/meilisearch:v1.10
+    environment: [ "MEILI_MASTER_KEY=masterKey" ]
+    ports: [ "7700:7700" ]
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes: [ "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" ]
+    ports: [ "9090:9090" ]
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment: [ "GF_SECURITY_ADMIN_PASSWORD=admin" ]
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/etc/grafana/dashboards
+    ports: [ "3001:3000" ]
+
+volumes:
+  drive_data: {}

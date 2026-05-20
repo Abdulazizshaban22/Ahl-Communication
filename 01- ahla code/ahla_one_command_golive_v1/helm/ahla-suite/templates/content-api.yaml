@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: content-api, labels: { app: content-api } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: content-api } }
+  template:
+    metadata: { labels: { app: content-api } }
+    spec:
+      containers:
+      - name: content-api
+        image: {{ .Values.images.contentApi }}
+        ports: [{{ name: http, containerPort: 8001 }}]
+        env:
+        - name: DATABASE_URL
+          valueFrom: { secretKeyRef: { name: db-url, key: url } }
+        - name: AUTH_KEYCLOAK_ISSUER
+          value: "{{ .Values.global.auth.issuer }}"
+---
+apiVersion: v1
+kind: Service
+metadata: { name: content-api }
+spec:
+  selector: { app: content-api }
+  ports: [{{ name: http, port: 80, targetPort: 8001 }}]
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: content-api
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "{{ .Values.global.ingress.clusterIssuer }}"
+spec:
+  ingressClassName: "{{ .Values.global.ingress.className }}"
+  tls:
+  - hosts: ["{{ .Values.hosts.api }}"]
+    secretName: content-api-tls
+  rules:
+  - host: "{{ .Values.hosts.api }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: content-api, port: { number: 80 } }

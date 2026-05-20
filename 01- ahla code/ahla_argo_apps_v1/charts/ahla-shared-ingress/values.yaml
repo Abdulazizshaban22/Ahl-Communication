@@ -1,0 +1,16 @@
+groupName: "ahla-public"
+wafv2AclArn: ""  # optional: attach WAFv2 for rate limiting and protections
+hosts:
+  - host: apps.ahla.com
+    service: ahla-web-app
+    port: 80
+  - host: chat.ahla.com
+    service: ahla-chat-api
+    port: 80
+  - host: drive.ahla.com
+    service: ahla-drive-api
+    port: 80
+  - host: meet.ahla.com
+    service: ahla-meet-signaling
+    port: 80
+annotations: {}

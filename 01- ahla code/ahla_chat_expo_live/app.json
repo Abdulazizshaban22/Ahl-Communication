@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Ahla Chat LIVE",
+    "slug": "ahla-chat-live",
+    "version": "0.2.0",
+    "sdkVersion": "51.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6CC5A3"
+    },
+    "updates": {
+      "enabled": false
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6CC5A3"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "build": "2025-10-20T07:29:17.559124Z"
+    }
+  }
+}

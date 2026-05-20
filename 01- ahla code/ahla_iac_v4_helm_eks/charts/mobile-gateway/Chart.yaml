@@ -1,0 +1,7 @@
+
+apiVersion: v2
+name: mobile-gateway
+description: JSON↔NATS WebSocket Gateway for Ahla
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

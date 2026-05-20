@@ -1,0 +1,11 @@
+{
+  "name": "ahla-suite-v5",
+  "private": true,
+  "version": "0.0.1",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

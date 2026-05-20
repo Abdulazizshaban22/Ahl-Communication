@@ -1,0 +1,76 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:stable
+    volumes:
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports: [ "8080:80" ]
+    depends_on: [ chat, meet-signaling, drive-api, business-api, mail-api, emotion-api ]
+  redis:
+    image: redis:7-alpine
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    ports:
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+  coturn:
+    image: instrumentisto/coturn
+    network_mode: host
+    command: ["-n", "--log-file=stdout", "--external-ip=$(hostname -I | awk '{print $1}')", "--realm=localhost", "--min-port=49160", "--max-port=49200", "--use-auth-secret", "--static-auth-secret=staticauth", "--no-tls", "--no-dtls"]
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    ports: [ "8081:8080" ]
+
+  chat:
+    build: ./services/chat
+    environment:
+      REDIS_URL: ${REDIS_URL}
+    depends_on: [ redis ]
+  meet-signaling:
+    build: ./services/meet-signaling
+  drive-api:
+    build: ./services/drive-api
+    environment:
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      AWS_REGION: ${AWS_REGION}
+    depends_on: [ minio ]
+  business-api:
+    build: ./services/business-api
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on: [ postgres ]
+  mail-api:
+    build: ./services/mail-api
+    environment:
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+    depends_on: [ reverse-proxy ]
+  emotion-api:
+    build: ./services/emotion-api
+
+volumes:
+  pgdata: {}
+  miniodata: {}

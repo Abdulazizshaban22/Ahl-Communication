@@ -1,0 +1,15 @@
+# NATS with JetStream + WebSocket
+nats:
+  image: nats:2.10
+config:
+  cluster:
+    enabled: true
+  jetstream:
+    enabled: true
+  websocket:
+    enabled: true
+    port: 9222
+    no_tls: true
+resources:
+  limits: { cpu: "500m", memory: "512Mi" }
+  requests: { cpu: "200m", memory: "256Mi" }

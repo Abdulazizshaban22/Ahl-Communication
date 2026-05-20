@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'chat-api'
+    static_configs:
+      - targets: ['chat-api:8000']
+  - job_name: 'chat-ws'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['chat-ws:8080']
+  - job_name: 'emotion'
+    static_configs:
+      - targets: ['emotion-engine:8010']

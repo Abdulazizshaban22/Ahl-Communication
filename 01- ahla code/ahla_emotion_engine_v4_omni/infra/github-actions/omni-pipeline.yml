@@ -1,0 +1,51 @@
+name: ahla-omni-pipeline
+on:
+  push: { branches: ["main"] }
+  schedule:
+    - cron: "0 1 * * *"     # daily: materialize incremental (UTC)
+    - cron: "30 1 * * *"    # daily: drift report
+    - cron: "0 2 * * 1"     # weekly: retrain
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install feast redis pandas pyarrow
+      - name: Feast apply & compute parquet
+        run: |
+          python feast_repo/jobs/compute_chat_metrics.py
+          cd feast_repo
+          feast apply
+      - name: Materialize incremental (last 25h)
+        run: |
+          cd feast_repo
+          TS=$(date -u -d "25 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
+          feast materialize-incremental $TS
+
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install evidently pandas
+      - run: python monitoring/evidently/drift_report.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidently-report
+          path: monitoring/evidently/report.html
+
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install prefect mlflow
+      - run: python training/prefect/flow.py

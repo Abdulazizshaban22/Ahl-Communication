@@ -1,0 +1,66 @@
+{
+  "index_patterns": [
+    "ahla-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "default_pipeline": "ahla-ip2geo"
+      }
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "service": {
+          "type": "keyword"
+        },
+        "request_url": {
+          "type": "keyword"
+        },
+        "elb_status_code": {
+          "type": "integer"
+        },
+        "target_status_code": {
+          "type": "integer"
+        },
+        "target_processing_time": {
+          "type": "float"
+        },
+        "client_ip": {
+          "type": "ip"
+        },
+        "ip2geo": {
+          "properties": {
+            "continent_name": {
+              "type": "keyword"
+            },
+            "region_iso_code": {
+              "type": "keyword"
+            },
+            "city_name": {
+              "type": "keyword"
+            },
+            "country_iso_code": {
+              "type": "keyword"
+            },
+            "country_name": {
+              "type": "keyword"
+            },
+            "region_name": {
+              "type": "keyword"
+            },
+            "time_zone": {
+              "type": "keyword"
+            },
+            "location": {
+              "type": "geo_point"
+            }
+          }
+        }
+      }
+    }
+  },
+  "priority": 100
+}

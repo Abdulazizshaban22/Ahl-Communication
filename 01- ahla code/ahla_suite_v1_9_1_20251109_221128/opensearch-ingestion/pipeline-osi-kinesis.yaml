@@ -1,0 +1,27 @@
+version: "2"
+pipeline:
+  name: "ahla-logs-osi-kinesis"
+  source:
+    kinesis:
+      aws:
+        region: <YOUR_REGION>
+      stream_name: "<YOUR_KINESIS_STREAM_NAME>"
+      start_position: "LATEST"
+  processor:
+    - json:
+        on_failure: drop
+    - date:
+        from_time_received: false
+        destination: "@timestamp"
+        source: "time"
+        pattern: "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+    - geoip:
+        entries:
+          - source: client_ip
+            destination: ip2geo
+  sink:
+    - opensearch:
+        hosts: ["https://<YOUR_OPENSEARCH_ENDPOINT>"]
+        index: "ahla-app-%{yyyy.MM.dd}"
+        # username: "<user>"
+        # password: "<pass>"

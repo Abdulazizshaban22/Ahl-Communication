@@ -1,0 +1,36 @@
+
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    volumes: [ "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro" ]
+    ports: [ "8082:80" ]
+    depends_on: [ mail-web, mail-api, greenmail ]
+
+  mail-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/mail-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  mail-api:
+    image: node:20-alpine
+    working_dir: /srv
+    command: sh -c "npm i && node src/server.js"
+    volumes: [ "../services/mail-api:/srv" ]
+    environment:
+      - IMAP_HOST=greenmail
+      - IMAP_PORT=3143
+      - IMAP_SECURE=false
+      - SMTP_HOST=greenmail
+      - SMTP_PORT=3025
+      - SMTP_SECURE=false
+      - MAIL_USER=ahla@local
+      - MAIL_PASS=pass
+
+  greenmail:
+    image: greenmail/standalone:latest
+    ports: [ "3025:3025", "3143:3143", "3993:3993", "3465:3465", "4587:4587" ]
+    environment:
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.users=ahla@local:pass

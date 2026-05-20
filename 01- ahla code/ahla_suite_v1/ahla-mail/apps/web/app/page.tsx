@@ -1,0 +1,1 @@
+export default function Page(){return <p>بريد ذكي — قريبًا: صندوق وارد + اقتراح ردود.</p>}

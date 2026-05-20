@@ -1,0 +1,22 @@
+resource "aws_cloudfront_response_headers_policy" "security" {
+  name = "${var.project}-security-headers"
+
+  security_headers_config {
+    strict_transport_security {
+      access_control_max_age_sec = 63072000
+      include_subdomains         = true
+      preload                    = true
+      override                   = true
+    }
+    content_type_options { override = true }
+    frame_options { frame_option = "DENY" override = true }
+    referrer_policy { referrer_policy = "strict-origin-when-cross-origin" override = true }
+    content_security_policy {
+      content_security_policy = "default-src 'self' https: wss:; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' https: 'unsafe-inline'; connect-src 'self' https: wss:; frame-ancestors 'none'; upgrade-insecure-requests"
+      override = true
+    }
+  }
+}
+
+# Attach to distribution behaviors:
+# default_cache_behavior { response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id }

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: notes, labels: { app: notes } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: notes } }
+  template:
+    metadata:
+      labels: { app: notes }
+    spec:
+      containers:
+      - name: notes
+        image: {{ .Values.images.notes }}
+        ports: [{{{{ name: http, containerPort: 3000 }}}}]
+        env:
+        - name: NEXTAUTH_URL
+          value: "https://{{ .Values.hosts.notes }}"
+        - name: NEXTAUTH_SECRET
+          valueFrom: {{ '{{' }} secretKeyRef: {{ '}}' }}
+        - name: AUTH_KEYCLOAK_ISSUER
+          value: "{{ .Values.global.auth.issuer }}"
+        - name: AUTH_KEYCLOAK_CLIENT_ID
+          value: "{{ .Values.global.auth.clientId }}"
+        - name: AUTH_KEYCLOAK_CLIENT_SECRET
+          valueFrom: {{ '{{' }} secretKeyRef: {{ '}}' }}
+        - name: NEXT_PUBLIC_NATS_WS_URL
+          value: "{{ .Values.global.natsWS }}"
+        - name: NEXT_PUBLIC_CONTENT_API
+          value: "{{ .Values.global.contentApi }}"
+---
+apiVersion: v1
+kind: Service
+metadata: { name: notes }
+spec:
+  selector: { app: notes }
+  ports: [{{{{ name: http, port: 80, targetPort: 3000 }}}}]
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: notes
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "{{ .Values.global.ingress.clusterIssuer }}"
+spec:
+  ingressClassName: "{{ .Values.global.ingress.className }}"
+  tls:
+  - hosts: ["{{ .Values.hosts.notes }}"]
+    secretName: notes-tls
+  rules:
+  - host: "{{ .Values.hosts.notes }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: notes, port: { number: 80 } }

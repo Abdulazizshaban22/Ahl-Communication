@@ -1,0 +1,13 @@
+{
+  "name": "xray-daemon",
+  "image": "public.ecr.aws/xray/aws-xray-daemon:latest",
+  "essential": true,
+  "cpu": 32,
+  "memory": 128,
+  "portMappings": [
+    {"containerPort": 2000, "protocol": "udp"}
+  ],
+  "environment": [
+    {"name": "AWS_REGION", "value": "me-central-1"}
+  ]
+}

@@ -1,0 +1,85 @@
+# Ahla Emotion Engine v3 config
+
+# Models (can be swapped later)
+sentiment_model: "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+toxicity_model:  "unitary/multilingual-toxic-xlm-roberta"
+emotion_zeroshot_model: "joeddav/xlm-roberta-large-xnli"
+
+# GoEmotions label space
+goemotions_labels:
+  - admiration
+  - amusement
+  - anger
+  - annoyance
+  - approval
+  - caring
+  - confusion
+  - curiosity
+  - desire
+  - disappointment
+  - disapproval
+  - disgust
+  - embarrassment
+  - excitement
+  - fear
+  - gratitude
+  - grief
+  - joy
+  - love
+  - nervousness
+  - optimism
+  - pride
+  - realization
+  - relief
+  - remorse
+  - sadness
+  - surprise
+  - neutral
+
+# Behavior rules (thresholds & windows)
+rules:
+  anger_cooloff:
+    window_days: 30
+    min_conflicts: 3
+    anger_threshold: 0.70
+    escalation_levels:
+      - "🕊️ خذوا استراحة قصيرة."
+      - "🕊️ شكل السجال يتكرر؛ تبغون نأخر النقاش ساعة؟"
+      - "🕊️ أقترح ملخّص نقاط وتهدئة قبل المتابعة."
+
+  reconciliation:
+    window_days: 45
+    negative_bursts_min: 2
+    silent_days_after: 3
+    suggestion: "🤝 تحب أكتب مسودة اعتذار قصيرة ومحايدة؟"
+
+  appreciation_work:
+    joy_threshold: 0.70
+    min_praise_last7d: 3
+    suggestion: "🌟 واضح إنك مبسوط؛ أكتب رسالة شكر أو بطاقة تقدير؟"
+
+  burnout_signal:
+    night_hour_start: 23
+    night_msgs_min_14d: 10
+    negative_trend_threshold: 0.15
+    suggestion: "🌙 فيه تواصل متأخر متكرر؛ أذكّر الفريق بوقت راحة أو أضبط Focus Time؟"
+
+  social_debt:
+    unanswered_hours: 24
+    suggestion: "📬 عندك رسائل بدون رد؛ تبغاني أجهّز رد لطيف؟"
+
+  check_in_after_silence:
+    silence_days: 7
+    suggestion: "👋 فات أسبوع بدون تواصل؛ تبغى أرسل سؤال بسيط للاطمئنان؟"
+
+# NATS JetStream for low-confidence queues
+nats:
+  url: "nats://nats:4222"
+  stream: "AHLA_EMOTION"
+  subject_lowconf: "ahla.emotion.lowconf"
+  durable: "labeler"
+
+# Feast (Feature Store) — use Redis for online, local files for offline by default
+feast:
+  repo_path: "/app/feast_repo"
+  online_redis_url: "redis://redis:6379/0"

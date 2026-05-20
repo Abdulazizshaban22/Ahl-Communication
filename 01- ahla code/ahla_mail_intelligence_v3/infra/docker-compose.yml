@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  intel-api:
+    build: ../services/intel-api
+    ports: ["8090:8090"]
+  reports-ingest:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ../ops:/app/ops:ro
+      - ../reports:/app/reports:ro
+      - ../out:/app/out
+    command: /bin/sh -c "python ops/tlsrpt_to_csv.py /app/reports/tlsrpt > /app/out/tlsrpt.csv 2>/app/out/tlsrpt.err && python ops/dmarc_rua_to_csv.py /app/reports/dmarc_rua > /app/out/dmarc_rua.csv 2>/app/out/dmarc_rua.err && sleep 3600"
+    restart: unless-stopped

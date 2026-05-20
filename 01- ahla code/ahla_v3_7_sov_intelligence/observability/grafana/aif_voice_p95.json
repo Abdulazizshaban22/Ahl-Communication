@@ -1,0 +1,25 @@
+{
+  "title": "Ahla \u2014 AIF Voice Latency p95",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "ASR p95 (ms)",
+      "targets": [
+        {
+          "expression": "aif_asr_latency_p95"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "TTS p95 (ms)",
+      "targets": [
+        {
+          "expression": "aif_tts_latency_p95"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

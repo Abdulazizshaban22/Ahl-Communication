@@ -1,0 +1,42 @@
+{
+  "title": "Ahla - CoTURN",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "STUN Binding requests",
+      "targets": [
+        {
+          "expr": "stun_binding_request"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "TURN allocations",
+      "targets": [
+        {
+          "expr": "turn_total_allocations"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Traffic sent/received",
+      "targets": [
+        {
+          "expr": "rate(turn_traffic_rcvd_bytes_total[1m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "UDP/TCP errors",
+      "targets": [
+        {
+          "expr": "sum(rate(turn_udp_errors_total[1m])) or vector(0)"
+        }
+      ]
+    }
+  ]
+}

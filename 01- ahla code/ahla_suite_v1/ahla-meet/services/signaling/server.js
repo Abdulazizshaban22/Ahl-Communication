@@ -1,0 +1,1 @@
+const WebSocket=require('ws');const wss=new (require('ws').Server)({port:8085});wss.on('connection',ws=>ws.on('message',m=>wss.clients.forEach(c=>{if(c!==ws&&c.readyState===1)c.send(m)})));console.log('Signaling WS on :8085');

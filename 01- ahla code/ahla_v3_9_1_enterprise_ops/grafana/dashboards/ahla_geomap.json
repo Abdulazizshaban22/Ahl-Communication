@@ -1,0 +1,55 @@
+{
+  "title": "Ahla \u2014 Geo Activity & Choropleth",
+  "panels": [
+    {
+      "type": "geomap",
+      "title": "Requests by Region (CloudFront)",
+      "id": 10,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 12
+      },
+      "options": {
+        "view": {
+          "fit": "bounds"
+        },
+        "basemap": {
+          "type": "carto"
+        },
+        "layers": [
+          {
+            "type": "heatmap",
+            "name": "Requests",
+            "config": {
+              "opacity": 0.8
+            }
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "AWS/CloudFront",
+          "metricName": "Requests",
+          "dimensions": {
+            "Region": "*",
+            "DistributionId": "*"
+          },
+          "stats": [
+            "Sum"
+          ],
+          "period": "300",
+          "region": "us-east-1"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

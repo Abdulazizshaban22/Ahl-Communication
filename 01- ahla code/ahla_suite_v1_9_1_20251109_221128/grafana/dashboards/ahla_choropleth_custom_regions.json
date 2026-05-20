@@ -1,0 +1,235 @@
+{
+  "id": null,
+  "uid": "ahla-choropleth-custom",
+  "title": "Ahla — Choropleth (Custom Regions) + Markers",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "type": "textbox",
+        "name": "SERVICE",
+        "label": "Service",
+        "query": "alb",
+        "current": {
+          "text": "alb",
+          "value": "alb"
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "ROUTE",
+        "label": "Path contains",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "COUNTRY",
+        "label": "country_iso_code",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "type": "textbox",
+        "name": "T",
+        "label": "Apdex T (sec)",
+        "query": "0.5",
+        "current": {
+          "text": "0.5",
+          "value": "0.5"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "geomap",
+      "title": "Custom Regions Choropleth (24h)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 16
+      },
+      "targets": [
+        {
+          "refId": "B",
+          "query": "service.keyword: \"${SERVICE}\" AND @timestamp:[now-24h TO now] AND request_url:\"${ROUTE}\"",
+          "pipelineAgg": false,
+          "bucketAggs": [
+            {
+              "type": "terms",
+              "field": "ip2geo.region_iso_code.keyword",
+              "id": "1",
+              "settings": {
+                "size": 1000
+              }
+            }
+          ],
+          "metrics": [
+            {
+              "type": "count",
+              "id": "m1"
+            }
+          ]
+        }
+      ],
+      "options": {
+        "basemap": {
+          "type": "carto",
+          "config": {
+            "theme": "auto",
+            "showLabels": true
+          }
+        },
+        "layers": [
+          {
+            "name": "Regions GeoJSON (Local)",
+            "type": "geojson",
+            "config": {
+              "geojson": {
+                "type": "FeatureCollection",
+                "name": "example_regions",
+                "features": [
+                  {
+                    "type": "Feature",
+                    "properties": {
+                      "region_iso_code": "SA-01",
+                      "region_name": "Example North"
+                    },
+                    "geometry": {
+                      "type": "Polygon",
+                      "coordinates": [
+                        [
+                          [
+                            39.0,
+                            26.0
+                          ],
+                          [
+                            45.0,
+                            26.0
+                          ],
+                          [
+                            45.0,
+                            30.0
+                          ],
+                          [
+                            39.0,
+                            30.0
+                          ],
+                          [
+                            39.0,
+                            26.0
+                          ]
+                        ]
+                      ]
+                    }
+                  },
+                  {
+                    "type": "Feature",
+                    "properties": {
+                      "region_iso_code": "SA-02",
+                      "region_name": "Example South"
+                    },
+                    "geometry": {
+                      "type": "Polygon",
+                      "coordinates": [
+                        [
+                          [
+                            39.0,
+                            20.0
+                          ],
+                          [
+                            45.0,
+                            20.0
+                          ],
+                          [
+                            45.0,
+                            25.5
+                          ],
+                          [
+                            39.0,
+                            25.5
+                          ],
+                          [
+                            39.0,
+                            20.0
+                          ]
+                        ]
+                      ]
+                    }
+                  }
+                ]
+              },
+              "join": {
+                "featureKey": "region_iso_code",
+                "dataKey": "ip2geo.region_iso_code.keyword",
+                "valueField": "Count"
+              },
+              "style": {
+                "colorScheme": "Spectral",
+                "opacity": 0.8,
+                "legend": true
+              }
+            },
+            "data": {
+              "queryRefId": "B"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "geomap",
+      "title": "Markers — Top UA/URI (24h, filters applied)",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 24,
+        "h": 16
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "service.keyword: \"${SERVICE}\" AND @timestamp:[now-24h TO now] AND request_url:\"${ROUTE}\""
+        }
+      ],
+      "options": {
+        "basemap": {
+          "type": "osm-standard",
+          "config": {}
+        },
+        "layers": [
+          {
+            "name": "Clients",
+            "type": "markers",
+            "config": {
+              "locationMode": "auto",
+              "textLabelField": "user_agent",
+              "tooltip": {
+                "enabled": true,
+                "mode": "fields",
+                "extraFields": [
+                  "request_url",
+                  "client_ip",
+                  "target_status_code"
+                ]
+              }
+            },
+            "data": {
+              "queryRefId": "A"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

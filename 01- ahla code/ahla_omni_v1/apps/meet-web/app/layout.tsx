@@ -1,0 +1,1 @@
+export const metadata={title:'Ahla Chat'}; export default function R({children}:{children:React.ReactNode}){return <html dir='rtl'><body style={{fontFamily:'system-ui'}}>{children}</body></html>}

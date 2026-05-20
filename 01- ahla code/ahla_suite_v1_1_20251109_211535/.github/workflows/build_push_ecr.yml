@@ -1,0 +1,30 @@
+
+name: Build & Push ECR
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/**'
+      - 'services/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build & Push chat-api
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          REGION=${{ secrets.AWS_REGION }}
+          REPO=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/ahla-chat-api
+          docker build -t chat-api:ci ./services/chat-api
+          docker tag chat-api:ci $REPO:prod
+          docker push $REPO:prod

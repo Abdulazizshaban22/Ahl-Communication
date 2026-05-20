@@ -1,0 +1,34 @@
+{
+  "Name": "ahla-cf-acl",
+  "Scope": "CLOUDFRONT",
+  "DefaultAction": { "Allow": {} },
+  "VisibilityConfig": { "MetricName": "ahla-cf-acl", "SampledRequestsEnabled": true, "CloudWatchMetricsEnabled": true },
+  "Rules": [
+    {
+      "Name": "AWS-AWSManagedRulesACFPRuleSet",
+      "Priority": 10,
+      "OverrideAction": { "None": {} },
+      "Statement": {
+        "ManagedRuleGroupStatement": {
+          "VendorName": "AWS",
+          "Name": "AWSManagedRulesACFPRuleSet"
+        }
+      },
+      "VisibilityConfig": { "MetricName": "ahla-acfp", "SampledRequestsEnabled": true, "CloudWatchMetricsEnabled": true }
+    },
+    {
+      "Name": "SignUpPath",
+      "Priority": 20,
+      "Action": { "Allow": {} },
+      "Statement": {
+        "ByteMatchStatement": {
+          "SearchString": "/auth/register",
+          "FieldToMatch": { "UriPath": {} },
+          "TextTransformations": [{ "Type": "NONE", "Priority": 0 }],
+          "PositionalConstraint": "STARTS_WITH"
+        }
+      },
+      "VisibilityConfig": { "MetricName": "ahla-acfp-path", "SampledRequestsEnabled": true, "CloudWatchMetricsEnabled": true }
+    }
+  ]
+}

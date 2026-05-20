@@ -1,0 +1,13 @@
+# ===== Phase-Final v3.0 =====
+# ElastiCache: pass your private subnet IDs
+elasticache_subnet_ids = ["10.30.11.0/24","10.30.12.0/24"]
+
+# Grafana
+amg_workspace_name = "ahla-observability"
+
+# Keycloak image (build from keycloak/Dockerfile then push to ECR)
+image_keycloak = "123456789012.dkr.ecr.me-central-1.amazonaws.com/ahla-keycloak:prod"
+
+# CloudFront (us-east-1 ACM)
+cloudfront_cert_arn_us_east_1 = "arn:aws:acm:us-east-1:123456789012:certificate/xxxx"
+cloudfront_alt_names          = ["app.ahla.example.com"]

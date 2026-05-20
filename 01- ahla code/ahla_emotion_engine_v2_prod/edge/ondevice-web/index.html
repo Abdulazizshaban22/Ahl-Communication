@@ -1,0 +1,21 @@
+<!doctype html>
+<html dir="rtl" lang="ar">
+<head><meta charset="utf-8"><title>Ahla On-Device Emotion</title></head>
+<body>
+  <h3>استدلال على الجهاز (ONNX Runtime Web)</h3>
+  <textarea id="t" rows="5" cols="60" placeholder="أدخل رسالة..."></textarea>
+  <button id="b">حلّل</button>
+  <pre id="o"></pre>
+  <script type="module">
+    import * as ort from 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js'
+    // Placeholder: load quantized onnx model if available
+    async function analyze(text){
+      // here we'd run tokenizer + ONNX model; placeholder returns neutral
+      return {sentiment:{positive:0.33,neutral:0.34,negative:0.33}, emotions:[{neutral:0.6}]}
+    }
+    document.getElementById('b').onclick=async()=>{
+      const out = await analyze(document.getElementById('t').value)
+      document.getElementById('o').textContent = JSON.stringify(out,null,2)
+    }
+  </script>
+</body></html>

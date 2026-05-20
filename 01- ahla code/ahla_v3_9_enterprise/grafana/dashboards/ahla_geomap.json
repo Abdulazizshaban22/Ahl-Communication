@@ -1,0 +1,92 @@
+{
+  "title": "Ahla \u2014 Geo Activity & Choropleth",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "geomap",
+      "title": "Geo Heatmap by Country (CloudFront)",
+      "id": 1,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 12
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "carto"
+        },
+        "view": {
+          "fit": "data"
+        },
+        "layers": [
+          {
+            "type": "heatmap",
+            "name": "Requests",
+            "config": {
+              "opacity": 0.8
+            }
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "AWS/CloudFront",
+          "metricName": "Requests",
+          "dimensions": {
+            "Region": "*",
+            "DistributionId": "*"
+          },
+          "stats": [
+            "Sum"
+          ],
+          "period": "300",
+          "expression": "",
+          "region": "us-east-1"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Top URIs latency p95 (ALB)",
+      "id": 2,
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "AWS/ApplicationELB",
+          "metricName": "TargetResponseTime",
+          "dimensions": {
+            "LoadBalancer": "*",
+            "TargetGroup": "*"
+          },
+          "stats": [
+            "p95"
+          ],
+          "period": "60",
+          "region": "${var.region}"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

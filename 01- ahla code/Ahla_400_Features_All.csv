@@ -1,0 +1,401 @@
+﻿Unit,Feature #,Feature,Category
+Ahla Chat,1,واجهة شفافة Glass UI بحركة RTL/LTR ديناميكية,UI
+Ahla Chat,2,فقاعات رسائل تتغير ألوانها حسب المزاج المكتشف,UI
+Ahla Chat,3,تحريك فيزيائي للرسائل عند السحب/الرد,UI
+Ahla Chat,4,تحويل صوت إلى نص فوري (Whisper‑WASM),UI
+Ahla Chat,5,ردود ذكية ثنائية اللغة من Emotion Engine,UI
+Ahla Chat,6,ردود فعل حركية بتأثيرات Lottie ثلاثية الأبعاد,UI
+Ahla Chat,7,ملف شخصي تفاعلي Ahla ID يعرض الحالة العاطفية,UI
+Ahla Chat,8,تمرير ذكي يعود لآخر موضع في المحادثة,UI
+Ahla Chat,9,سحب‑و‑إفلات للملفات والصور داخل النافذة,UI
+Ahla Chat,10,خلفيات ديناميكية حسب الطقس والمزاج,UI
+Ahla Chat,11,تشفير طرفي Signal/MLS لكل جلسة,Security
+Ahla Chat,12,واجهة مقارنة Safety Numbers بين الأطراف,Security
+Ahla Chat,13,نسخ احتياطي مشفّر بالمفتاح المحلي فقط,Security
+Ahla Chat,14,مصادقة الأجهزة الجديدة عبر QR آمن,Security
+Ahla Chat,15,رسائل ذاتية الإتلاف بمهلة زمنية,Security
+Ahla Chat,16,وضع خاص Private Mode ببصمة/كلمة مرور,Security
+Ahla Chat,17,تنبيه عند التقاط لقطة شاشة في المحادثات الحساسة,Security
+Ahla Chat,18,وضع الاختفاء المؤقت للمستخدم في المحادثات,Security
+Ahla Chat,19,فلترة الروابط المشبوهة وتحذير من التصيّد,Security
+Ahla Chat,20,تجزئة مفاتيح التشفير حسب نوع البيانات,Security
+Ahla Chat,21,تحليل نبرة الحوار لحظيًا (حدة/تعاطف/سعادة),AI
+Ahla Chat,22,مؤشر بصري لحدة النقاش أعلى الشاشة,AI
+Ahla Chat,23,اقتراح جمل مهدئة عند تصاعد التوتر,AI
+Ahla Chat,24,ملخص ذكي للمحادثة الطويلة,AI
+Ahla Chat,25,اكتشاف الكلمات المفتاحية تلقائيًا,AI
+Ahla Chat,26,تحليل انفعال الملاحظات الصوتية,AI
+Ahla Chat,27,سجل زمني لتطور المزاج بالمحادثة,AI
+Ahla Chat,28,اقتراح إيموجي دقيق حسب السياق,AI
+Ahla Chat,29,تفعيل لحظة صمت تلقائيًا عند ارتفاع التوتر,AI
+Ahla Chat,30,لوحة Insights للكلمات الشائعة ونِسب المزاج,AI
+Ahla Chat,31,إرسال صور عالية الدقة دون ضغط,UI
+Ahla Chat,32,مشغل فيديو مصغر داخل الفقاعة,UI
+Ahla Chat,33,تقطيع/ترميز WebCodecs للفيديو الطويل (H.264/AV1),UI
+Ahla Chat,34,مشاركة الموقع الحي بخريطة تفاعلية,UI
+Ahla Chat,35,تحويل الرسائل الصوتية إلى نص تلقائيًا,UI
+Ahla Chat,36,خزانة وسائط شخصية داخل المحادثة,UI
+Ahla Chat,37,عارض PDF/Word مدمج داخل الدردشة,UI
+Ahla Chat,38,إعادة تسمية المرفقات داخل التطبيق,UI
+Ahla Chat,39,OCR محلي (WASM) لتحويل الصور إلى نص,UI
+Ahla Chat,40,تحويل الرسالة إلى بطاقة مشاركة جميلة,UI
+Ahla Chat,41,مجلدات محادثات (عمل/أصدقاء/عائلة),Governance
+Ahla Chat,42,تثبيت المحادثات الهامة مع تذكير زمني,Governance
+Ahla Chat,43,بحث موحّد عبر النص والوسائط والملفات,Governance
+Ahla Chat,44,وضع التركيز لكتم محادثات محددة مؤقتًا,Governance
+Ahla Chat,45,إدارة الأجهزة النشطة وتسجيل الخروج عن بُعد,Governance
+Ahla Chat,46,تكامل مباشر مع Ahla Drive لإرسال/استقبال الملفات,Integration
+Ahla Chat,47,دمج Ahla Mail للرد عبر البريد أو الدردشة,Integration
+Ahla Chat,48,تشغيل محادثة عمل من مهمة Ahla Business,Integration
+Ahla Chat,49,Webhook API للبوتات والتكاملات الخارجية,Integration
+Ahla Chat,50,تحويل المحادثة إلى اجتماع Ahla Meet بضغطة,Integration
+Ahla Meet,1,انضمام بضغطة واحدة بدون تسجيل مسبق (One‑Click Join),UI
+Ahla Meet,2,خلفيات افتراضية تفاعلية ثلاثية الأبعاد مع إزالة الخلفية,UI
+Ahla Meet,3,تأثيرات فيديو فورية (Blur/Lighting/Color),UI
+Ahla Meet,4,مشاركة شاشة ذكية مع معاينة ومؤشر تفاعل,UI
+Ahla Meet,5,غرف فرعية Breakout تلقائية حسب الحضور,UI
+Ahla Meet,6,تسجيل 4K مع H.264/AV1 ورفع مباشر إلى Drive,UI
+Ahla Meet,7,تصويت وأسئلة مباشرة داخل الواجهة,UI
+Ahla Meet,8,Spotlight ديناميكي بناءً على الصوت/الحركة,UI
+Ahla Meet,9,دردشة جانبية ذكية باقتراح ردود,UI
+Ahla Meet,10,وضع التركيز لإظهار المتحدث فقط,UI
+Ahla Meet,11,تشفير DTLS/SRTP افتراضي لكل جلسة,Security
+Ahla Meet,12,خادم TURN (Coturn) لتجاوز NAT الصعب,Security
+Ahla Meet,13,رموز أمان + غرفة انتظار قبل الدخول,Security
+Ahla Meet,14,استضافة داخل نطاق سعودي سيادي,Security
+Ahla Meet,15,تحكم قبول/رفض المشاركين للمضيف,Security
+Ahla Meet,16,دخول المضيف عبر Ahla ID مع 2FA,Security
+Ahla Meet,17,كتم/فتح تلقائي للكاميرا/الميكروفون,Security
+Ahla Meet,18,لقطة معاينة تُرسل للمضيف للحالات الحساسة,Security
+Ahla Meet,19,سياسات أدوار (مضيف/مساعد/الجميع),Security
+Ahla Meet,20,سجل تدقيق كامل للحضور والتصرفات,Security
+Ahla Meet,21,تحليل حدة النقاش عبر الصوت أثناء الاجتماع,AI
+Ahla Meet,22,قياس انتباه المشاركين (نافذة نشطة/مشاركة),AI
+Ahla Meet,23,تلخيص آلي للنقاط بعد الاجتماع,AI
+Ahla Meet,24,بطاقة إنجاز للمتحدثين (مدة/مشاركة/ردود),AI
+Ahla Meet,25,اقتراح مهام متابعة داخل Ahla Business,AI
+Ahla Meet,26,تحليل مشاعر الصوت (Emotion Engine),AI
+Ahla Meet,27,ترجمة فورية عربية↔إنجليزية أثناء العرض,AI
+Ahla Meet,28,نص حي (Live Transcript) لحظي,AI
+Ahla Meet,29,تنبؤ باضطراب الاتصال (Latency/Jitter),AI
+Ahla Meet,30,لوحة تحليلات للمضيف على مستوى كل لقاء,AI
+Ahla Meet,31,رف ميديا للسحب والإفلات داخل الاجتماع,Integration
+Ahla Meet,32,Whiteboard تعاوني متعدد المستخدمين,Integration
+Ahla Meet,33,مشاركة تطبيق محدد بدل الشاشة كاملة,Integration
+Ahla Meet,34,دفق 4K/60fps باختيار الترميز تلقائيًا,Integration
+Ahla Meet,35,استخدام كاميرا الهاتف كنقطة مشاركة إضافية,Integration
+Ahla Meet,36,تبديل تلقائي للكاميرا حسب الوضع,Integration
+Ahla Meet,37,تجميع التسجيل والدردشة في ملف واحد قابل للبحث,Integration
+Ahla Meet,38,نافذة تقديم شرائح دون مغادرة الاجتماع,Integration
+Ahla Meet,39,مزامنة الشرائح مع Drive وتوزيعها,Integration
+Ahla Meet,40,روابط اجتماعات مخصصة + QR مشاركة,Integration
+Ahla Meet,41,لوحة مضيف لجدولة/دعوات/تصنيف اللقاءات,Governance
+Ahla Meet,42,مكتبة تسجيلات مع وسوم وبحث,Governance
+Ahla Meet,43,تقارير حضور/غياب/مدة لكل لقاء,Governance
+Ahla Meet,44,لقاءات مفتوحة أو للأعضاء فقط ضمن الفريق,Governance
+Ahla Meet,45,تكامل SSO/LDAP للمؤسسات الكبرى,Governance
+Ahla Meet,46,بدء Meet من داخل Ahla Chat (Meet Now),Integration
+Ahla Meet,47,حفظ التسجيلات تلقائيًا في مجلد Drive,Integration
+Ahla Meet,48,إنشاء لقاء من مهمة Ahla Business,Integration
+Ahla Meet,49,REST/GraphQL API لإدارة اللقاءات,Integration
+Ahla Meet,50,Webhooks للتكامل مع Slack/CRM,Integration
+Ahla Drive,1,واجهة Glass Panels ثلاثية الأبعاد,UI
+Ahla Drive,2,بطاقات حيّة تعرض معاينة PDF/فيديو,UI
+Ahla Drive,3,سحب‑و‑إفلات للرفع في أي مجلد,UI
+Ahla Drive,4,علامات لونية لتنظيم بصري سريع,UI
+Ahla Drive,5,عارض موحد لـ PDF/DOCX/PSD/CAD/AI,UI
+Ahla Drive,6,Timeline لإصدارات الملف,UI
+Ahla Drive,7,قائمة آخر الملفات مع مؤشرات تفاعل,UI
+Ahla Drive,8,وضع ليلي ذكي متكيف,UI
+Ahla Drive,9,تصفح دون إنترنت لمجلدات مختارة,UI
+Ahla Drive,10,عارض مصغّر أثناء التنقل بين المجلدات,UI
+Ahla Drive,11,تشفير AES‑256 أثناء النقل والتخزين,Security
+Ahla Drive,12,تجزئة الملفات (Sharding) على خوادم متعددة,Security
+Ahla Drive,13,صلاحيات دقيقة (Viewer/Editor/Admin/Temp),Security
+Ahla Drive,14,روابط مشاركة ذاتية الانتهاء,Security
+Ahla Drive,15,تعقب الروابط العامة وكشف التحميل غير المصرح,Security
+Ahla Drive,16,توقيع رقمي للملفات الحساسة + Timestamp,Security
+Ahla Drive,17,مسح مضاد للفيروسات والروابط الخبيثة,Security
+Ahla Drive,18,تنظيف بيانات EXIF/Meta قبل المشاركة العامة,Security
+Ahla Drive,19,مصادقة متعددة العوامل للوصول المحمي,Security
+Ahla Drive,20,سياسة PDPL داخل النطاق السعودي,Security
+Ahla Drive,21,بحث متعدد اللغات داخل الملفات (Text+OCR),AI
+Ahla Drive,22,تصنيف تلقائي حسب النوع والاستخدام,AI
+Ahla Drive,23,اقتراح مجلدات بناءً على الملفات الحديثة,AI
+Ahla Drive,24,تلخيص المستندات داخل العارض,AI
+Ahla Drive,25,توقع امتلاء السعة (Storage Forecast),AI
+Ahla Drive,26,كشف الملفات المكررة واقتراح دمج,AI
+Ahla Drive,27,تحليل مشاركة الملفات داخل الفريق,AI
+Ahla Drive,28,تصنيف أمان (Public/Private/Confidential) ذكي,AI
+Ahla Drive,29,File Watch للتنبيه عند التعديل,AI
+Ahla Drive,30,محرك توصية لملفات تحتاجها قريبًا,AI
+Ahla Drive,31,مشاركة فورية برابط قصير مشفّر,Integration
+Ahla Drive,32,تعليقات وتفاعلات داخل المستند,Integration
+Ahla Drive,33,تحرير Office تعاوني في المتصفح,Integration
+Ahla Drive,34,ربط الملفات بمهام Ahla Business,Integration
+Ahla Drive,35,سجل تفاعلات لكل ملف/مجلد,Integration
+Ahla Drive,36,توقيع عبر Adobe Sign/DocuSign API,Integration
+Ahla Drive,37,أذونات تحرير بالقوائم البريدية Teams,Integration
+Ahla Drive,38,تحرير متزامن Realtime,Integration
+Ahla Drive,39,وضع القراءة الجماعية,Integration
+Ahla Drive,40,تنبيهات في Chat عند مشاركة ملف,Integration
+Ahla Drive,41,رفع متعدد الأجزاء للملفات الكبيرة,Governance
+Ahla Drive,42,ضغط تلقائي قبل النقل,Governance
+Ahla Drive,43,Snapshots + Versioning دوري,Governance
+Ahla Drive,44,استرجاع نسخة سابقة بنقرة,Governance
+Ahla Drive,45,S3 Intelligent‑Tiering لتقليل التكلفة,Governance
+Ahla Drive,46,إرسال الملفات مباشرة من Chat,Integration
+Ahla Drive,47,إرفاق الملفات الكبيرة في Mail كرابط Drive,Integration
+Ahla Drive,48,REST API + Webhook لإدارة الملفات,Integration
+Ahla Drive,49,دعم WebDAV/SFTP للوصول الآمن,Integration
+Ahla Drive,50,ترحيل من أنظمة خارجية (Google/MS),Integration
+Ahla Business,1,لوحة Kanban عربية بالسحب والإفلات,UI
+Ahla Business,2,مشاريع مع KPIs فورية,UI
+Ahla Business,3,مهام متكررة وجدولة تلقائية,UI
+Ahla Business,4,أدوار متعددة للمهمة (Owner/Reviewer/Follower),UI
+Ahla Business,5,تتبّع وقت وإنتاجية برسوم بيانية,UI
+Ahla Business,6,تذكيرات ذكية حسب العادات,UI
+Ahla Business,7,ربط المهمة بمحادثة Chat مباشرة,UI
+Ahla Business,8,تصنيف مهام بالألوان والوسوم والهدف,UI
+Ahla Business,9,إرفاق ملفات من Drive/Mail بكل مهمة,UI
+Ahla Business,10,عرض Gantt للعلاقات والاعتمادية,UI
+Ahla Business,11,مساحات عمل Workspaces لكل فريق,Integration
+Ahla Business,12,مراسلة داخلية في صفحة المشروع,Integration
+Ahla Business,13,لوحة نشاط الأعضاء (On/Off/Active),Integration
+Ahla Business,14,Mentions ذكية باقتراحات,Integration
+Ahla Business,15,تعيين عبر البريد أو الدردشة,Integration
+Ahla Business,16,تصويت على القرارات المرتبطة بالمهام,Integration
+Ahla Business,17,وضع Showcase لعرض النتائج,Integration
+Ahla Business,18,إدارة الإجازات والتوافر مع التقويم,Integration
+Ahla Business,19,Threads لتجميع النقاشات,Integration
+Ahla Business,20,إشعارات فورية متعددة القنوات,Integration
+Ahla Business,21,Heatmap لإنتاجية الفريق,AI
+Ahla Business,22,مؤشر المزاج العام من Emotion Engine,AI
+Ahla Business,23,AI Task Balancer لتوزيع الحمل,AI
+Ahla Business,24,ملخص أسبوعي ذكي,AI
+Ahla Business,25,تحليل أداء فردي وفِرَقي,AI
+Ahla Business,26,لوحة KPIs مرنة لكل مشروع,AI
+Ahla Business,27,Root‑Cause AI لتأخيرات المهام,AI
+Ahla Business,28,تنبيه جهد زائد,AI
+Ahla Business,29,تنبؤ بموعد الإنجاز,AI
+Ahla Business,30,تحليل موضوعات المحادثات المرتبطة,AI
+Ahla Business,31,Dashboards تفاعلية لكل فريق,Governance
+Ahla Business,32,تقارير PDF تُرسل إلى Mail,Governance
+Ahla Business,33,تصدير إلى Excel/Power BI,Governance
+Ahla Business,34,تقارير زمنية Time Logs,Governance
+Ahla Business,35,قياس الالتزام بالمواعيد,Governance
+Ahla Business,36,مؤشر التفاعل الداخلي,Governance
+Ahla Business,37,تحليل الأسبوع الأكثر نشاطًا,Governance
+Ahla Business,38,رسوم للأداء حسب الوحدة/الدور,Governance
+Ahla Business,39,Heatmap للنشاط,Governance
+Ahla Business,40,Impact Meter يربط المهام بالنتائج المالية,Governance
+Ahla Business,41,RBAC/ACL للأذونات الدقيقة,Security
+Ahla Business,42,Audit Trail لكل تعديل,Security
+Ahla Business,43,تشفير الملفات والمهام الحساسة,Security
+Ahla Business,44,سياسات احتفاظ وتصنيف,Security
+Ahla Business,45,SSO/Keycloak للمؤسسات الكبرى,Security
+Ahla Business,46,حفظ مخرجات المهام في Drive,Integration
+Ahla Business,47,بدء اجتماع Meet من المهمة,Integration
+Ahla Business,48,تكامل Mail للإشعارات وتتبع الرسائل,Integration
+Ahla Business,49,GraphQL API للربط مع ERP/CRM,Integration
+Ahla Business,50,Webhooks للتكامل مع Jira/Slack,Integration
+Ahla Mail,1,واجهة Glass‑Light بثلاثة أعمدة,UI
+Ahla Mail,2,Inbox معاينة سريعة + تفاصيل,UI
+Ahla Mail,3,وضع التركيز لإخفاء الضجيج,UI
+Ahla Mail,4,إيماءات سحب للأرشفة/التذكير/التصنيف,UI
+Ahla Mail,5,Threaded View بأسلوب محادثة,UI
+Ahla Mail,6,Smart Preview لأول 3 جمل,UI
+Ahla Mail,7,وضع ليلي متناسق مع Chat/Business,UI
+Ahla Mail,8,بحث عالمي (⌘+K) عبر النص والمرفقات,UI
+Ahla Mail,9,Tabs تلقائية (أساسي/اجتماعي/نظامي/مشاريع),UI
+Ahla Mail,10,توقيعات HTML تفاعلية مع QR/روابط,UI
+Ahla Mail,11,TLS لكل القنوات IMAP/SMTP/HTTPS,Security
+Ahla Mail,12,PGP لتشفير المحتوى (المفتاح لدى المستخدم),Security
+Ahla Mail,13,فحص تلقائي للتصيّد والفيروسات,Security
+Ahla Mail,14,أذونات مشاركة (Forward/View‑Only/Expire),Security
+Ahla Mail,15,رسائل ذاتية الانتهاء,Security
+Ahla Mail,16,إشعار عند إعادة توجيه غير مصرّح,Security
+Ahla Mail,17,ختم رقمي وتاريخ لكل بريد صادر,Security
+Ahla Mail,18,وضع إخفاء العنوان (Alias Privacy),Security
+Ahla Mail,19,فلترة حساسية (Public/Confidential/Secret),Security
+Ahla Mail,20,2FA وثقة الجهاز لكل جلسة,Security
+Ahla Mail,21,Tone Advisor قبل الإرسال,AI
+Ahla Mail,22,إعادة صياغة دبلوماسية/واضحة,AI
+Ahla Mail,23,تلخيص فوري للبريد الطويل,AI
+Ahla Mail,24,تجميع محادثات حسب الموضوع,AI
+Ahla Mail,25,Smart Reply احترافي أو ودّي,AI
+Ahla Mail,26,اكتشاف نية البريد (طلب/مهمة/شكوى),AI
+Ahla Mail,27,رصد التوتر بين الأطراف,AI
+Ahla Mail,28,Insights لأهم جهات تواصل وأوقات الذروة,AI
+Ahla Mail,29,Send Optimizer لأفضل وقت إرسال,AI
+Ahla Mail,30,استخراج مهام من المرفقات وإرسالها لـBusiness,AI
+Ahla Mail,31,رفع المرفقات الكبيرة كرابط Drive,Integration
+Ahla Mail,32,عارض للمرفقات داخل البريد,Integration
+Ahla Mail,33,تحويل البريد إلى مهمة في Business,Integration
+Ahla Mail,34,تحويل الرسالة إلى اجتماع Meet,Integration
+Ahla Mail,35,استيراد التوقيع من Drive/Business,Integration
+Ahla Mail,36,تحويل البريد الصوتي إلى نص,Integration
+Ahla Mail,37,أرشفة تلقائية للبريد القديم,Integration
+Ahla Mail,38,مشاركة البريد في Chat كرسالة داخلية,Integration
+Ahla Mail,39,OCR محلي للمرفقات المصورة,Integration
+Ahla Mail,40,خزانة وسائط مشتركة للمرفقات المتكررة,Integration
+Ahla Mail,41,نطاقات مؤسسية @ahla.com,Governance
+Ahla Mail,42,سياسات حفظ وتشفير حسب القسم,Governance
+Ahla Mail,43,مراجعة وتدقيق للرسائل الرسمية,Governance
+Ahla Mail,44,تكامل WorkMail/SES وZATCA للإشعارات,Governance
+Ahla Mail,45,أرشفة قانونية (Retention & eDiscovery),Governance
+Ahla Mail,46,تكامل كامل مع Chat/Meet/Drive/Business,Integration
+Ahla Mail,47,REST API لإدارة البريد,Integration
+Ahla Mail,48,Webhooks لوصول/فتح البريد,Integration
+Ahla Mail,49,استيراد Gmail/Outlook مع المجلدات,Integration
+Ahla Mail,50,نظام إضافات (CRM/Legal/AI Sign),Integration
+Emotion Engine,1,تحليل نبرة النص فور كتابته,AI
+Emotion Engine,2,تلوين النصوص حسب المزاج,AI
+Emotion Engine,3,مؤشر حدة النقاش في الوقت الحقيقي,AI
+Emotion Engine,4,Poly‑Tone لاكتشاف تغيّر المشاعر,AI
+Emotion Engine,5,تفسير سياقي ثقافي عربي,AI
+Emotion Engine,6,Intent Classification للرسائل,AI
+Emotion Engine,7,كشف التناقضات في النص,AI
+Emotion Engine,8,قياس مستوى الرسمية,AI
+Emotion Engine,9,تصفية سُمّية العبارات,AI
+Emotion Engine,10,تحليل طاقة الكتابة,AI
+Emotion Engine,11,تحليل النبرة العاطفية من الصوت,AI
+Emotion Engine,12,كشف الانفعال (فرح/غضب/توتر/هدوء),AI
+Emotion Engine,13,قياس مؤشر التهدئة أثناء الاجتماعات,AI
+Emotion Engine,14,تمييز اللهجات السعودية والخليجية,AI
+Emotion Engine,15,تحليل سرعة وإيقاع الكلام,AI
+Emotion Engine,16,تمييز المتحدثين (Diarization),AI
+Emotion Engine,17,كشف سقوط الانتباه أثناء الحديث,AI
+Emotion Engine,18,تحليل دلائل الابتسامة/الإجهاد,AI
+Emotion Engine,19,تقرير مرئي لتقلبات المزاج,AI
+Emotion Engine,20,تحليل عاطفي للملاحظات الصوتية,AI
+Emotion Engine,21,مزج النص والصوت في مؤشر موحّد,AI
+Emotion Engine,22,تعلم الشخصية عبر الوقت (Adaptive Model),AI
+Emotion Engine,23,اكتشاف تحوّل العلاقات الاجتماعية,AI
+Emotion Engine,24,تحليل مزاج المؤسسة ككل,AI
+Emotion Engine,25,ربط المشاعر بالإنتاجية,AI
+Emotion Engine,26,تمييز أنواع التحفيز العاطفي,AI
+Emotion Engine,27,تحليل الترابط الاجتماعي,AI
+Emotion Engine,28,إيقاف المحادثة عند تجاوز الحدة,AI
+Emotion Engine,29,توقع رد الفعل المثالي,AI
+Emotion Engine,30,توليد ردود مقترحة عاطفيًا,AI
+Emotion Engine,31,Ahla‑BERT العربي الخاص,AI
+Emotion Engine,32,Fine‑tuning على بيانات محلية,AI
+Emotion Engine,33,LLM خفيف على المتصفح (WASM),AI
+Emotion Engine,34,Inference لحظي على GPU/Edge,AI
+Emotion Engine,35,Emotion Graph للعلاقات العاطفية,AI
+Emotion Engine,36,تعلم نقل العاطفة,AI
+Emotion Engine,37,معايرة حساسية النموذج,AI
+Emotion Engine,38,تنبؤات سلوكية (انسحاب/تراجع),AI
+Emotion Engine,39,تحليل بيانات مجهولة الهوية للتدريب,AI
+Emotion Engine,40,ذاكرة عاطفية لتخصيص التجربة,AI
+Emotion Engine,41,شريط مزاجي (Gradient Mood Bar),UI
+Emotion Engine,42,مؤشر هدوء/توتر لحظي,UI
+Emotion Engine,43,اقتراح موسيقى/عبارات مهدئة,UI
+Emotion Engine,44,Timeline لتطور المزاج,UI
+Emotion Engine,45,إشعارات لطيفة (خذ نفسًا…),UI
+Emotion Engine,46,تكامل عميق مع Chat/Meet/Mail/Business,Integration
+Emotion Engine,47,Edge Processing دون تخزين بيانات خام,Integration
+Emotion Engine,48,تشفير نتائج التحليل وفصل الهوية,Integration
+Emotion Engine,49,API للتحليل العاطفي للأنظمة الخارجية,Integration
+Emotion Engine,50,Explain‑Why يوضح سبب كل تقييم عاطفي,Governance
+Cloud & AI Infra,1,خدمات معزولة على ECS Fargate,Governance
+Cloud & AI Infra,2,موازنة ALB ديناميكية,Governance
+Cloud & AI Infra,3,ACM SSL وتجديد تلقائي,Governance
+Cloud & AI Infra,4,تخزين دائم S3 + EFS مشفر,Governance
+Cloud & AI Infra,5,Secrets عبر SSM/Secrets Manager,Governance
+Cloud & AI Infra,6,Auto Scaling على CPU/Memory/Latency,Governance
+Cloud & AI Infra,7,نشر Blue/Green + Canary,Governance
+Cloud & AI Infra,8,Nginx Edge مع Brotli وCache,Governance
+Cloud & AI Infra,9,Multi‑AZ لاستمرارية الخدمة,Governance
+Cloud & AI Infra,10,Infrastructure as Code عبر Terraform,Governance
+Cloud & AI Infra,11,IAM بسياسة أقل صلاحية,Security
+Cloud & AI Infra,12,مراجعة أمنية NIST + ISO 27001,Security
+Cloud & AI Infra,13,WAF + Shield ضد DDoS/Injection/XSS,Security
+Cloud & AI Infra,14,KMS + HSM لإدارة المفاتيح,Security
+Cloud & AI Infra,15,CloudTrail + Config لتدقيق لحظي,Security
+Cloud & AI Infra,16,CSP/HSTS صارمة لجميع الخدمات,Security
+Cloud & AI Infra,17,امتثال PDPL/GDPR داخل النطاق,Security
+Cloud & AI Infra,18,Incident Response آلي خلال 72 ساعة,Security
+Cloud & AI Infra,19,SSO/RBAC/2FA/Audit عبر Keycloak,Security
+Cloud & AI Infra,20,تشفير شامل TLS1.3/AES‑256,Security
+Cloud & AI Infra,21,تكامل كامل مع CloudWatch,Governance
+Cloud & AI Infra,22,OpenSearch + Grafana للوحات موحدة,Governance
+Cloud & AI Infra,23,خرائط Geo‑IP وتوزيع Latency,Governance
+Cloud & AI Infra,24,Apdex لكل خدمة,Governance
+Cloud & AI Infra,25,SLO/SLA Budget Tracking,Governance
+Cloud & AI Infra,26,تحليل p50/p95/p99 لكل API,Governance
+Cloud & AI Infra,27,تحليلات جلسات Meet/Chat اللحظية,Governance
+Cloud & AI Infra,28,تنبيهات Slack/Email على التجاوزات,Governance
+Cloud & AI Infra,29,Firehose + Lambda GeoIP enrichment,Governance
+Cloud & AI Infra,30,تقارير تشغيلية أسبوعية PDF,Governance
+Cloud & AI Infra,31,AI Auto‑Scaler تنبؤي,AI
+Cloud & AI Infra,32,Predictive Maintenance للأعطال,AI
+Cloud & AI Infra,33,Anomaly Detection + RCA,AI
+Cloud & AI Infra,34,Health Score موحّد للخدمات,AI
+Cloud & AI Infra,35,ChatOps Bot للاستعلام التشغيلي,AI
+Cloud & AI Infra,36,تحليل الطاقة/التكلفة وتوصيات التوفير,AI
+Cloud & AI Infra,37,Adaptive Logging حسب السياق,AI
+Cloud & AI Infra,38,Smart Failover تلقائي,AI
+Cloud & AI Infra,39,Drift Detection مقابل Terraform State,AI
+Cloud & AI Infra,40,Usage Forecast AI للتوجهات,AI
+Cloud & AI Infra,41,CI/CD: Actions → ECR → Terraform,Integration
+Cloud & AI Infra,42,قوالب Modules قابلة لإعادة الاستخدام,Integration
+Cloud & AI Infra,43,API Gateway موحد مع Rate Limiter,Integration
+Cloud & AI Infra,44,دعم REST/GraphQL/WebSocket,Integration
+Cloud & AI Infra,45,Plugin Architecture لإضافة خدمات,Integration
+Cloud & AI Infra,46,Data Lake موحّد للّوج/الاستخدام/العاطفة,AI
+Cloud & AI Infra,47,RAG Engine (pgvector + LangChain),AI
+Cloud & AI Infra,48,Model Serving عبر Ray/SageMaker,AI
+Cloud & AI Infra,49,Edge AI (WASM/ONNX) في المتصفح,AI
+Cloud & AI Infra,50,Explain‑Why Analytics لقرارات الذكاء,AI
+Saudi Intelligence Core,1,قيم وهوية سعودية مضمنة في النواة,AI
+Saudi Intelligence Core,2,نماذج لغوية مدرّبة على بيانات عربية/سعودية,AI
+Saudi Intelligence Core,3,معجم وطني للهجات والأسماء المحلية,AI
+Saudi Intelligence Core,4,إدراك ثقافي للسياق الاجتماعي والمهني,AI
+Saudi Intelligence Core,5,كشف اللهجات السعودية بدقة عالية,AI
+Saudi Intelligence Core,6,توجيه الاستجابات بما يلائم العادات والقيم,AI
+Saudi Intelligence Core,7,هوية بصرية وصوتية سعودية,AI
+Saudi Intelligence Core,8,تكامل مع بوابات البيانات الوطنية,AI
+Saudi Intelligence Core,9,ترجمة/تلخيص بالعربية واللهجات,AI
+Saudi Intelligence Core,10,تعلم مستمر من مصادر سعودية موثوقة,AI
+Saudi Intelligence Core,11,تحليل نصوص رسمية ونظامية سعودية,AI
+Saudi Intelligence Core,12,استنتاج العلاقات بين أشخاص/جهات/مناطق,AI
+Saudi Intelligence Core,13,تحليل مكاني واجتماعي منظور وطني,AI
+Saudi Intelligence Core,14,تصنيف مستندات حكومية حسب الجهة/الموضوع,AI
+Saudi Intelligence Core,15,استيعاب مفردات نظامية وشرعية محلية,AI
+Saudi Intelligence Core,16,معرفة تعتمد القواعد الرسمية السعودية,AI
+Saudi Intelligence Core,17,تحليل الخطاب في الإعلام المحلي,AI
+Saudi Intelligence Core,18,ذكاء للعلاقات المؤسسية والهيكل الإداري,AI
+Saudi Intelligence Core,19,فهم سياقات حساسة (قانوني/ديني/اجتماعي),AI
+Saudi Intelligence Core,20,توصيات منسجمة مع رؤية 2030,AI
+Saudi Intelligence Core,21,توليد محتوى عربي رسمي وراقي,AI
+Saudi Intelligence Core,22,تحويل فصحى ↔ لهجة سعودية,AI
+Saudi Intelligence Core,23,مؤشر مواءمة ثقافية للنص,AI
+Saudi Intelligence Core,24,تعديل النبرة تلقائيًا حسب المخاطب,AI
+Saudi Intelligence Core,25,TTS بصوت سعودي واقعي,AI
+Saudi Intelligence Core,26,ASR مخصص للهجات السعودية,AI
+Saudi Intelligence Core,27,إعادة صياغة بأسلوب سعودي مهذب,AI
+Saudi Intelligence Core,28,توليد أمثال واقتباسات سعودية,AI
+Saudi Intelligence Core,29,استخراج مفاهيم تراثية وثقافية,AI
+Saudi Intelligence Core,30,محرك سرد قصصي سعودي للعلامات,AI
+Saudi Intelligence Core,31,مؤشر حوكمة للذكاء المؤسسي الوطني,Governance
+Saudi Intelligence Core,32,تحليل مؤشرات المدن السعودية,Governance
+Saudi Intelligence Core,33,دمج SDAIA/Open Data ضمن خط البيانات,Governance
+Saudi Intelligence Core,34,National Knowledge Graph موحد,Governance
+Saudi Intelligence Core,35,تحليل وثائق رسمية واستخلاص أنماط,Governance
+Saudi Intelligence Core,36,قياس أثر المشاريع على رؤية 2030,Governance
+Saudi Intelligence Core,37,تحليل سوق العمل/التعليم/الصحة وطنيًا,Governance
+Saudi Intelligence Core,38,لوحات ذكاء سيادي تربط الأداء بالمجتمع,Governance
+Saudi Intelligence Core,39,توصيات قرارات وفق الأولويات الوطنية,Governance
+Saudi Intelligence Core,40,ملخصات تنفيذية بأسلوب رسمي,Governance
+Saudi Intelligence Core,41,تشغيل داخل نطاق سيادي (AWS KSA/NCA),Security
+Saudi Intelligence Core,42,تشفير كامل للبيانات الحساسة,Security
+Saudi Intelligence Core,43,AI Audit Trail لكل مخرجات الذكاء,Security
+Saudi Intelligence Core,44,فلترة سياقية تمنع استجابات غير ملائمة,Security
+Saudi Intelligence Core,45,اعتماد NIST AI RMF وISO/IEC 42001,Security
+Saudi Intelligence Core,46,تكامل عميق مع Emotion Engine,Integration
+Saudi Intelligence Core,47,تقارير ذكاء وطنية في Ahla Business,Integration
+Saudi Intelligence Core,48,استفادة من قدرات GPU/Data Lake في Cloud,Integration
+Saudi Intelligence Core,49,بوابة API وطنية للمطورين,Integration
+Saudi Intelligence Core,50,تعلّم ذاتي بإشراف بشري دوري,Integration

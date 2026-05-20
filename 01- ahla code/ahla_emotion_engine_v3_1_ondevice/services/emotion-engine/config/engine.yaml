@@ -1,0 +1,54 @@
+# Ahla Emotion Engine — v3.1 policies and rules
+
+rules:
+  anger_cooloff:
+    window_days: 30
+    min_conflicts: 3
+    anger_threshold: 0.70
+    escalation_levels:
+      - "🕊️ خذوا استراحة قصيرة."
+      - "🕊️ شكل السجال يتكرر؛ تبغون نأخر النقاش ساعة؟"
+      - "🕊️ أقترح ملخّص نقاط وتهدئة قبل المتابعة."
+
+  reconciliation:
+    window_days: 45
+    negative_bursts_min: 2
+    silent_days_after: 3
+    suggestion: "🤝 تحب أكتب مسودة اعتذار قصيرة ومحايدة؟"
+
+  appreciation_work:
+    joy_threshold: 0.70
+    min_praise_last7d: 3
+    suggestion: "🌟 واضح إنك مبسوط؛ أكتب رسالة شكر أو بطاقة تقدير؟"
+
+  burnout_signal:
+    night_hour_start: 23
+    night_msgs_min_14d: 10
+    negative_trend_threshold: 0.15
+    suggestion: "🌙 فيه تواصل متأخر متكرر؛ أذكّر الفريق بوقت راحة أو أضبط Focus Time؟"
+
+  social_debt:
+    unanswered_hours: 24
+    suggestion: "📬 عندك رسائل بدون رد؛ تبغاني أجهّز رد لطيف؟"
+
+  check_in_after_silence:
+    silence_days: 7
+    suggestion: "👋 فات أسبوع بدون تواصل؛ تبغى أرسل سؤال بسيط للاطمئنان؟"
+
+policies:
+  contexts:
+    personal:
+      on_device: true
+      store_raw_text: false
+      store_results: aggregated
+      retention_days: 60
+    family:
+      on_device: true
+      store_raw_text: false
+      store_results: aggregated
+      retention_days: 60
+    work:
+      on_device: false
+      store_raw_text: true
+      store_results: full
+      retention_days: 180

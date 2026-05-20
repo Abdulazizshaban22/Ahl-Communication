@@ -1,0 +1,1 @@
+export default function Page(){return <p>ملفات ذكية — قريبًا: بحث سياقي وتصنيف تلقائي.</p>}

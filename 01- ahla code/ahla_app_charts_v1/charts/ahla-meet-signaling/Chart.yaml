@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-meet-signaling
+description: Ahla Meet Signaling (WebRTC/WS)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

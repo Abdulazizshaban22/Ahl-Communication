@@ -1,0 +1,181 @@
+{
+  "title": "Ahla \u2014 SLO & Burn-rate",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Apdex (Chat)",
+      "id": 10,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Chat",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "chat"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Apdex (Meet)",
+      "id": 11,
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Meet",
+          "metricName": "Apdex",
+          "dimensions": {
+            "Service": "meet"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate (window short)",
+      "id": 12,
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/*",
+          "metricName": "ErrorRate",
+          "dimensions": {
+            "Service": "*"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "60"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate (window long)",
+      "id": 13,
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/*",
+          "metricName": "ErrorRate",
+          "dimensions": {
+            "Service": "*"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "3600"
+        }
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Latency budget burn-rate (Chat)",
+      "id": 14,
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Chat",
+          "metricName": "LatencyBudgetBurnRate",
+          "dimensions": {
+            "Service": "chat"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "300"
+        }
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Latency budget burn-rate (Meet)",
+      "id": 15,
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "F",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "namespace": "Ahla/Meet",
+          "metricName": "LatencyBudgetBurnRate",
+          "dimensions": {
+            "Service": "meet"
+          },
+          "stats": [
+            "Average"
+          ],
+          "period": "300"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

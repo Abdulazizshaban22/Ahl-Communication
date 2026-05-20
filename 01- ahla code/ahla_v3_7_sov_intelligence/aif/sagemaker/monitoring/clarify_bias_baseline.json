@@ -1,0 +1,13 @@
+{
+  "bias_config": {
+    "label_values_or_thresholds": {"label": 1},
+    "facet": {"names": ["gender","age_band","region"]},
+    "methods": ["DPPL","PPL","DI","CS"]
+  },
+  "data_config": {
+    "s3_data_input_path": "s3://YOUR-BUCKET/aif/capture/",
+    "s3_output_path": "s3://YOUR-BUCKET/aif/clarify/",
+    "features": ["f1","f2","f3","gender","age_band","region"],
+    "label": "y"
+  }
+}

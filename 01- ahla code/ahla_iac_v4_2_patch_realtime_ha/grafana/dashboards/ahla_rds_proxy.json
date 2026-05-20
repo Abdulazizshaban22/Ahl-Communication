@@ -1,0 +1,33 @@
+{
+  "title": "Ahla - RDS Proxy",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Proxy connections",
+      "targets": [
+        {
+          "expr": "aws_rds_proxy_connections"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Target availability",
+      "targets": [
+        {
+          "expr": "aws_rds_proxy_target_available"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Query latency P95 (ms)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(pg_query_duration_seconds_bucket[5m])) by (le)) * 1000"
+        }
+      ]
+    }
+  ]
+}

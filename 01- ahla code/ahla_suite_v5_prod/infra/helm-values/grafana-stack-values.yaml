@@ -1,0 +1,8 @@
+prometheus:
+  resources: { requests: { cpu: "200m", memory: "512Mi" } }
+loki:
+  resources: { requests: { cpu: "200m", memory: "256Mi" } }
+tempo:
+  resources: { requests: { cpu: "200m", memory: "256Mi" } }
+grafana:
+  resources: { requests: { cpu: "100m", memory: "128Mi" } }

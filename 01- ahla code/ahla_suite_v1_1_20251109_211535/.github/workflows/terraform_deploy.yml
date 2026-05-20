@@ -1,0 +1,31 @@
+
+name: Terraform Plan+Apply
+on:
+  workflow_dispatch:
+  push:
+    branches: [ infra/prod ]
+    paths:
+      - 'terraform/**'
+jobs:
+  tf:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: terraform/envs/prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Plan
+        run: terraform plan -var-file="prod.tfvars"
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/infra/prod'
+        run: terraform apply -auto-approve -var-file="prod.tfvars"

@@ -1,0 +1,55 @@
+# Stalwart Enterprise — core config overrides (merge with your main config)
+[server.general]
+hostname = "mail.ahla.com"
+default-domain = "ahla.com"
+
+[tls]
+min-tls-version = "1.2"
+# Use ACME profile 'letsencrypt' for all listeners by default
+certificate = "acme:letsencrypt"
+
+[acme."letsencrypt"]
+directory  = "https://acme-v02.api.letsencrypt.org/directory"
+challenge  = "tls-alpn-01"           # or "http-01" / "dns-01"
+contact    = ["postmaster@ahla.com"]
+domains    = ["mail.ahla.com"]
+cache      = "%{BASE_PATH}%/etc/acme"
+renew-before = "30d"
+
+# JMAP EventSource push
+[jmap.event-source]
+throttle = "1s"   # aggregate updates to ~1s
+
+# JMAP Push subscriptions (optional)
+[jmap.push]
+max-total = 100
+throttle  = "1ms"
+[ jmap.push.attempts ]
+max = 3
+interval = "1m"
+[ jmap.push.retry ]
+interval = "1s"
+[ jmap.push.timeout ]
+request = "10s"
+verify  = "1s"
+
+# ManageSieve listener (for uploading Sieve scripts remotely)
+[server.listener."managesieve"]
+bind = ["0.0.0.0:4190"]
+protocol = "managesieve"
+tls.implicit = true
+
+# Example AI model (Enterprise feature): use local HTTP endpoint (our Intel API) or a provider
+[enterprise.ai."ahla-intel-local"]
+type = "http"
+endpoint = "http://intel-api:8090/classify"
+method   = "POST"
+timeout  = "2s"
+# Map return JSON to 'label' if used directly in scripts (see SIEVE_LLM.md)
+
+# DKIM signing (keys should be mounted accordingly)
+[dkim."s1"]
+domain = "ahla.com"
+selector = "s1"
+private-key = "/opt/stalwart/keys/s1.private.pem"
+sign = true

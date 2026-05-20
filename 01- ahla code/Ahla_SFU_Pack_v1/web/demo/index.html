@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Ahla SFU Demo (JSON-RPC)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    video { width: 360px; height: 202px; background:#000; border-radius: 10px; }
+    input, button { padding: 10px; font-size: 14px; }
+    .log { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#111; color:#0f0; padding:12px; border-radius:8px; height:160px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>Ahla SFU Demo (JSON‑RPC)</h1>
+  <p>Connects directly to the Ion‑SFU JSON‑RPC WebSocket at <code>wss://HOST:7000/ws</code> (or <code>ws://</code> in dev).</p>
+
+  <div class="row">
+    <label>WS URL: <input id="wsurl" size="40" value="ws://localhost:7000/ws"/></label>
+    <label>Room: <input id="sid" size="10" value="demo"/></label>
+    <label>User: <input id="uid" size="16" value="user-1"/></label>
+    <button id="btnJoin">Join + Publish</button>
+  </div>
+
+  <div class="row" style="margin-top:16px;">
+    <video id="local" autoplay playsinline muted></video>
+    <video id="remote" autoplay playsinline></video>
+  </div>
+
+  <h3>Log</h3>
+  <div id="log" class="log"></div>
+
+  <script>
+    const log = (...args) => {
+      const el = document.getElementById('log');
+      el.textContent += args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + "\n";
+      el.scrollTop = el.scrollHeight;
+      console.log(...args);
+    };
+
+    const nextId = (() => { let i = 1; return () => i++; })();
+    let ws, pc;
+
+    function sendRPC(method, params) {
+      const msg = { jsonrpc: "2.0", id: nextId(), method, params };
+      ws.send(JSON.stringify(msg));
+      return msg.id;
+    }
+
+    function addTrickle(candidate, target="publisher") {
+      if (!candidate) return;
+      sendRPC("trickle", { candidate, target });
+    }
+
+    async function start() {
+      const wsurl = document.getElementById('wsurl').value;
+      const sid = document.getElementById('sid').value;
+      const uid = document.getElementById('uid').value;
+
+      ws = new WebSocket(wsurl);
+      ws.onopen = async () => {
+        log("WS open");
+        sendRPC("join", { sid, uid });
+      };
+
+      ws.onmessage = async (ev) => {
+        const data = JSON.parse(ev.data);
+        if (data.method === "trickle") {
+          const { candidate } = data.params || {};
+          if (candidate && pc) {
+            try { await pc.addIceCandidate(candidate); } catch (e) { log("addIceCandidate err", e); }
+          }
+          return;
+        }
+
+        if (!data.id) return; // notifications
+
+        // 'join' reply -> create offer
+        if (data.result && data.id && pc == null) {
+          log("Joined room. Creating RTCPeerConnection...");
+          pc = new RTCPeerConnection({
+            iceServers: [
+              { urls: ["stun:stun.l.google.com:19302"] },
+              // Match your docker-compose TURN if accessed via same host:
+              { urls: ["turn:localhost:3478?transport=udp","turn:localhost:3478?transport=tcp"], username: "ahla", credential: "ahla123" }
+            ]
+          });
+
+          pc.onicecandidate = (e) => {
+            if (e.candidate) addTrickle(e.candidate, "publisher");
+          };
+
+          pc.ontrack = (e) => {
+            log("Remote track");
+            document.getElementById('remote').srcObject = e.streams[0];
+          };
+
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+          document.getElementById('local').srcObject = stream;
+          stream.getTracks().forEach(t => pc.addTrack(t, stream));
+
+          const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
+          await pc.setLocalDescription(offer);
+          log("Sending offer...");
+          sendRPC("offer", { desc: offer });
+        }
+
+        // 'offer' reply (answer from SFU)
+        if (data.result && data.result.desc && data.result.desc.type === "answer") {
+          log("Setting remote description (answer).");
+          await pc.setRemoteDescription(new RTCSessionDescription(data.result.desc));
+        }
+
+        if (data.error) {
+          log("RPC error:", data.error.message || data.error);
+        }
+      };
+
+      ws.onclose = () => log("WS closed");
+      ws.onerror = (e) => log("WS error", e.message || e);
+    }
+
+    document.getElementById('btnJoin').addEventListener('click', start);
+  </script>
+</body>
+</html>

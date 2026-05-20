@@ -1,0 +1,40 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: coturn-allocations
+  namespace: ahla-system
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: coturn
+  minReplicaCount: 2
+  maxReplicaCount: 20
+  cooldownPeriod: 90
+  pollingInterval: 15
+  fallback:
+    failureThreshold: 3
+    replicas: 4
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 60
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 60
+        scaleDown:
+          stabilizationWindowSeconds: 180
+          policies:
+          - type: Percent
+            value: 50
+            periodSeconds: 60
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+      metricName: turn_total_allocations
+      threshold: "500"             # desired ~500 allocations per replica
+      activationThreshold: "50"    # don't scale from 0/low unless >50
+      query: |
+        sum(turn_total_allocations)  # single scalar result

@@ -1,0 +1,14 @@
+{
+  "name": "ahla-chat-ws",
+  "version": "8.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "4.19.2",
+    "ws": "8.18.0",
+    "prom-client": "15.1.3"
+  }
+}

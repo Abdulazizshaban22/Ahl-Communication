@@ -1,0 +1,29 @@
+# ===== Phase-Final v3.0 variables =====
+# ElastiCache Redis
+variable "elasticache_node_type"    { type = string  default = "cache.t4g.small" }
+variable "elasticache_engine_ver"   { type = string  default = "7.1" } # Redis OSS compat
+variable "elasticache_subnet_ids"   { type = list(string) }
+variable "elasticache_allowed_sgs"  { type = list(string) default = [] } # (optional) additional SGs
+variable "elasticache_num_replicas" { type = number default = 1 }
+
+# Grafana (Amazon Managed Grafana)
+variable "amg_workspace_name"       { type = string  default = "ahla-workspace" }
+variable "amg_auth_providers"       { type = list(string) default = ["AWS_SSO"] } # IAM Identity Center
+variable "amg_account_access_type"  { type = string  default = "CURRENT_ACCOUNT" } # or CURRENT_ACCOUNT
+variable "amg_permission_type"      { type = string  default = "SERVICE_MANAGED" }
+
+# Keycloak
+variable "image_keycloak"           { type = string  description = "ECR image for keycloak with realm baked in" }
+variable "keycloak_cpu"             { type = number  default = 512 }
+variable "keycloak_mem"             { type = number  default = 1024 }
+variable "keycloak_admin_user"      { type = string  default = "admin" }
+variable "keycloak_admin_pass"      { type = string  default = "change_me" }
+
+# PDPL / Audit
+variable "opensearch_domain_name"   { type = string  default = "ahla-audit" }
+variable "opensearch_instance_type" { type = string  default = "t3.small.search" }
+variable "audit_s3_bucket"          { type = string  default = "ahla-audit-backup" }
+
+# CloudFront (global)
+variable "cloudfront_cert_arn_us_east_1" { type = string }  # ACM in us-east-1
+variable "cloudfront_alt_names"          { type = list(string) default = ["app.ahla.example.com"] }

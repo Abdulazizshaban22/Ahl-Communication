@@ -1,0 +1,28 @@
+name: Deploy Helm to EKS
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: ${{ secrets.REGISTRY }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup kubectl/helm
+      uses: azure/setup-helm@v4
+      with:
+        version: v3.14.4
+
+    - name: Configure kubeconfig (from secret)
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
+        echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
+
+    - name: Helm upgrade
+      run: |
+        helm upgrade --install ahla-suite ./helm/ahla-suite -n ahla-system --create-namespace           --set images.notes=${{ env.REGISTRY }}/ahla/notes-web:${{ github.sha }}           --set images.book=${{ env.REGISTRY }}/ahla/book-web:${{ github.sha }}           --set images.graph=${{ env.REGISTRY }}/ahla/graph-web:${{ github.sha }}           --set images.dote=${{ env.REGISTRY }}/ahla/dote-web:${{ github.sha }}           --set images.dash=${{ env.REGISTRY }}/ahla/dash-web:${{ github.sha }}           --set images.contentApi=${{ env.REGISTRY }}/ahla/content-api:${{ github.sha }}           --set images.collab=${{ env.REGISTRY }}/ahla/collab-gateway:${{ github.sha }}

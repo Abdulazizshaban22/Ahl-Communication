@@ -1,0 +1,62 @@
+
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    volumes: [ "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro", "../apps/chat-web/public:/app/apps/chat-web/public:ro" ]
+    ports: [ "8095:80" ]
+    depends_on: [ chat-web, chat-api, moments-api, emotion-api, voice-tone-api, push-worker, redis, prometheus, grafana ]
+
+  chat-web:
+    build: ../apps/chat-web
+
+  chat-api:
+    build: ../services/chat-api
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - ATTACH_STORE=/data
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+    volumes: [ "chat_data:/data" ]
+    ports: [ "8000:8000" ]
+
+  moments-api:
+    build: ../services/moments-api
+    volumes: [ "moments:/data" ]
+    ports: [ "8010:8010" ]
+
+  emotion-api:
+    build: ../services/emotion-api
+    ports: [ "8020:8020" ]
+
+  voice-tone-api:
+    build: ../services/voice-tone-api
+    ports: [ "8030:8030" ]
+
+  push-worker:
+    build: ../services/push-worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+    ports: [ "8787:8787" ]
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes: [ "../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro" ]
+    ports: [ "9090:9090" ]
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment: [ "GF_SECURITY_ADMIN_PASSWORD=admin" ]
+    ports: [ "3001:3000" ]
+    volumes:
+      - ../monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ../monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ../monitoring/grafana/dashboards:/etc/grafana/dashboards:ro
+
+  redis:
+    image: redis:7-alpine
+    ports: [ "6379:6379" ]
+
+volumes: { chat_data: {}, moments: {} }

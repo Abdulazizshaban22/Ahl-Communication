@@ -1,0 +1,15 @@
+project = "ahla-aif"
+region  = "me-central-1"
+db_username = "aif_user"
+db_password = "CHANGE_ME_STRONG_PASSWORD"
+
+# msk_mode: "serverless-iam" (default) or "provisioned-scram"
+msk_mode = "serverless-iam"
+msk_scram_username = ""
+msk_scram_password = ""
+
+ecr_repo_orchestrator = "aif/orchestrator"
+ecr_repo_workers      = "aif/workers"
+
+# Needed for CloudWatch Synthetics canary
+canary_role_arn = "arn:aws:iam::<ACCOUNT>:role/CloudWatchSyntheticsRole"

@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "required": [
+    "chat_id",
+    "message_id",
+    "suggestions"
+  ],
+  "properties": {
+    "chat_id": {
+      "type": "string"
+    },
+    "message_id": {
+      "type": "string"
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

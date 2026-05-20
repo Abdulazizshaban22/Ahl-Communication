@@ -1,0 +1,26 @@
+{
+  "title": "Ahla SLO / Apdex",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "Apdex (Chat)",
+      "targets": [
+        {
+          "expression": "apdex_chat"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency p95 (All)",
+      "targets": [
+        {
+          "expression": "latency_p95_all"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

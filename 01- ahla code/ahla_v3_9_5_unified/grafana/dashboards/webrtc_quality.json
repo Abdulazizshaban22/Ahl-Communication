@@ -1,0 +1,131 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 1,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Packets Lost (sum) by userId",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "OpenSearch"
+      },
+      "targets": [
+        {
+          "query": "kind:audio OR kind:video",
+          "bucketAggs": [
+            {
+              "type": "date_histogram",
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              }
+            }
+          ],
+          "metrics": [
+            {
+              "type": "sum",
+              "id": "1",
+              "field": "packetsLost"
+            }
+          ],
+          "timeField": "@timestamp"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Jitter (avg seconds)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "OpenSearch"
+      },
+      "targets": [
+        {
+          "query": "kind:audio OR kind:video",
+          "bucketAggs": [
+            {
+              "type": "date_histogram",
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              }
+            }
+          ],
+          "metrics": [
+            {
+              "type": "avg",
+              "id": "1",
+              "field": "jitter"
+            }
+          ],
+          "timeField": "@timestamp"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "JitterBuffer Delay & Target Delay (avg seconds)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "OpenSearch"
+      },
+      "targets": [
+        {
+          "query": "kind:audio OR kind:video",
+          "bucketAggs": [
+            {
+              "type": "date_histogram",
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              }
+            }
+          ],
+          "metrics": [
+            {
+              "type": "avg",
+              "id": "1",
+              "field": "jitterBufferDelay"
+            },
+            {
+              "type": "avg",
+              "id": "2",
+              "field": "jitterBufferTargetDelay"
+            }
+          ],
+          "timeField": "@timestamp"
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "ahla",
+    "webrtc"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timezone": "",
+  "title": "Ahla — WebRTC Quality",
+  "version": 1
+}

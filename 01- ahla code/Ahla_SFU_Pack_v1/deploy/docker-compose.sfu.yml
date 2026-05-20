@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  sfu:
+    image: pionwebrtc/ion-sfu:latest-jsonrpc
+    container_name: ahla-sfu
+    restart: unless-stopped
+    ports:
+      - "7000:7000"                  # JSON-RPC over WS (ws://host:7000/ws)
+      - "5000-5200:5000-5200/udp"    # RTP/RTCP UDP range
+    volumes:
+      - ./services/sfu/config.toml:/config.toml:ro
+    environment:
+      - GODEBUG=madvdontneed=1       # small mem optimization
+
+  coturn:
+    image: coturn/coturn:4.6.3
+    container_name: ahla-coturn
+    restart: unless-stopped
+    ports:
+      - "3478:3478"                  # STUN/TURN TCP
+      - "3478:3478/udp"              # STUN/TURN UDP
+      # TURN relay ports (adjust to your security policy)
+      - "49152-49999:49152-49999/udp"
+    volumes:
+      - ./services/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+    command: ["turnserver","-c","/etc/coturn/turnserver.conf","-v"]

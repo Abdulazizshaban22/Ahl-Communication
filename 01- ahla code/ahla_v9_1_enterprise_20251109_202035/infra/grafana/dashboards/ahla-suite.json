@@ -1,0 +1,66 @@
+{
+  "title": "Ahla Suite \u2014 Enterprise",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Chat WS",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "ahla_ws_connections"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Meet WS",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "ahla_meet_ws"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "API Requests",
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "scrape_samples_scraped"
+        }
+      ]
+    },
+    {
+      "type": "logs",
+      "title": "Logs (Loki)",
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 10
+      },
+      "targets": [
+        {
+          "expr": "{job=~\"chat-api|meet-api|drive-api\"}"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39
+}

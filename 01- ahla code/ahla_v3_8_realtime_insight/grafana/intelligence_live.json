@@ -1,0 +1,43 @@
+{
+  "title": "Ahla \u2014 Intelligence Live Overview",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "ASR msgs",
+      "targets": [
+        {
+          "expression": "sum(cnt_asr)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Emotion msgs",
+      "targets": [
+        {
+          "expression": "sum(cnt_emotion)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Suggestions msgs",
+      "targets": [
+        {
+          "expression": "sum(cnt_suggestions)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency p95 (API)",
+      "targets": [
+        {
+          "expression": "latency_p95_api"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

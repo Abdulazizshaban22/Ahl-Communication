@@ -1,0 +1,33 @@
+$TTL 3600
+@   IN  SOA ns1.ahla.com. admin.ahla.com. (2025102001 7200 3600 1209600 3600)
+@   IN  NS  ns1.ahla.com.
+@   IN  NS  ns2.ahla.com.
+
+; A / AAAA
+@             IN  A     YOUR_PUBLIC_IPV4
+mail          IN  A     YOUR_PUBLIC_IPV4
+mta-sts       IN  A     YOUR_PUBLIC_IPV4
+
+; MX
+@             IN  MX    10 mail.ahla.com.
+
+; SPF
+@             IN  TXT   "v=spf1 mx -all"
+
+; DKIM
+s1._domainkey IN  TXT   "v=DKIM1; k=rsa; p=<BASE64_PUBLIC_KEY>"
+
+; DMARC
+_dmarc        IN  TXT   "v=DMARC1; p=reject; rua=mailto:dmarc@ahla.com; ruf=mailto:dmarc@ahla.com; fo=1; adkim=s; aspf=s"
+
+; MTA-STS + TLS-RPT
+_mta-sts      IN  TXT   "v=STSv1; id=20251020"
+_smtp._tls    IN  TXT   "v=TLSRPTv1; rua=mailto:tlsrpt@ahla.com"
+mta-sts       IN  CNAME mta-sts.ahla.com.
+
+; BIMI
+default._bimi IN  TXT   "v=BIMI1; l=https://static.ahla.com/brand/ahla-logo.svg; a=https://static.ahla.com/brand/ahla.vmc"
+
+; Autoconfig
+autoconfig    IN  CNAME mail.ahla.com.
+autodiscover  IN  CNAME mail.ahla.com.

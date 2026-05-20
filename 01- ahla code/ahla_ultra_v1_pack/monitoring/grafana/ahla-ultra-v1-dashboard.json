@@ -1,0 +1,61 @@
+{
+  "title": "Ahla Ultra v1 — ASR/Translate/Search",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "ASR latency p95",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(asr_request_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Translate latency p95",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(translate_request_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Search latency p95",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(search_request_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "ASR RPS",
+      "targets": [
+        {
+          "expr": "rate(asr_requests_total[1m])"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Translate RPS",
+      "targets": [
+        {
+          "expr": "rate(translate_requests_total[1m])"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Search RPS",
+      "targets": [
+        {
+          "expr": "rate(search_requests_total[1m])"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}

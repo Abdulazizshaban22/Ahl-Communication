@@ -1,0 +1,4 @@
+services:
+  # include core stack (use 'docker compose -f deploy/docker-compose.core.yml up -d')
+  # include sfu stack  (use 'docker compose -f deploy/docker-compose.sfu.yml up -d')
+  # this file is placeholder to document combined deployment, keeping stacks separate for clarity.

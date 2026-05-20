@@ -1,0 +1,16 @@
+# Target group for drive-api
+resource "aws_lb_target_group" "tg_drive" {
+  name        = "${var.project}-tg-drive"
+  port        = 3002
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = aws_vpc.this.id
+  health_check { path = "/health" matcher = "200-399" }
+}
+
+resource "aws_lb_listener_rule" "drive_rule" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 12
+  action { type = "forward" target_group_arn = aws_lb_target_group.tg_drive.arn }
+  condition { path_pattern { values = ["/drive*", "/drive/*"] } }
+}

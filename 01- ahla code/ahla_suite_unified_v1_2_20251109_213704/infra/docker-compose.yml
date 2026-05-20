@@ -1,0 +1,120 @@
+
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    volumes: [ "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro" ]
+    ports: [ "8080:80" ]
+    depends_on: [ chat-web, meet-web, drive-web, business-web, mail-web, chat-api, meet-api, drive-api, business-api, mail-api, emotion-engine, push-worker, redis, greenmail, coturn ]
+
+  chat-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/chat-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  meet-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/meet-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  drive-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/drive-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  business-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/business-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  mail-web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev"
+    volumes: [ "../apps/mail-web:/app" ]
+    environment: [ "NEXT_TELEMETRY_DISABLED=1" ]
+
+  chat-api:
+    image: python:3.11-alpine
+    working_dir: /app
+    command: sh -c "pip install fastapi uvicorn[standard] prometheus-client && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes: [ "../services/chat-api/app:/app/app" ]
+
+  meet-api:
+    image: python:3.11-alpine
+    working_dir: /app
+    command: sh -c "pip install fastapi uvicorn[standard] prometheus-client && uvicorn app.main:app --host 0.0.0.0 --port 8100"
+    environment:
+      - STUN_URL=stun:stun.l.google.com:19302
+      - TURN_URL=turn:localhost:3478
+      - TURN_USER=ahla
+      - TURN_PASS=ahla123
+    volumes: [ "../services/meet-api/app:/app/app" ]
+
+  drive-api:
+    image: python:3.11-alpine
+    working_dir: /app
+    command: sh -c "pip install fastapi uvicorn[standard] python-multipart && uvicorn app.main:app --host 0.0.0.0 --port 8200"
+    volumes: [ "../services/drive-api/app:/app/app", "drive_data:/data" ]
+
+  business-api:
+    image: python:3.11-alpine
+    working_dir: /app
+    command: sh -c "pip install fastapi uvicorn[standard] && uvicorn app.main:app --host 0.0.0.0 --port 8250"
+    volumes: [ "../services/business-api/app:/app/app" ]
+
+  emotion-engine:
+    image: python:3.11-alpine
+    working_dir: /app
+    command: sh -c "pip install fastapi uvicorn[standard] && uvicorn app.main:app --host 0.0.0.0 --port 8400"
+    volumes: [ "../services/emotion-engine/app:/app/app" ]
+
+  push-worker:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm i && node src/server.js"
+    environment:
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+    volumes: [ "../services/push-worker:/app" ]
+    ports: [ "8787:8787" ]
+
+  mail-api:
+    image: node:20-alpine
+    working_dir: /srv
+    command: sh -c "npm i && node src/server.js"
+    environment:
+      - IMAP_HOST=greenmail
+      - IMAP_PORT=3143
+      - IMAP_SECURE=false
+      - SMTP_HOST=greenmail
+      - SMTP_PORT=3025
+      - SMTP_SECURE=false
+      - MAIL_USER=ahla@local
+      - MAIL_PASS=pass
+    volumes: [ "../services/mail-api:/srv" ]
+
+  greenmail:
+    image: greenmail/standalone:latest
+    ports: [ "3025:3025", "3143:3143" ]
+    environment:
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.users=ahla@local:pass
+
+  redis:
+    image: redis:7-alpine
+
+  coturn:
+    image: coturn/coturn:latest
+    network_mode: host
+    volumes: [ "./turn/turnserver.conf:/etc/turnserver.conf:ro" ]
+    command: [ "-c", "/etc/turnserver.conf" ]
+
+volumes: { drive_data: {} }

@@ -1,0 +1,8 @@
+{
+  "agent": { "debug": false },
+  "traces": { "traces_collected": { "application_signals": {} } },
+  "metrics": {
+    "append_dimensions": { "ServiceName": "${AHLA_SERVICE}" },
+    "metrics_collected": { "application_signals": {} }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "realm": "ahla",
+  "displayName": "Ahla ID",
+  "webAuthnPolicyRpEntityName": "ahla.com",
+  "webAuthnPolicySignatureAlgorithms": [
+    "ES256"
+  ],
+  "webAuthnPolicyRpId": "app.ahla.example.com",
+  "webAuthnPolicyAuthenticatorAttachment": "platform",
+  "webAuthnPolicyRequireResidentKey": "no",
+  "webAuthnPolicyUserVerificationRequirement": "required",
+  "webAuthnPolicyAttestationConveyancePreference": "none",
+  "webAuthnPolicyAcceptableAaguids": [],
+  "webAuthnPolicyAvoidSameAuthenticatorRegister": false,
+  "requiredActions": [
+    "webauthn-register",
+    "CONFIGURE_TOTP"
+  ],
+  "authenticationFlows": []
+}

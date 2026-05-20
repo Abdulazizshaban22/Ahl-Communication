@@ -1,0 +1,15 @@
+
+jetstream:
+  enabled: true
+nats:
+  image: ghcr.io/nats-io/nats-server:2.10.14
+websocket:
+  enabled: true
+  port: 9222
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+replicaCount: 1
+persistence:
+  enabled: false

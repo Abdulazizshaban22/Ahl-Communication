@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ahla
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: ahla
+spec:
+  description: Ahla Suite apps and services
+  destinations:
+  - namespace: ahla
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'

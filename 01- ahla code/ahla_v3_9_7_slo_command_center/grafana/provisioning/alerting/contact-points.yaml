@@ -1,0 +1,11 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: ahla-sns-relay
+    receivers:
+      - uid: sns-relay
+        type: webhook
+        # Forward Grafana alerts to an SNS-compatible relay (optional).
+        settings:
+          url: http://sns-relay.default.svc.cluster.local/webhook
+          httpMethod: POST

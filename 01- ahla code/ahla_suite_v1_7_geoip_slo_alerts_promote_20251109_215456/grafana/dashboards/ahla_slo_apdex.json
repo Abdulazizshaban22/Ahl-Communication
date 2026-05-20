@@ -1,0 +1,126 @@
+{
+  "id": null,
+  "uid": "ahla-slo-apdex",
+  "title": "Ahla — SLO & Apdex (ALB Latency)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "type": "textbox",
+        "name": "T",
+        "label": "Apdex T (sec)",
+        "query": "0.5",
+        "current": {
+          "text": "0.5",
+          "value": "0.5"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Apdex (last 1h)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb AND @timestamp>now()-1h | eval tp=to_double(target_processing_time) | stats sum(case(tp <= ${T},1,0)) as S, sum(case(tp > ${T} and tp <= ${T}*4,1,0)) as TOL, count() as N | eval apdex=(S + TOL/2)/N | fields apdex"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 4
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "p50/p95 Target Processing Time",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb | stats percentiles(target_processing_time,[50,95]) by date_histogram(@timestamp,1m)"
+        }
+      ],
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 16,
+        "h": 8
+      }
+    },
+    {
+      "type": "stat",
+      "title": "SLO (Latency <= ${T}s, 7d)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb AND @timestamp>now()-7d | eval ok=case(target_processing_time<=${T},1,0) | stats (sum(ok)/count())*100 as slo"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 8,
+        "h": 4
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Error Rate (ALB 5xx, 1m bins)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb AND elb_status_code:[500 TO 599] | stats count() by date_histogram(@timestamp,1m)"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency Budget Burn (>%{T}s)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND service:alb | eval over=case(target_processing_time>${T},1,0) | stats sum(over) as over, count() as N by date_histogram(@timestamp,5m) | eval burn=(over/N)*100 | fields burn"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
+    }
+  ]
+}

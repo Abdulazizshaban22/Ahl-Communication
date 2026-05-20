@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: dote, labels: { app: dote } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: dote } }
+  template:
+    metadata: { labels: { app: dote } }
+    spec:
+      containers:
+      - name: dote
+        image: { { .Values.images.dote } }
+        ports: [{{ name: http, containerPort: 3000 }}]
+        env:
+        - name: NEXTAUTH_URL
+          value: "https://{{ .Values.hosts.dote }}"
+        - name: NEXTAUTH_SECRET
+          valueFrom: { '{' } secretKeyRef: { '}' }
+        - name: AUTH_KEYCLOAK_ISSUER
+          value: "{{ .Values.global.auth.issuer }}"
+        - name: AUTH_KEYCLOAK_CLIENT_ID
+          value: "{{ .Values.global.auth.clientId }}"
+        - name: AUTH_KEYCLOAK_CLIENT_SECRET
+          valueFrom: { '{' } secretKeyRef: { '}' }
+        - name: NEXT_PUBLIC_NATS_WS_URL
+          value: "{{ .Values.global.natsWS }}"
+        - name: NEXT_PUBLIC_CONTENT_API
+          value: "{{ .Values.global.contentApi }}"
+---
+apiVersion: v1
+kind: Service
+metadata: { name: dote }
+spec:
+  selector: { app: dote }
+  ports: [{{ name: http, port: 80, targetPort: 3000 }}]
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dote
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "{{ .Values.global.ingress.clusterIssuer }}"
+spec:
+  ingressClassName: "{{ .Values.global.ingress.className }}"
+  tls:
+  - hosts: ["{{ .Values.hosts.dote }}"]
+    secretName: dote-tls
+  rules:
+  - host: "{{ .Values.hosts.dote }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: dote, port: { number: 80 } }

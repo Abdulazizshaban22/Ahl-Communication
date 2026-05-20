@@ -1,0 +1,35 @@
+# === Required DNS for a public email service @ahla.com ===
+
+# MX (point to your public mail exchanger FQDN)
+MX    ahla.com.          10 mail.ahla.com.
+
+# A/AAAA for mail host
+A     mail.ahla.com.     YOUR_PUBLIC_IPV4
+AAAA  mail.ahla.com.     YOUR_PUBLIC_IPV6   # optional but recommended
+
+# PTR (Reverse DNS) at your IP provider: YOUR_PUBLIC_IPV4 -> mail.ahla.com
+# This must be configured at the IP/hosting provider (not in your zone).
+
+# SPF (authorize only your MX + specific IP ranges if any)
+TXT   ahla.com.          "v=spf1 mx -all"
+
+# DKIM (publish your public key for selector 's1')
+# Generate a keypair and publish the public key below. Replace <BASE64> with your key.
+TXT   s1._domainkey.ahla.com.  "v=DKIM1; k=rsa; p=<BASE64_PUBLIC_KEY>"
+
+# DMARC (start relaxed then harden)
+TXT   _dmarc.ahla.com.   "v=DMARC1; p=quarantine; rua=mailto:[email protected]; ruf=mailto:[email protected]; fo=1; adkim=s; aspf=s"
+
+# MTA-STS (announce policy & HTTPS endpoint)
+TXT   _mta-sts.ahla.com. "v=STSv1; id=20251020"
+CNAME mta-sts.ahla.com.  mta-sts.ahla.com.   # ensure it resolves to the web server that serves /.well-known/mta-sts.txt
+
+# TLS-RPT (receive TLS failure reports)
+TXT   _smtp._tls.ahla.com. "v=TLSRPTv1; rua=mailto:[email protected]"
+
+# (Optional) BIMI (brand logo in inboxes) - needs a VMC and strong DMARC policy (p=quarantine/reject)
+TXT   default._bimi.ahla.com. "v=BIMI1; l=https://static.ahla.com/brand/ahla-logo.svg; a=https://static.ahla.com/brand/ahla.vmc"
+
+# (Optional) Autoconfig/Autodiscover (for MUAs)
+CNAME autoconfig.ahla.com. mail.ahla.com.
+CNAME autodiscover.ahla.com. mail.ahla.com.

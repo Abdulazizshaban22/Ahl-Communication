@@ -1,0 +1,8 @@
+# v3.5 APPLY variables
+variable "project" { type = string }
+variable "cloudfront_distribution_arn" { type = string }
+variable "alb_arn" { type = string }
+variable "login_paths" { type = list(string)  default = ["/auth/login", "/api/login"] }
+variable "canary_bucket_name" { type = string }
+variable "test_base_url" { type = string  description = "e.g., https://app.ahla.com" }
+variable "sns_alarms_arn" { type = string }

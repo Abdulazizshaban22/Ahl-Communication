@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-translate-service
+description: Ahla Ultra — Translate Service (NLLB-200 CT2)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

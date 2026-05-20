@@ -1,0 +1,68 @@
+{
+  "id": null,
+  "uid": "ahla-os-logs",
+  "title": "Ahla — OpenSearch Logs (Firehose)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Requests per Minute (by service)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* | stats count() by date_histogram(@timestamp, 1m), service",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP 5xx count (ALB)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* AND (elb_status_code:5* OR target_status_code:5*) | stats count() by date_histogram(@timestamp, 1m)"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "table",
+      "title": "Top URIs (ALB)",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "OSDS"
+          },
+          "query": "index=ahla-* | stats count() by request_uri | sort -count | limit 20"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
+    }
+  ]
+}

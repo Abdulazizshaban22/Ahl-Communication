@@ -1,0 +1,75 @@
+{
+  "type": "monitor",
+  "name": "Latency p95 > threshold (last 15m)",
+  "enabled": true,
+  "schedule": {
+    "period": {
+      "interval": 2,
+      "unit": "MINUTES"
+    }
+  },
+  "inputs": [
+    {
+      "search": {
+        "indices": [
+          "ahla-*"
+        ],
+        "query": {
+          "size": 0,
+          "query": {
+            "bool": {
+              "filter": [
+                {
+                  "range": {
+                    "@timestamp": {
+                      "gte": "now-15m"
+                    }
+                  }
+                },
+                {
+                  "term": {
+                    "service": "alb"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "p95": {
+              "percentiles": {
+                "field": "target_processing_time",
+                "percents": [
+                  95
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "name": "p95 latency high",
+      "severity": "2",
+      "condition": {
+        "script": {
+          "source": "double p=ctx.results[0].aggregations.p95.values['95.0']; return p > params.th",
+          "lang": "painless",
+          "params": {
+            "th": 1.0
+          }
+        }
+      },
+      "actions": [
+        {
+          "name": "Notify SNS",
+          "destination_id": "<REPLACE-SNS-DESTINATION-ID>",
+          "message_template": {
+            "source": "p95 latency {{ctx.results.0.aggregations.p95.values['95.0']}}s > 1.0s over last 15m"
+          }
+        }
+      ]
+    }
+  ]
+}

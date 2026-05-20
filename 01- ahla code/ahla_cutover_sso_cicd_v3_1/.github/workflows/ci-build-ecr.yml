@@ -1,0 +1,40 @@
+name: CI — Build & Push ECR
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "services/**"
+      - ".github/workflows/ci-build-ecr.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GHA_ROLE_ARN }}
+          aws-region: me-central-1
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push images
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_REGION: me-central-1
+        run: |
+          set -eux
+          REPO="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+          declare -a services=("chat" "meet-signaling" "drive-api" "business-api" "mail-api" "emotion-api" "audit-api" "keycloak")
+          for s in "${services[@]}"; do
+            IMAGE="$REPO/ahla-$s:prod"
+            docker build -t "$IMAGE" ./services/$s
+            docker push "$IMAGE"
+          done

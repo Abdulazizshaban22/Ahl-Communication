@@ -1,0 +1,4 @@
+1) Override image.repository/tag لكل خدمة (ECR)، ثم شغّل: 
+   helm upgrade -i <rel> charts/ahla-asr-service -n ahla --create-namespace      --set image.repository=$ECR_REGISTRY/ahla/ahla-asr-service      --set image.tag=$GIT_SHA
+2) Ingress يتطلب AWS Load Balancer Controller، وTLS عبر cert-manager (HTTP-01).
+3) ServiceMonitor يتطلب Prometheus Operator/Stack لجمع المقاييس.

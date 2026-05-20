@@ -1,0 +1,18 @@
+{- if .Values.serviceMonitor.enabled }
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: { include "ahla-diarization-service.fullname" . }
+  labels:
+    release: monitoring
+{ include "ahla-diarization-service.labels" . | indent 4 }
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: { include "ahla-diarization-service.name" . }
+      app.kubernetes.io/instance: { .Release.Name }
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: {{ .Values.serviceMonitor.interval }}
+{- end }

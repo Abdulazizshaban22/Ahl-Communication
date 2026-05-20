@@ -1,0 +1,1 @@
+public struct ChatMessage: Codable, Identifiable { public var id = UUID(); public var room: String; public var user: String; public var text: String; public init(room:String,user:String,text:String){self.room=room;self.user=user;self.text=text} }

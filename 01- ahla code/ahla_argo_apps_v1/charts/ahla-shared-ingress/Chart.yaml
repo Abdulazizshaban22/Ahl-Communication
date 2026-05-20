@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ahla-shared-ingress
+description: Shared ALB IngressGroup that fronts multiple Ahla services
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

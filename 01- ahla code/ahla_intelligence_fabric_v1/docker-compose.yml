@@ -1,0 +1,78 @@
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports: [ "2181:2181" ]
+
+  kafka:
+    image: bitnami/kafka:3.6
+    depends_on: [ zookeeper ]
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports: [ "9092:9092" ]
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on: [ kafka ]
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    ports: [ "8080:8080" ]
+
+  pgvector:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_DB=aif
+      - POSTGRES_USER=aif
+      - POSTGRES_PASSWORD=aifpass
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+    ports: [ "5432:5432" ]
+
+  neo4j:
+    image: neo4j:5-community
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_server_default__listen__address=0.0.0.0
+    volumes:
+      - neo4j-data:/data
+    ports: [ "7474:7474", "7687:7687" ]
+
+  orchestrator:
+    build: ./orchestrator
+    depends_on: [ kafka, pgvector, neo4j ]
+    env_file: [ .env ]
+    ports: [ "8000:8000" ]
+
+  worker-embeddings:
+    build: ./workers
+    depends_on: [ kafka, pgvector ]
+    env_file: [ .env ]
+    command: ["python", "embeddings_worker.py"]
+
+  worker-emotion:
+    build: ./workers
+    depends_on: [ kafka ]
+    env_file: [ .env ]
+    command: ["python", "emotion_worker.py"]
+
+  worker-analyzer:
+    build: ./workers
+    depends_on: [ kafka, pgvector, neo4j ]
+    env_file: [ .env ]
+    command: ["python", "analyzer_worker.py"]
+
+  worker-talk:
+    build: ./workers
+    depends_on: [ kafka ]
+    env_file: [ .env ]
+    command: ["python", "talk_worker.py"]
+
+volumes:
+  neo4j-data:

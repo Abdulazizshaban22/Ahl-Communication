@@ -1,0 +1,11 @@
+{
+  "realm": "ahla",
+  "otpPolicyType": "totp",
+  "otpPolicyDigits": 6,
+  "otpPolicyPeriod": 30,
+  "otpPolicyLookAheadWindow": 1,
+  "otpPolicyAlgorithm": "HmacSHA1",
+  "requiredActions": [
+    "CONFIGURE_TOTP"
+  ]
+}

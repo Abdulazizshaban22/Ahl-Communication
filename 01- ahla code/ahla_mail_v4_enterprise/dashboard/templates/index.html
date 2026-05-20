@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Ahla Deliverability</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
+<body>
+<h2>Ahla Deliverability</h2>
+<p>Total successful TLS sessions (from TLS-RPT): <b>{{ tls_ok }}</b></p>
+<p>DMARC reporters: {{ orgs }}</p>
+<canvas id="chart1"></canvas>
+<script>
+async function load(){
+  const tls = await fetch('/api/tls').then(r=>r.json());
+  const byDomain = {};
+  tls.forEach(r=>{ const k=r.policy_domain||'unknown'; byDomain[k]=(byDomain[k]||0)+Number(r.total_success||0); });
+  const labels=Object.keys(byDomain), values=labels.map(k=>byDomain[k]);
+  const ctx=document.getElementById('chart1').getContext('2d');
+  new Chart(ctx,{type:'bar', data:{labels, datasets:[{label:'TLS Success per policy domain', data:values}]}});
+}
+load();
+</script>
+</body></html>

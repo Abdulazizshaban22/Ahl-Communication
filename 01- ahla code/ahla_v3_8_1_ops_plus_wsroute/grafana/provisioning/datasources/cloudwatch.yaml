@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: CloudWatch
+    type: cloudwatch
+    access: proxy
+    isDefault: true
+    jsonData:
+      authType: default          # uses the instance/task role by default
+      defaultRegion: ${AWS_REGION}
+      namespace: 'AWS/EC2'
+      # For Application Signals, add a dedicated data source once enabled
+    editable: false

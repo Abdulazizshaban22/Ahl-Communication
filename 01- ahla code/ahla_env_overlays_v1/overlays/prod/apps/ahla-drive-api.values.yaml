@@ -1,0 +1,33 @@
+replicas: 3
+image:
+  repository: ${{ env.ECR_REGISTRY }}/ahla/ahla-drive-api
+  tag: ${{ github.sha }}
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8081
+
+env:
+  LOG_LEVEL: info
+
+resources:
+  requests: { cpu: "800m", memory: "1Gi" }
+  limits:   { cpu: "4", memory: "8Gi" }
+
+readiness: { path: /healthz }
+liveness:  { path: /healthz }
+
+ingress:
+  enabled: true
+  host: drive.ahla.com
+  tlsSecret: drive-ahla-com-tls
+
+hpa:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+
+serviceMonitor:
+  enabled: true
+  interval: 30s

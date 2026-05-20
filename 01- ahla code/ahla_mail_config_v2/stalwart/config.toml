@@ -1,0 +1,46 @@
+[general]
+hostname = mail.ahla.com
+
+[tls]
+cert = acme:lets
+min-tls-version = 1.2
+
+[acme.lets]
+dir = https://acme-v02.api.letsencrypt.org/directory
+email = admin@ahla.com
+challenge = http-01
+domains = ["mail.ahla.com"]
+renew-before = 7d
+
+[listener.smtp]
+address = 0.0.0.0:25
+tls-mode = starttls
+
+[listener.submission]
+address = 0.0.0.0:587
+tls-mode = starttls
+
+[listener.smtps]
+address = 0.0.0.0:465
+tls-mode = implicit
+
+[listener.imap]
+address = 0.0.0.0:143
+tls-mode = starttls
+
+[listener.imaps]
+address = 0.0.0.0:993
+tls-mode = implicit
+
+[listener.jmap]
+address = 0.0.0.0:443
+tls-mode = implicit
+
+[dns]
+servers = ["1.1.1.1", "8.8.8.8"]
+
+[dkim.s1]
+domain = ahla.com
+selector = s1
+private-key = /opt/stalwart/keys/s1.private.pem
+sign = yes

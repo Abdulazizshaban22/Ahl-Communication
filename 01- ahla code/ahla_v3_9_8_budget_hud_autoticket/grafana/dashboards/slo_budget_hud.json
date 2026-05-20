@@ -1,0 +1,393 @@
+{
+  "title": "Ahla \u2014 SLO Budget HUD",
+  "tags": [
+    "ahla",
+    "slo",
+    "budget",
+    "hud"
+  ],
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 10,
+      "type": "stat",
+      "title": "Chat \u2014 Error Budget Remaining (%)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR, 0)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "Chat \u2014 Projected Exhaustion (days)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R1h",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Requests",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E1h",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Errors",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR1h",
+          "expression": "(E1h / R1h) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "R30d",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E30d",
+          "namespace": "Ahla/CHAT",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR30d",
+          "expression": "(E30d / R30d) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR30d, 0)",
+          "returnData": false
+        },
+        {
+          "refId": "TTE",
+          "expression": "(REM * 30) / clamp_min(BR1h, 0.0001)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "stat",
+      "title": "Meet \u2014 Error Budget Remaining (%)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/MEET",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/MEET",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.995)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR, 0)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "stat",
+      "title": "Meet \u2014 Projected Exhaustion (days)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R1h",
+          "namespace": "Ahla/MEET",
+          "metricName": "Requests",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E1h",
+          "namespace": "Ahla/MEET",
+          "metricName": "Errors",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR1h",
+          "expression": "(E1h / R1h) / (1 - 0.995)",
+          "returnData": false
+        },
+        {
+          "refId": "R30d",
+          "namespace": "Ahla/MEET",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E30d",
+          "namespace": "Ahla/MEET",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR30d",
+          "expression": "(E30d / R30d) / (1 - 0.995)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR30d, 0)",
+          "returnData": false
+        },
+        {
+          "refId": "TTE",
+          "expression": "(REM * 30) / clamp_min(BR1h, 0.0001)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "stat",
+      "title": "Drive \u2014 Error Budget Remaining (%)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR, 0)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "stat",
+      "title": "Drive \u2014 Projected Exhaustion (days)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R1h",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Requests",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E1h",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Errors",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR1h",
+          "expression": "(E1h / R1h) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "R30d",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E30d",
+          "namespace": "Ahla/DRIVE",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR30d",
+          "expression": "(E30d / R30d) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR30d, 0)",
+          "returnData": false
+        },
+        {
+          "refId": "TTE",
+          "expression": "(REM * 30) / clamp_min(BR1h, 0.0001)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "stat",
+      "title": "Mail \u2014 Error Budget Remaining (%)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR",
+          "expression": "(E / R) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR, 0)",
+          "returnData": true
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "stat",
+      "title": "Mail \u2014 Projected Exhaustion (days)",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "targets": [
+        {
+          "refId": "R1h",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Requests",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E1h",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Errors",
+          "period": "3600",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR1h",
+          "expression": "(E1h / R1h) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "R30d",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Requests",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "E30d",
+          "namespace": "Ahla/MAIL",
+          "metricName": "Errors",
+          "period": "300",
+          "stat": "Sum"
+        },
+        {
+          "refId": "BR30d",
+          "expression": "(E30d / R30d) / (1 - 0.999)",
+          "returnData": false
+        },
+        {
+          "refId": "REM",
+          "expression": "clamp_min(1 - BR30d, 0)",
+          "returnData": false
+        },
+        {
+          "refId": "TTE",
+          "expression": "(REM * 30) / clamp_min(BR1h, 0.0001)",
+          "returnData": true
+        }
+      ]
+    }
+  ]
+}

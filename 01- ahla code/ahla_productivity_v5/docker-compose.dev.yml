@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  collab:
+    build: ./services/collab-gateway
+    ports: ["1234:1234"]
+  notesapi:
+    build: ./services/notes-api
+    ports: ["8000:8000"]
+  superset:
+    image: apache/superset:latest
+    environment:
+      - SUPERSET_SECRET_KEY=ahla-secret
+    ports: ["8088:8088"]
+  # Postgres/MinIO can be added if needed

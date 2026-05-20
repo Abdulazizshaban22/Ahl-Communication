@@ -1,0 +1,8 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE TABLE IF NOT EXISTS embeddings (
+  id BIGSERIAL PRIMARY KEY,
+  content TEXT,
+  embedding VECTOR(768),
+  metadata JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);

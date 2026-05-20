@@ -1,0 +1,22 @@
+project                 = "ahla"
+alb_load_balancer_dimension = "app/ahla-alb/1234567890abcdef"
+anomaly_alarm_sns_arn   = "arn:aws:sns:me-central-1:123456789012:ahla-alarms"
+
+# rotation
+rds_secret_arn          = "arn:aws:secretsmanager:me-central-1:123456789012:secret:ahla/rds/prod-AbCdE"
+rds_instance_id         = "ahla-prod-db-1"
+lambda_subnet_ids       = ["subnet-aaa","subnet-bbb"]
+lambda_security_group_ids = ["sg-xyz"]
+
+# backup
+backup_resources_arns = [
+  "arn:aws:rds:me-central-1:123456789012:db:ahla-prod-db-1",
+  "arn:aws:ec2:me-central-1:123456789012:volume/vol-0123456789abcdef0"
+]
+backup_daily_retention   = 30
+backup_weekly_retention  = 12
+backup_monthly_retention = 12
+
+# s3 lifecycle
+s3_drive_bucket = "ahla-drive-prod"
+s3_logs_bucket  = "ahla-logs-prod"

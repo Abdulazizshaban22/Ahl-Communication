@@ -1,0 +1,21 @@
+{
+  "organization_id": "m-xxxxxxxxxxxxxxxxx",
+  "default_password": "TemporaryPass#2025",
+  "users": [
+    {
+      "name": "Abdulaziz Shaban",
+      "display": "Abdulaziz Shaban",
+      "email": "az@ahla.com"
+    },
+    {
+      "name": "Support",
+      "display": "Ahla Support",
+      "email": "support@ahla.com"
+    },
+    {
+      "name": "NoReply",
+      "display": "Ahla No-Reply",
+      "email": "no-reply@ahla.com"
+    }
+  ]
+}
